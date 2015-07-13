@@ -42,7 +42,7 @@ Make sure you have a basic understanding of git before you launch into things:
 ###Clone This Repo
 From the command line:
 ```
-git clone https://github.com/aleeper/engineering_mechanics
+git clone https://github.com/aleeper/EngineeringMechanicsShared
 ```
 Or, you may consider trying out the
 [Github for Mac](https://mac.github.com/) desktop client.
