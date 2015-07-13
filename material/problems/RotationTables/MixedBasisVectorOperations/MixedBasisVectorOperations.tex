@@ -1,0 +1,99 @@
+%   File: frame_conventions.tex
+% Author: Adam Leeper (with modifications by Paul Mitiguy)
+%------------------------------------------------------------------------------
+%\\[0.45pc]
+\providecommand{\isolatedBuild}[1]{#1}% fallback definition lets this file build normally
+\isolatedBuild{
+  \documentclass[11pt,letterpaper]{book}
+  \input{handout_helpers.tex}   % Must be found via TEXINPUTS environment variable.
+  \isolatedBuildHeader{Rotation Tables and Vector Operations}
+                      {Mixed-Basis Dot and Cross}
+}
+%%%
+%%%
+%%%
+\begin{minipage}[t]{0.75\linewidth}
+  Let \uvecBasisxyz{n} and \uvecBasisxyz{b} be two distinct sets of
+  right-handed, orthogonal unit vectors related by the rotation table
+  \dircos{n}{b} given at right. The entries $c_{ij}$ in the matrix represent
+  scalars.
+  %
+  \\[0.45pc]
+  Assume you are \textbf{given} a vector
+  $\posvec{P}{Q} \equals[\;] 3~\uvecx{n} \plus[\;] 2~\uvecz{b}$.
+\end{minipage}
+%
+\hfill
+%
+\begin{minipage}[t]{0.25\linewidth}
+  \vspace*{0pt}
+  \flushright
+  \directionCosineTable{n}{b}{~c}
+\end{minipage}
+%\\[0.0pc]
+\begin{enumerate}
+  \item Calculate  $\posvec{P}{Q} \DotProduct \posvec{P}{Q}\!$,
+        expressing your answer in terms of the coefficients $c_{ij}$.
+  \\[1.0pc]
+  \Solution {}{1.0\linewidth}{
+    \begin{tabular}{@{}l@{ \equals[\;] }ll}
+    $\posvec{P}{Q} \cdot \posvec{P}{Q}$ & $(3~\uvecx{n} \plus[\;]
+      2~\uvecz{b}) \cdot (3~\uvecx{n} \plus[\;] 2~\uvecz{b})$ &
+    \\[0.5pc]
+      & $9~\uvecx{n}\DotProduct\uvecx{n} \plus[\;]
+         6~\uvecx{n}\DotProduct\uvecz{b} \plus[\;]
+         6~\uvecz{b}\DotProduct\uvecx{n} \plus[\;]
+         4~\uvecz{b}\DotProduct\uvecz{b}$
+      & distribute, preserving order
+    \\[0.5pc]
+      & $9~\uvecx{n}\DotProduct\uvecx{n} \plus[\;]
+        12~\uvecx{n}\DotProduct\uvecz{b} \plus[\;]
+         4~\uvecz{b}\DotProduct\uvecz{b}$
+      & dot product is commutative
+    \\[0.5pc]
+      & $9~(1) \plus[\;] 12~(c_{13}) \plus[\;] 4~(1)$
+      & look up dot products
+    \\[0.5pc]
+      & $13 \plus[\;] 12~c_{13}$
+      & simplify
+    \end{tabular}
+  }
+  \\[0.5pc]
+  \item Calculate $\uvecz{n} \CrossProduct \posvec{P}{Q}\!$, expressing your
+        answer in terms of \uvecBasisxyz{n} and the coefficients $c_{ij}$.
+  \\[1.0pc]
+  \Solution {}{1.0\linewidth}{
+    \begin{tabular}{@{}l@{ \equals[\;] }c@{\plus[\;]}ll}
+        $\uvecz{n} \CrossProduct \posvec{P}{Q}$
+      & $\uvecz{n} \CrossProduct (3~\uvecx{n} $
+      & $ 2~\uvecz{b})$
+      &
+      \\[0.5pc]
+      & $3~\uvecz{n} \CrossProduct \uvecx{n}$
+      & $2~\uvecz{n} \CrossProduct \uvecz{b}$
+      & distribute, preserve order
+    \\[0.5pc]
+      & $3~\uvecz{n} \CrossProduct \uvecx{n} $
+      & $2~\uvecz{n} \CrossProduct (c_{13}~\uvecx{n} + c_{23}~\uvecy{n}
+                                    + c_{33}~\uvecz{n})$
+      & convert \uvecz{b} with table
+    \\[0.5pc]
+      & $3~\uvecz{n} \CrossProduct \uvecx{n} $
+      & $2~c_{13}~\uvecz{n} \CrossProduct \uvecx{n} \plus[\;]
+         2~c_{23}~\uvecz{n} \CrossProduct \uvecy{n} \plus[\;]
+         2~c_{33}~\uvecz{n} \CrossProduct \uvecz{n}$
+      & distribute, preserve order
+    \\[0.5pc]
+      & $3~\uvecy{n} $
+      & $2~c_{13}~\uvecy{n} \minus[\;] 2~c_{23}~\uvecx{n} \plus[\;] \bvec{0}$
+      & evaluate cross products
+    \\[0.5pc]
+      & $ \minus[\;] 2~c_{23}~\uvecx{n}$
+      & $(3 + 2~c_{13})~\uvecy{n} $
+      & simplify
+    \end{tabular}
+  }
+  \\[1.0pc]
+\end{enumerate}
+%
+\isolatedBuildFooter

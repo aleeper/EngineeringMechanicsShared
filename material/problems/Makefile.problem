@@ -1,0 +1,62 @@
+###############################################################################
+### NOTE: This Makefile is shared across all problem folders via a symlink.
+### Changes to this file will affect ALL problem folders.
+### The actual file location is engr105/problems/Makefile.problem.
+###############################################################################
+
+### Fun with colors.
+CWHITE="\\x1B[0m"
+CGREEN="\\x1B[32m"
+CRED="\\x1B[31m"
+CPURPLE="\\x1B[35m"
+
+### Specify the shell environment we expect to use.
+SHELL := /bin/bash
+
+### Make the echo command obey escape sequences.
+ECHO := echo -e
+
+### Specify the latex build command.
+TEX := pdflatex -halt-on-error -shell-escape -interaction=nonstopmode
+
+### Define a command for PDF viewing that will work on both Mac and Linux.
+PDF_VIEW := $$(if [ "$$(uname)" == "Darwin" ]; then echo "open -a Preview"; else echo "evince"; fi;)
+
+### Deduce the filename from the directory name (we expect them to be the same).
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+
+filename=$(current_dir)
+
+preambleA="\\def\\ShowSolution{0}\\def\\StudentTeacherPaul{0}"
+preambleB="\\def\\ShowSolution{1}\\def\\StudentTeacherPaul{1}"
+
+###############################################################################
+### Make targets.
+###############################################################################
+
+build: check_env student instructor
+
+student: check_env
+	$(TEX) -jobname=$(filename)-Student     "$(preambleA)\input{$(filename).tex}"
+
+instructor: check_env
+	$(TEX) -jobname=$(filename)-Instructor  "$(preambleB)\input{$(filename).tex}"
+
+view:
+	@$(ECHO) "Opening pdfs in viewer..."
+	@$(PDF_VIEW) $(filename)-Student.pdf &
+	@$(PDF_VIEW) $(filename)-Instructor.pdf &
+
+clean:
+	@rm -vf *.aux *.synctex.gz *.log
+	@ls | grep -E "$(filename).*.pdf" | xargs rm -vf
+
+check_env:
+	@ if [ "${TEXINPUTS}" == "" ]; then \
+	    $(ECHO) "$(CRED)Environment variable TEXINPUTS is not set!$(CWHITE)"; \
+	    $(ECHO) "In this terminal, please source the setup.sh script located at the root of the repo:"; \
+	    $(ECHO) "    $(CGREEN)source setup.sh$(CWHITE)"; \
+	    exit 1; \
+	  fi
+

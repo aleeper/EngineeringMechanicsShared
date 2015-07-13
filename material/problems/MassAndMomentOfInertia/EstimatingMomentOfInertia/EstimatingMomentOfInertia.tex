@@ -1,0 +1,39 @@
+% File: MomentOfInertia.tex
+% Author: Adam Leeper
+%------------------------------------------------------------------------------
+\providecommand{\isolatedBuild}[1]{#1}% Fallback definition to build normally.
+\isolatedBuild{
+  \documentclass[11pt,letterpaper]{book}
+  \input{handout_helpers.tex}   % Found via TEXINPUTS environment variable.
+  \isolatedBuildHeader{Estimating Inertia}
+                      {Estimating Inertia}
+}
+%%%
+%%%
+%%%
+Consider a man of mass 100 kg standing up with his arms at his sides. He is
+\textit{approximately} 2 meters tall, 0.5 meters wide, and 0.25 meters deep.
+%
+\begin{enumerate}
+  \item Sketch the system, with \uvecy{b} pointed from feet to head and
+    \uvecz{b} pointed from back to front.
+  \item Compute the man's \textbf{approximate} moments of inertia about his
+    center of mass for \uvecxyz{b}, using the \textbf{rough model} that he is
+    a box of uniform density. That is, compute \iscalarxx{B/\cm{B}},
+    \iscalaryy{B/\cm{B}}, and \iscalarzz{B/\cm{B}}.
+  \item From (a), compute the moments of inertia about a point $B_1$ located
+    between his feet, for \uvecxyz{b}.
+  \item Briefly describe what happens to these values when the man crouches
+    and ``tucks" his arms and legs (e.g. doing a cannon-ball into a pool,
+    or a backflip).
+  %\item Comment on the accuracy of this model. Is it within 1\%? 50\%?
+  %  Totally bogus?
+  %\item Explain briefly how you might go about computing (or otherwise
+  %  determining) a more accurate estimate of the moments of inertia for the man.
+  %\item With reference to moment of inertia, explain why it is advantageous
+  %  to ``tuck" when performing a backflip.
+\end{enumerate}
+
+%\ScoreOutOfPointsOnBottomRightOfPage{20}
+%
+\isolatedBuildFooter

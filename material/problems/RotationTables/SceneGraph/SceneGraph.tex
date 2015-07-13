@@ -1,0 +1,53 @@
+%   File: SceneGraph.tex
+% Author: Adam Leeper
+%------------------------------------------------------------------------------
+%\\[0.45pc]
+\providecommand{\isolatedBuild}[1]{#1}% fallback definition lets this file build normally
+\isolatedBuild{
+  \documentclass[11pt,letterpaper]{book}
+  \input{handout_helpers.tex}   % Must be found via TEXINPUTS environment variable.
+  \isolatedBuildHeader{Rotation Matrices}
+                      {Computer Graphics Scene Graph:
+                        Working with Multiple Rotation Matrices}
+}
+%%%
+%%%
+%%%
+In computer graphics and robotics, a \textit{scene graph} is a structure which
+holds position and rotation information for a set of frames.
+Typically this structure gives you rotation matrices relating each frame to a
+single common ``world'' frame; it is then up to you to compute the quantities
+you need for a particular use.
+%
+\\[0.45pc]
+For this problem, assume you obtain from the scene graph the rotation matrices
+\dircos{N}{A}, \dircos{N}{B}, \dircos{N}{C} which relate the right-handed,
+orthogonal unit vectors of frames \basis{N}, \basis{A}, \basis{B}, and \basis{C}.
+\\[-0.75pc]
+\begin{enumerate}
+  \item
+    Given \dircos{N}{A}, explain how to obtain the inverse rotation
+    matrix, \dircos{A}{N}.
+    \\[0.45pc]
+    \Solution {}{1.0\linewidth}{
+      You \underline{transpose} \dircos{N}{A} to get \dircos{A}{N}.
+      In other words, $\dircos{A}{N} = (\dircos{N}{A})^T$.
+      \\[0.45pc]
+      % In linear algebra, a matrix with the property
+      % $\dircos{N}{A} * \dircos{A}{N} \equals[\;] I$ is
+      % called an \textit{orthogonal} matrix.
+    }
+    \\[0.75pc]
+%
+  \item
+    Show how to use the above quantities to form the rotation
+    matrix relating frame A and C.
+    \\[1.0pc] $\dircos{A}{C} \equals[\;]$
+      $\hidemath[0cm]{
+        \dircos{A}{N} \mult[\;] \dircos{N}{C}
+        \equals[\;] (\dircos{N}{A})^T * \dircos{N}{C}
+        }$
+%
+\end{enumerate}
+%
+\isolatedBuildFooter

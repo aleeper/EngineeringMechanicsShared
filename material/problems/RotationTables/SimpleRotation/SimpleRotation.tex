@@ -1,0 +1,41 @@
+%   File: SimpleRotation.tex
+% Author: Adam Leeper
+%------------------------------------------------------------------------------
+%\\[0.45pc]
+\providecommand{\isolatedBuild}[1]{#1}% fallback definition lets this file build normally
+\isolatedBuild{
+  \documentclass[11pt,letterpaper]{book}
+  \input{handout_helpers.tex}   % Must be found via TEXINPUTS environment variable.
+  \isolatedBuildHeader{Rotation Matrices}
+                      {Simple Rotations}
+}
+%%%
+%%%
+%%%
+Frames \basis{A} and \basis{B}, with \textbf{right-handed} orthogonal
+unit vectors \uvecBasisxyz{a}, and \uvecBasisxyz{b}, respectively,
+are initially aligned. Frame \basis{B} is then rotated by an angle
+$\phi$ about the positive \uvecx{a} axis.
+%
+\\[-0.45pc]
+\begin{enumerate}
+  \begin{minipage}[t]{0.50\linewidth}
+    \item
+      Sketch \uvecBasisxyz{a}, \uvecBasisxyz{b}, and $\phi$ on the
+      figure below.
+      \\[0.45pc]
+      \includegraphicsAB[height=4cm]{basis_solution.png}{basis.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.50\linewidth}
+    \item
+      Write a rotation table relating \basis{A} and \basis{B}.
+      \\[2.0pc]
+      \Solution {}{1.0\linewidth}{
+        \simpleRotationX{a}{b}{\phi}
+        \\[1.0pc]
+      }
+  \end{minipage}
+\end{enumerate}
+%
+\isolatedBuildFooter

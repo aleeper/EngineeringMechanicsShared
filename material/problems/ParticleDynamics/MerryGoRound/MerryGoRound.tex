@@ -1,0 +1,51 @@
+% File: MerryGoRound.tex
+% Author: Adam Leeper
+%------------------------------------------------------------------------------
+\providecommand{\isolatedBuild}[1]{#1}% Fallback definition to build normally.
+\isolatedBuild{
+  \documentclass[11pt,letterpaper]{book}
+  \input{handout_helpers.tex}   % Found via TEXINPUTS environment variable.
+  \isolatedBuildHeader{2D Angular Momentum for a Child on a Merry-Go-Round}
+                      {2D Angular Momentum for a Child on a Merry-Go-Round}
+}
+%%%
+%%%
+%%%
+A child, modeled as a particle $Q$, of mass $m^Q = 50$ kg stands at the
+center of a merry-go-round $B$ of radius $R = 2$ m and mass $m^B = 200$ kg.
+Let $\uvecz{b}$ be a unit vector vertically upward (perpendicular to the
+surface of $B$). Let the center of the merry-go-round be coincident with a
+point $N_o$ which is fixed in a Newtonian reference frame $N$. The angular
+velocity of $B$ in $N$ can be described as function of time as
+$\angvel{B}{N} = \omega_z(t)~\uvecz{b}$.
+
+Initially, $\omega_z( t = 0 ) = 6$ rad/s.
+%The child then becomes dizzy and begins to walk in an outward spiral, such that his position in meters (expressed as a function of time $t$ in seconds) is given by:
+%\\[0.25pc]
+%$$\posvec{N_o}{\cm{C}} = \frac{t}{4}\cos(t)~\uvecx{b} + \frac{t}{4} \sin(t)~\uvecy{b}$$
+%
+The child then begins to walk outward such that his position in meters (expressed as a function of time $t$ in seconds) is given by:
+$\posvec{N_o}{Q} = t~\uvecx{b}$.
+
+Neglecting sources of friction and air-resistance,
+we can assume there are \textbf{no external moments} about \uvecz{b}
+on the system consisting of $B$ and $Q$.
+
+\textbf{Hint:} It is important in this problem for you to distinguish between
+$\omega_z(t=0)$, which is a single number, and the variable $\omega_z(t)$.
+Don't combine them together or cancel them out.
+
+\begin{enumerate}
+  \item Calculate the angular momentum of the child about $N_o$ at time $t$
+    in terms of $m^Q$, $t$, and $\omega_z(t)$.
+  \item Using part (a) and the information about the initial state of the
+    system, find an expression for $\omega_z(t)$.
+  \item Hence, calculate $\omega_z(t=2)$.
+  %\item In reality the child is not a particle, but has some ``extent"
+  %  horizontally. Modeling the child as a cylinder of radius $r = 0.2$ m and
+  %  height $h = 1$ m, recalculate $\omega_z(t=2)$ and determine the
+  %  difference from part (b) as a percentage. In your judgement, is the
+  %  particle model reasonable?
+\end{enumerate}
+%
+\isolatedBuildFooter
