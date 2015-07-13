@@ -1,0 +1,38 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DUKE PERREIRA OVERRIDE %%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{dukePerreiraOverride}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{mechanics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+% No options...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+\renewcommand{\posvec}[2]{\ensuremath{\positionVectorSymbol_{{#2}/{#1}}{}}}
+
+\renewcommand{\vel}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\velocityVectorSymbol}_{{#2}_{#1}}{}}}
+\renewcommand{\velScalarSymbol}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\velocityScalarSymbol}_{{#2}_{#1}}{}}}
+\renewcommand{\velRelative}[3]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\velocityVectorSymbol}_{#1/#2}{}}}
+\renewcommand{\velRelativeCoincidentPoints}[3][]{\ensuremath{{\velocityVectorSymbol}_{#2/#3}{}}}
+
+\renewcommand{\accel}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\accelerationVectorSymbol}_{{#2}_{#1}}{}}}
+\renewcommand{\accelRelative}[4][\,]{\ensuremath{\leftSuperscriptWithBase{#4}{\!\accelerationVectorSymbol}_{{#2/#3}_{#1}}{}}}
+
+\renewcommand{\mass}[1]{\massSubscript{#1}}
+
+\renewcommand{\linearMomentumName}{translational momentum}
+\renewcommand{\LinearMomentumName}{Translational momentum}
+
+%%% Direction cosine matrix i.e. rotation matrix.
+\renewcommand{\rotationMatrixSymbol}{\ensuremath{\textrm{C}}}
+\renewcommand{\dircos}[3][]{\ensuremath{{}^{\mathrm{#2}}{\rotationMatrixSymbol}_\mathrm{#1}^{\mathrm{#3}}}{}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

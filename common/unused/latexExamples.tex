@@ -1,0 +1,59 @@
+%-----------------------------------------------------------------
+% The following is an example of aligned equations with text on top of them
+%
+% \begin{subequations}
+% Some text describing the equations to not be sent to another page.
+% \boxmath{0.2cm}{\begin{aligned}
+%              F_x & \equals[] \textrm{First  equation}
+%    \\[0.0pc] F_y & \equals[] \textrm{Second equation}
+%    \\[0.0pc] F_z & \equals[] \textrm{Last   equation}
+% \end{aligned}}
+% \end{subequations}
+
+%-----------------------------------------------------------------
+% The following is an example of aligned box equations
+% Unfortunately, Keith says there is no way to number and box EACH equation.
+% To remove the one equation number, use \begin{displaymath}
+%
+% \begin{equation}
+% \boxmath{0.02cm}{\begin{aligned}
+%    F_x & \equals[] \textrm{First equation}  \\[0.0pc]
+%    F_y & \equals[] \textrm{Second equation} \\[0.0pc]
+%    F_z & \equals[] \textrm{Last equation}
+% \end{aligned}}
+% \end{equation}
+
+%-----------------------------------------------------------------
+% The following is a second example of gathered (but not aligned) boxed equations.
+% The good thing is that each equation is numbered and boxed.
+% The bad thing is that the equations are not aligned.
+% Use \begin{gather*} and \end{gather*} for nonumber.
+% %
+% \begin{gather}
+%              \boxmath{0.2cm}{ F_x = \textrm{First equation}  }
+%    \\[0.0pc] \boxmath{0.2cm}{ F_y = \textrm{Second equation} }
+%    \\[0.0pc] \boxmath{0.2cm}{ F_z = \textrm{Last equation}   }
+% \end{gather}
+%
+
+%-----------------------------------------------------------------
+% The following shows gathered and aligned and numbered equations.
+% Use \begin{align*} and \end{align*} for nonumber ?
+% %
+% \begin{align}
+%              F_x & \equals[\,]  \textrm{First equation}
+%    \\[0.0pc] F_y & \equals[\,]  \textrm{Second equation}
+%    \\[0.0pc] F_z & \equals[\,]  \textrm{Last equation}
+% \end{align}
+
+%-----------------------------------------------------------------
+% Example of boxed split invisible equation
+% \begin{equation} \label{eqn:newControlLaw}
+% \boxmath{0.2cm}{ \quad \hideqn{
+% \begin{split}
+%               T_x & \equals[\:] \overline{T}_x + K_v\,I_x\,\bigl(\omega^D_x - \omega_x \bigr) - K_p\,I_x\,\sgn\bigl(\eulerp{D}{B}{4}\bigr)\eulerp{D}{B}{1}
+%    \\[0.0pc]	T_y & \equals[\:] \overline{T}_y + K_v\,I_y\,\bigl(\omega^D_y - \omega_y \bigr) - K_p\,I_y\,\sgn\bigl(\eulerp{D}{B}{4}\bigr)\eulerp{D}{B}{2}
+%    \\[0.0pc]  T_z & \equals[\:] \overline{T}_z + K_v\,I_z\,\bigl(\omega^D_z - \omega_z \bigr) - K_p\,I_z\,\sgn\bigl(\eulerp{D}{B}{4}\bigr)\eulerp{D}{B}{3}
+%  \end{split}
+%  \quad } }
+%  \end{equation}

@@ -1,0 +1,147 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MG TEXT STYLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\NeedsTeXFormat{LaTeX2e}
+%\ProvidesPackage{textStyles}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{bigbold}
+\RequirePackage{color}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+% No options...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%% COMMON COLOR DEFINITIONS %%%%%%%%%%%%%%%%%%%%
+% Built in colors: red, green, blue, yellow, cyan, magenta, black, white
+% Additional custom colors:
+\definecolor{darkerRed}{rgb}{0.7,0,0}               % All red, but make it a little darker
+\definecolor{darkRed}{rgb}{0.5,0,0}                 % All red, but make it darker
+
+\definecolor{darkerGreen}{rgb}{0,0.6,0}             % All green, but make it a littler darker
+\definecolor{darkGreen}{rgb}{0,0.3,0}               % All green, but make it darker
+
+\definecolor{pureBlue}{rgb}{0,0,1.0}                % All blue (bright).
+\definecolor{darkerBlue}{rgb}{0,0,0.6}              % All blue, but make it a littler darker
+\definecolor{darkBlue}{rgb}{0,0,0.5}                % All blue, but make it darker
+
+\definecolor{darkestYellow}{rgb}{0.85,0.85,0.0}     % Yellow is green+blue.  Darker yellow is less green + less blue.
+\definecolor{darkYellow}{rgb}{1.0,1.0,0.0}          % Yellow is green+blue.  Adding little blue makes darker  yellow
+\definecolor{lightYellow}{rgb}{1.0,1.0,0.4}         % Yellow is green+blue.  Adding some   blue makes lighter yellow
+%\definecolor{darkYellow}{rgb}{1.0,1.0,1.0}          % Exams=white
+%\definecolor{lightYellow}{rgb}{1.0,1.0,1.0}         % Exams=white
+\definecolor{darkYellowOverride}{rgb}{1.0,1.0,0.0}  % Overrides definition on Exams=white
+\definecolor{lightYellowOverride}{rgb}{1.0,1.0,0.4} % Overrides definition on Exams=white
+
+\definecolor{darkOrange}{rgb}{0.75,0.4,0}           % Mostly red, half less of green, and no blue
+\definecolor{darkGray}{gray}{0.3}                   % 0.30 is nearly black (which is 0.0) % for homework and notes
+\definecolor{lightGray}{gray}{0.6}                  % 0.60 is more   white (which is 1.0) % for homework and notes
+\definecolor{lightestGray}{gray}{0.8}               % 0.80 is mostly white (which is 1.0) % for Watermarks.
+\definecolor{headingColor}{rgb}{0,1,0}              % Chapter, section, subsection heading colors (blue)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% BOLD, EMPH, COLORS AND BACKGROUNDS %%%%%%%%%%%%%%%%%%%%
+\newcommand{\textbfEmph}[1]{\textbf{\emph{#1}}}                                    % test: \textbfEmph{Some text}                    % Produces "Some text" in bold-face and emphasized text
+\newcommand{\textbfSize}[2]{\textbf{#1{#2}}}                                       % test: \textbfSize{\large}{Some text}            % Produces "Some text" in bold-face and large font
+\newcommand{\textColor}[2]{\textcolor{#1}{#2}}                                     % test: \textColor{darkerBlue}{Some text}         % Produces "Some text" in darkerBlue
+\newcommand{\textColorBold}[2]{\textbf{\textColor{#1}{#2}}}                        % test: \textColorBold{darkerBlue}{Some text}     % Produces "Some text" in darkerBlue Bold
+\newcommand{\textColorEmph}[2]{\emph{\textColor{#1}{#2}}}                          % test: \textColorEmph{darkerBlue}{Some text}     % Produces "Some text" in darkerBlue Emph
+\newcommand{\textColorBoldEmph}[2]{\textbfEmph{\textColor{#1}{#2}}}                % test: \textColorBoldEmph{darkerBlue}{Some text} % Produces "Some text" in darkerBlue large font
+\newcommand{\textColorBoldSize}[3]{\textbfSize{#2}{\textColor{#1}{#3}}}            % test: \textColorBoldSize{darkerBlue}{\large}{some text}
+\newcommand{\textColorBoldEmphSize}[3]{\emph{\textbfSize{#2}{\textColor{#1}{#3}}}} % test: \textColorBoldEmphSize{darkerBlue}{\large}{some text}
+
+\newcommand{\emphDarkRed}[1]{\textColorEmph{darkRed}{#1}}                          % test: \emphDarkRed{Some text}
+\newcommand{\emphDarkGreen}[1]{\textColorEmph{darkGreen}{#1}}                      % test: \emphDarkGreen{Some text}
+\newcommand{\emphDarkBlue}[1]{\textColorEmph{darkBlue}{#1}}                        % test: \emphDarkBlue{Some text}
+\newcommand{\boldDarkRed}[1]{\textColorBold{darkRed}{#1}}                          % test: \boldDarkRed{Some text}
+\newcommand{\boldDarkGreen}[1]{\textColorBold{darkGreen}{#1}}                      % test: \boldDarkGreen{Some text}
+\newcommand{\boldDarkBlue}[1]{\textColorBold{darkBlue}{#1}}                        % test: \boldDarkBlue{Some text}
+\newcommand{\boldEmphDarkRed}[1]{\textColorBoldEmph{darkRed}{#1}}                  % test: \boldEmphDarkRed{Some text}
+\newcommand{\boldEmphDarkGreen}[1]{\textColorBoldEmph{darkGreen}{#1}}              % test: \boldEmphDarkGreen{Some text}
+\newcommand{\boldEmphDarkBlue}[1]{\textColorBoldEmph{darkBlue}{#1}}                % test: \boldEmphDarkBlue{Some text}
+\newcommand{\boldUnderlineDarkRed}[1]{\textColorBold{darkRed}{\underline{#1}}}     % test: \boldUnderlineDarkRed{Some text}
+\newcommand{\boldUnderlineDarkGreen}[1]{\textColorBold{darkGreen}{\underline{#1}}} % test: \boldUnderlineDarkGreen{Some text}
+\newcommand{\boldUnderlineDarkBlue}[1]{\textColorBold{darkBlue}{\underline{#1}}}   % test: \boldUnderlineDarkBlue{Some text}
+\newcommand{\boldUnderlineBlack}[1]{\textbf{\underline{#1}}}                       % test: \boldUnderlineBlack{Some text}
+\newcommand{\boldUnderlineEmphDarkRed}[1]{\boldEmphDarkRed{\underline{#1}}}        % test: \boldUnderlineDarkRed{Some text}
+\newcommand{\boldDarkRedSize}[2]{\boldDarkRed{\smallerDescription[#1]{#2}}}        % test: \boldDarkRedSize{\large}{Some text}
+\newcommand{\boldDarkGreenSize}[2]{\boldDarkGreen{\smallerDescription[#1]{#2}}}    % test: \boldDarkGreenSize{\large}{Some text}
+\newcommand{\boldDarkBlueSize}[2]{\boldDarkBlue{\smallerDescription[#1]{#2}}}      % test: \boldDarkBlueSize{\large}{Some text}
+\newcommand{\boldEmphDarkRedSize}[2]{\textColorBoldEmphSize{darkRed}{#1}{#2}}      % test: \boldEmphDarkRedSize{\large}{Some text}
+\newcommand{\boldEmphDarkGreenSize}[2]{\textColorBoldEmphSize{darkGreen}{#1}{#2}}  % test: \boldEmphDarkGreenSize{\large}{Some text}
+\newcommand{\boldEmphDarkBlueSize}[2]{\textColorBoldEmphSize{darkBlue}{#1}{#2}}    % test: \boldEmphDarkBlueSize{\large}{Some text}
+
+\newcommand{\mathColor}[2]{\ensuremath{\textcolor{#1}{#2}}}                        % test: \mathColor{darkerBlue}{Some formula}
+\newcommand{\mathColorBold}[2]{\ensuremath{\mathbf{\mathColor{#1}{#2}}}}           % test: \mathColorBold{darkerBlue}{Some formula}
+\newcommand{\mathColorBBold}[2]{\ensuremath{\bigbold{\mathColor{#1}{#2}}}}         % test: \mathColorBBold{darkerBlue}{Some formula}
+\newcommand{\mathBoldBlack}[1]{\mathColorBold{black}{#1}}                          % test: \mathBoldBlack{Some math}
+\newcommand{\mathBoldDarkRed}[1]{\mathColorBold{darkRed}{#1}}                      % test: \mathBoldDarkRed{Some math}
+\newcommand{\mathBoldDarkGreen}[1]{\mathColorBold{darkGreen}{#1}}                  % test: \mathBoldDarkGreen{Some math}
+\newcommand{\mathBoldDarkBlue}[1]{\mathColorBold{darkBlue}{#1}}                    % test: \mathBoldDarkBlue{Some math}
+\newcommand{\mathBBoldDarkRed}[1]{\mathColorBBold{darkRed}{#1}}                    % test: \mathBBoldDarkRed{Some math}
+\newcommand{\mathBBoldDarkGreen}[1]{\mathColorBBold{darkGreen}{#1}}                % test: \mathBBoldDarkGreen{Some math}
+\newcommand{\mathBBoldDarkBlue}[1]{\mathColorBBold{darkBlue}{#1}}                  % test: \mathBBoldDarkBlue{Some math}
+\newcommand{\mathBBoldBlack}[1]{\mathColorBBold{black}{#1}}                        % test: \mathBBoldBlack{Some math}
+\newcommand{\mathDarkRedSize}[2]{#1{\mathColor{darkRed}{#2}}}                      % test: \mathDarkRedSize{\Large}{Some math}
+\newcommand{\mathDarkGreenSize}[2]{#1{\mathColor{darkGreen}{#2}}}                  % test: \mathDarkGreenSize{\Large}{Some math}
+\newcommand{\mathDarkBlueSize}[2]{#1{\mathColor{darkBlue}{#2}}}                    % test: \mathDarkBlueSize{\Large}{Some math}
+\newcommand{\mathBoldDarkRedSize}[2]{#1{\mathColorBold{darkRed}{#2}}}              % test: \mathBoldDarkRedSize{\Large}{Some math}
+\newcommand{\mathBoldDarkGreenSize}[2]{#1{\mathColorBold{darkGreen}{#2}}}          % test: \mathBoldDarkGreenSize{\Large}{Some math}
+\newcommand{\mathBoldDarkBlueSize}[2]{#1{\mathColorBold{darkBlue}{#2}}}            % test: \mathBoldDarkBlueSize{\Large}{Some math}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% SPACING %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\leftRightSpace}[3]{{\hspace*{#1}}{#3}{\hspace*{#2}}}
+\newcommand{\symmetricSpace}[2]{{\leftRightSpace{#1}{#1}{#2}}}
+\newcommand{\symmetricMath}[2]{{\leftRightSpace{#1}{#1}{\ensuremath{#2}}}}
+   % test: \leftRightSpace{1.0cm}{1.5cm}{abc} % Produces puts spacing around abc
+   % test: \symmetricSpace{1.0cm}{abc}        % Produces puts symmetric spacing around abc
+   % test: \symmetricMath{1.0cm}{abc}         % Produces puts symmetric spacing around abc and ensures abc is in math mode
+
+\newcommand{\underlineTextColorSpaceThickness}[4]{\color{#2}\underline{\normalcolor\symmetricSpace{#3}{#1}}\normalcolor}
+\newcommand{\frameText}[2][darkBlue]{{\color{#1}\setlength{\fboxrule}{0.10pc}\setlength{\fboxsep}{0.07pc}\framebox[1.0\width][c]{\normalcolor\symmetricSpace{0.07cm}{#2}}\normalcolor}}
+   % test: \frameText{something inside a frame}
+   % test: \frameText[darkRed]{something inside a frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  MISCELLANEOUS STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\smallCaps}[1]{{\sc{#1}}}              % test: \smallCaps{someText}
+
+\newcommand{\smallerDescription}[2][\footnotesize]{{#1{#2}}}
+\newcommand{\smallerDescriptionParens}[2][\footnotesize]{\smallerDescription[#1]{(#2)}}
+\newcommand{\smallerDescriptionBrackets}[2][\footnotesize]{\smallerDescription[#1]{[#2]}}
+\newcommand{\smallerDescriptionMathStyle}[2][\scriptstyle]{\ensuremath{#1{#2}}}  % Use \displaystyle, \textstyle, \scriptstyle, \scriptscriptstyle
+\newcommand{\smallerDescriptionMathParens}[2][\footnotesize]{\smallerDescriptionMathStyle[#1]{(#2)}}
+\newcommand{\smallerDescriptionMathBrackets}[2][\footnotesize]{\smallerDescriptionMathStyle[#1]{(#2)}}
+% test: \smallerDescription[\footnotesize]{ This text will be footnotesize }
+% test: \smallerDescriptionParens[\footnotesize]{ This text will be footnotesize }
+% test: \smallerDescriptionBrackets[\tiny]{ This text will by tiny }
+% test: \smallerDescriptionMathParens[\scriptstyle]{i = x,y,z}  % Produces Use \displaystyle, \textstyle, \scriptstyle, \scriptscriptstyle
+
+\newcommand{\smallInstructions}[2][\footnotesize]{{#1\textit{#2}}}  % test: \smallInstructions{These will be small}
+
+\newcommand{\weblink}[1]{\underlineTextColorSpaceThickness{{#1}}{blue}{0.2pt}{5pt}}  % test: \weblink{http://www.MotionGenesis.com}
+\newcommand{\strikeThrough}[1]{{\tiny #1}}  % test: \strikeThrough{text}
+
+\newcommand{\textal}[1]{\texttt{#1}}
+\newcommand{\boldDarkBlueTexttt}[1]{\texttt{\boldDarkBlue{#1}}}
+\newcommand{\textalSize}[2]{{#1{\texttt{#2}}}}
+\newcommand{\code}[1]{{\small\texttt{#1}}}    % Note, cannot use \verb|#1| inside macros for some reason
+   % test: \textal{This is text}             % Produces a nice changeable font for autolev text
+   % test: \textalSize{\small}{This is text} % Produces a nice changeable font for autolev text
+   % test: \code{Code content}               % Produces a nice changeable font for C, Fortran, etc. text
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% SYMBOL MODIFIERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% TILDE UNDER A SYMBOL
+\newcommand{\utilde}[1]{\setbox0=\hbox{$\displaystyle{{#1}}$}
+   \setbox1=\hbox{$\widetilde{\hphantom{{#1}}}$}
+   \smash{\copy0\kern-\wd0 \lower\ht1\hbox{\lower1pt\copy1}}\vphantom {#1}}
+   % Designed by Kurt Anderson from \smash (pg 178) and \bigbold (pg 386)
+   % test: \utilde{A} % Produces wide tilde under symbol A.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

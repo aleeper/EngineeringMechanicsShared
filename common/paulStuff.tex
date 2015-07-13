@@ -1,0 +1,200 @@
+%%
+%% This is file `paulStuff.tex'.
+%%
+%% Contains declarations specific to Paul Mitiguy and/or Motion Genesis.
+%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COPYRIGHT STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\CurrentCopyrightYear{2015}
+\def\copyrightTextPaulMitiguy{Copyright \copyright{} 1992-\CurrentCopyrightYear{} Paul Mitiguy.  All rights reserved.}
+\def\copyrightTextPaulMitiguyPortionsYearOnly{Portions copyright \copyright{} \CurrentCopyrightYear{} by Paul Mitiguy}
+\def\copyrightTextMGMitiguy{Portions copyright \copyright{} 2009-\CurrentCopyrightYear{} \MotionGenesisCompanyNameShort{} and 1992-2010 Paul Mitiguy}
+\def\copyrightTextMGOnly{Copyright \copyright{} 2009-\CurrentCopyrightYear{} \MotionGenesisCompanyNameLLC{}.  All rights reserved.}  % Could use 2009 = MG Business start or 1996 = Autolev tutorial date.
+\def\copyrightWithPermissionHungLe{Copyright \copyright{} 2011 by Dr. Hung Le {\tiny(with permission)}.}  % Coloring added by Paul Mitiguy
+\def\copyrightPermissionJenniferBowerDawson{Copyright \copyright{} 2008-\CurrentCopyrightYear{} by Jennifer Bower and Paul Mitiguy.}
+\def\copyrightPermissionApoorvaRajagopal{Copyright \copyright{} 2011-\CurrentCopyrightYear{} by Apoorva Rajagopal and Paul Mitiguy.}
+\def\copyrightText{\copyrightTextPaulMitiguy}
+% Note: use \renewcommand\copyrightText{\copyrightWithPermissionHungLe}
+% then:     \renewcommand\copyrightText{\copyrightTextPaulMitiguy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EDUCATIONAL STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{ \ForUnitedStates=1   }{ \newcommand{\USOnly}[1]{#1}                 }{ \newcommand{\USOnly}[1]{} }
+
+\ifthenelse{ \ForDukePerreria=1   }{ \newcommand{\DukePerreriaOnly}[1]{#1}       }{ \newcommand{\DukePerreriaOnly}[1]{}}
+\ifthenelse{ \ForDukePerreria=1   }{ \newcommand{\DukePerreriaExclude}[1]{}      }{ \newcommand{\DukePerreriaExclude}[1]{#1}}
+\ifthenelse{ \ForDukePerreria=0   }{ \newcommand{\DukeLowerCase}[1]{}            }{ \newcommand{\DukeLowerCase}[1]{\MakeTextLowercase{#1}}}
+\ifthenelse{ \ForDukePerreria=0   }{ \newcommand{\DukeLowerCaseSuperscript}[1]{} }{ \newcommand{\DukeLowerCaseSuperscript}[1]{\MakeTextLowercase{\footnotesize{#1}}}}
+\ifthenelse{ \ForDukePerreria=1   }{ \newcommand{\DukePerreriaOrOther}[2]{#1}    }{ \newcommand{\DukePerreriaOrOther}[2]{#2} }
+\ifthenelse{ \ForDukePerreria=1   }{ \usepackage{dukePerreiraOverride} }{}
+
+\ifthenelse{ \ForGraduate=1       }{ \newcommand{\graduateOnly}[1]{#1}           }{ \newcommand{\graduateOnly}[1]{}    }
+\ifthenelse{ \ForGraduate=1       }{ \newcommand{\undergradOnly}[1]{}            }{ \newcommand{\undergradOnly}[1]{#1} }
+\ifthenelse{ \ForGraduate=1       }{ \newcommand{\gradUndergrad}[2]{#1}          }{ \newcommand{\gradUndergrad}[2]{#2} }
+\ifthenelse{ \ForGraduate=1       }{ \newcommand{\graduateOrOther}[2]{#1}        }{ \newcommand{\graduateOrOther}[2]{#2} }
+\ifthenelse{ \ForHighSchool=1     }{ \newcommand{\highSchoolOnly}[1]{#1}         }{ \newcommand{\highSchoolOnly}[1]{}  }
+\ifthenelse{ \ForDynamics=1       }{ \newcommand{\dynamicsOnly}[1]{#1}           }{ \newcommand{\dynamicsOnly}[1]{}    }
+\ifthenelse{ \ForDynamics=1       }{ \newcommand{\dynamicsExclude}[1]{}          }{ \newcommand{\dynamicsExclude}[1]{#1} }
+\ifthenelse{ \ForDynamics=1       }{ \newcommand{\dynamicsOrOther}[2]{#1}        }{ \newcommand{\dynamicsOrOther}[2]{#2} }
+\ifthenelse{ \ForDynamicSystems=1 }{ \newcommand{\dynamicSystemsOnly}[1]{#1}     }{ \newcommand{\dynamicSystemsOnly}[1]{} }
+\ifthenelse{ \ForDynamicSystems=1 }{ \newcommand{\dynamicSystemsExclude}[1]{}    }{ \newcommand{\dynamicSystemsExclude}[1]{#1} }
+\ifthenelse{ \ForDynamicSystems=1 }{ \newcommand{\dynamicSystemsOrOther}[2]{#1}  }{ \newcommand{\dynamicSystemsOrOther}[2]{#2} }
+\ifthenelse{ \ForBioE=1           }{ \newcommand{\BioEOnly}[1]{#1}               }{ \newcommand{\BioEOnly}[1]{} }
+\ifthenelse{ \ForBioE=1           }{ \newcommand{\BioEExclude}[1]{}              }{ \newcommand{\BioEExclude}[1]{#1} }
+\ifthenelse{ \ForStatics=1        }{ \newcommand{\staticsOnly}[1]{#1}            }{ \newcommand{\staticsOnly}[1]{} }
+\ifthenelse{ \ForStatics=1        }{ \newcommand{\staticsExclude}[1]{}           }{ \newcommand{\staticsExclude}[1]{#1} }
+\ifthenelse{ \ForStatics=1        }{ \newcommand{\staticsOrOther}[2]{#1}         }{ \newcommand{\staticsOrOther}[2]{#2} }
+\ifthenelse{ \ForPhysics=1        }{ \newcommand{\physicsOnly}[1]{#1}            }{ \newcommand{\physicsOnly}[1]{} }
+\ifthenelse{ \ForPhysics=1        }{ \newcommand{\physicsExclude}[1]{}           }{ \newcommand{\physicsExclude}[1]{#1} }
+\ifthenelse{ \ForMaterials=1      }{ \newcommand{\materialsOnly}[1]{#1}          }{ \newcommand{\materialsOnly}[1]{} }
+\ifthenelse{ \ForMaterials=1      }{ \newcommand{\materialsExclude}[1]{}         }{ \newcommand{\materialsExclude}[1]{#1} }
+\ifthenelse{ \ForMGTutorial=1     }{ \newcommand{\MGTutorialOnly}[1]{#1}         }{ \newcommand{\MGTutorialOnly}[1]{} }
+\ifthenelse{ \ForMGTutorial=1     }{ \newcommand{\MGTutorialExclude}[1]{}        }{ \newcommand{\MGTutorialExclude}[1]{#1} }
+\ifthenelse{ \ForMGTutorial=1     }{ \newcommand{\MGTutorialOrOther}[2]{#1}      }{ \newcommand{\MGTutorialOrOther}[2]{#2} }
+\ifthenelse{ \ForMGBook=1         }{ \newcommand{\MGBookOnly}[1]{#1}             }{ \newcommand{\MGBookOnly}[1]{} }
+\ifthenelse{ \ForGraduate=1  \or \ForStatics=1                               }{ \newcommand{\graduateOrStaticsOnly}[1]{#1}                        }{ \newcommand{\graduateOrStaticsOnly}[1]{} }
+\ifthenelse{ \ForGraduate=1  \or \ForMaterials=1                             }{ \newcommand{\graduateOrMaterialsOnly}[1]{#1}                      }{ \newcommand{\graduateOrMaterialsOnly}[1]{} }
+\ifthenelse{ \ForGraduate=1  \or \ForDynamicSystems=1                        }{ \newcommand{\graduateOrDynamicSystemsOnly}[1]{#1}                 }{ \newcommand{\graduateOrDynamicSystemsOnly}[1]{} }
+\ifthenelse{ \ForGraduate=0  \or \ForDynamicSystems=1                        }{ \newcommand{\undergradOrDynamicSystemsOnly}[1]{#1}                }{ \newcommand{\undergradOrDynamicSystemsOnly}[1]{} }
+\ifthenelse{ \ForGraduate=1  \or \ForDynamicSystems=1 \or \ForDukePerreria=1 }{ \newcommand{\graduateOrDynamicSystemsOrDukePerreriaOnly}[1]{#1}   }{ \newcommand{\graduateOrDynamicSystemsOrDukePerreriaOnly}[1]{} }
+\ifthenelse{ \ForGraduate=1  \or \ForMGTutorial=1                            }{ \newcommand{\graduateOrMGTutorialOnly}[1]{#1}                     }{ \newcommand{\graduateOrMGTutorialOnly}[1]{} }
+\ifthenelse{ \ForGraduate=0  \or \ForMGTutorial=1                            }{ \newcommand{\undergradOrMGTutorialOnly}[1]{#1}                    }{ \newcommand{\undergradOrMGTutorialOnly}[1]{} }
+\ifthenelse{ \ForGraduate=1 \and \ForDynamics=1 \and \ForBioE=0              }{ \newcommand{\graduateDynamicsOnly}[1]{#1}                         }{ \newcommand{\graduateDynamicsOnly}[1]{} }
+\ifthenelse{ \ForGraduate=1 \and \ForDynamics=1 \and \ForBioE=0              }{ \newcommand{\graduateDynamicsExclude}[1]{}                        }{ \newcommand{\graduateDynamicsExclude}[1]{#1} }
+\ifthenelse{ \ForGraduate=1 \and \ForDynamics=1 \and \ForBioE=0              }{ \newcommand{\graduateDynamicsOrOther}[2]{#1}                      }{ \newcommand{\graduateDynamicsOrOther}[2]{#2} }
+\ifthenelse{ \ForGraduate=0 \and \ForDynamics=1 \and \ForBioE=0              }{ \newcommand{\undergradDynamicsOnly}[1]{#1}                        }{ \newcommand{\undergradDynamicsOnly}[1]{} }
+\ifthenelse{ \ForGraduate=0 \and \ForDynamics=1 \and \ForBioE=0              }{ \newcommand{\undergradDynamicsExclude}[1]{}                       }{ \newcommand{\undergradDynamicsExclude}[1]{#1} }
+\ifthenelse{ \ForGraduate=0 \and \ForDynamics=1 \and \ForBioE=0              }{ \newcommand{\undergradDynamicsOrOther}[2]{#1}                     }{ \newcommand{\undergradDynamicsOrOther}[2]{#2} }
+\ifthenelse{ \ForGraduate=0 \and \ForDynamicSystems=0                        }{ \newcommand{\staticsUndergradDynamicsOnly}[1]{#1}                 }{ \newcommand{\staticsUndergradDynamicsOnly}[1]{} }
+\ifthenelse{ \ForGraduate=0 \and \ForDynamicSystems=0                        }{ \newcommand{\staticsUndergradDynamicsExclude}[1]{}                }{ \newcommand{\staticsUndergradDynamicsExclude}[1]{#1}}
+\ifthenelse{ \ForGraduate=0 \and \ForStatics=1 \or \ForDynamics=1            }{ \newcommand{\staticsUndergradDynamicsOrOther}[2]{#1}              }{ \newcommand{\staticsUndergradDynamicsOrOther}[2]{#2}}
+\ifthenelse{ \ForStatics=1   \or \ForPhysics=1                               }{ \newcommand{\staticsOrPhysicsOnly}[1]{#1}                         }{ \newcommand{\staticsOrPhysicsOnly}[1]{} }
+\ifthenelse{ \ForStatics=1   \or \ForMaterials=1                             }{ \newcommand{\staticsOrMaterialsOnly}[1]{#1}                       }{ \newcommand{\staticsOrMaterialsOnly}[1]{} }
+\ifthenelse{ \ForStatics=1   \or \ForMaterials=1                             }{ \newcommand{\staticsOrMaterialsExclude}[1]{}                      }{ \newcommand{\staticsOrMaterialsExclude}[1]{#1} }
+   % \studentOrTeacher{StuffForStudents}{StuffForTeacherOrPaul}
+   % \PaulOnly{Is used to make things show up for me but not students or teachers}
+   % \DukePerreriaOnly{for notation and vibrations sections to show up for Duke Perreria}
+   % \DukePerreriaExclude{for notation used by everyone else}
+   % \graduateOnly{Is used to make things show up for graduate book}
+   % \undergradOnly{Is used to make things show up for undergraduate book}
+   % \gradUndergrad{UsesThisIfGrad}{OtherwiseUsesThis}
+   % \dynamicSystemsOnly{Is used to make things show up for just dynamic systems}
+   % \dynamicSystemsExclude{Does not put this in for dynamic systems}
+   % \dynamicSystemsOrOther{StuffForDynamicSystems}{StuffForOther}
+   % \dynamicsOnly{Is used to make things show up for just dynamics}
+   % \BioEExclude{Does not put this in for BioE}
+   % \BioEOnly{Includes this text for BioE only}
+   % \physicsOnly{Includes this text for Physics}
+   % \teacherFrame{Is used to box an answer for me and teachers but not students}
+   % \teacherOnly{Is used to make things show up for me and teachers but not students}
+   % \studentOnly{Is used to make things show up for students but not me and teachers}
+   % \teacherStudentOnly{Stuff only teacher sees}{Stuff only student sees}
+   % \graduateOrStaticsOnly{Is used to make things show up for graduate students or for statics}
+   % \materialsOnly{Is used to make things show up for graduate students or for materials}
+   % \graduateOrMaterialsOnly{Is used to make things show up for graduate students or for materials}
+   % \graduateOrDynamicSystemsOnly{Is used to make things show up for graduate students or dynamic systems}
+   % \undergradOrDynamicSystemsOnly{Is used to make things show up for undergrad students or dynamic systems}
+   % \graduateOrMGTutorialOnly{Is used to make things show up for graduate students or dynamic systems}
+   % \staticsOrMaterialsOnly{StuffForStaticsOrMaterials}
+   % \staticsOrMaterialsExclude{StuffToExcludeFromStaticsOrMaterials}
+   % \staticsUndergradDynamicsOnly{Is used to make things show up for statics and undergraduate dynamics only}
+   % \staticsUndergradDynamicsExclude{Is used to exclude things from statics and undergraduate dynamics only}
+   % \staticsOrOther{StuffForStatics}{StuffForOther}
+   % \graduateOrBioEOnly{Is used to make things show up for graduate students or BioEngineering}
+   % \undergradDynamicsOnly{Only for undergraduate dynamics}
+   % \graduateDynamicsOnly{Only for graduate dynamics}
+   % \MGBookOnly{Only included if the book uses MotionGenesis}
+   % \hide{This is invisible text} produces blank white space as wide as text.  Phantom is part of amsmath package
+   % \includegraphicsAB[width=0.85\textwidth]{teacherFile.eps}{studentFile.eps}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OTHER EDUCATIONAL STUFF %%%%%%%%%%%%%%%%%%%%%%%%
+\def\MGProblem{\textbf{MG}\ensuremath{{}^{\mathbf{*}}}}
+   % \MGProblem{}   puts the word MGProblem and superscripted, boldfaced * (for homework and reading sections)
+   % \MGProblem:    puts MG*:
+
+\newcommand{\MGTutorial}[1]{Section~\ref{#1} at \MGWebsiteLink}
+\newcommand{\MGTutorialTextbookResources}[1]{Section~\ref{#1} at \MGWebsiteTextbookResources}
+   % \MGTutorial{section:Joe}                   produces e.g., Section 7   at www.MotionGenesis.com or MGTutorial 7   for articles
+   % \MGTutorial{section:Joe}                   produces e.g., Section 7.2 at www.MotionGenesis.com or MGTutorial 7.2 for textbooks
+   % \MGTutorialTextbookResources{section:Joe}  produces e.g., Section 7.2 at www.MotionGenesis.com->Textbooks->Resources
+
+\newcommand{\sectionWithMGLogo}[1]{\vbox{\section{#1}
+\begin{flushright}
+  \vspace{-1.95pc}
+  \includegraphics[totalheight=2.05pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoOnlyWithBlackBorder.eps}
+\end{flushright}
+\vspace{-0.75pc}}}
+
+\newcommand{\subsectionWithMGLogo}[2]{\vbox{\subsection{#1}
+\begin{flushright}
+  \vspace{-1.95pc}
+  \includegraphics[totalheight=1.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoOnlyWithBlackBorder.eps}
+\end{flushright}
+\vspace{-0.75pc}}}
+
+% Not sure if this is general enough to put in customSections.sty, or specific enough to put in paulStuff.tex.
+\def\LabPreParticipationPost{{\noindent\small \boxmath{0.05cm}{\textrm{PreLab: }       \surd^{+}\;\;\surd\;\;\surd^{-}\;\;0}
+                                       \hfill \boxmath{0.05cm}{\textrm{Participation: }\surd^{+}\;\;\surd\;\;\surd^{-}\;\;0}
+                                       \hfill \boxmath{0.05cm}{\textrm{PostLab: }      \surd^{+}\;\;\surd\;\;\surd^{-}\;\;0}}\\[0.1pc]}
+   % \LabPreParticipationPost{} % Puts grading header on the top of Stanford labs
+
+%\newcommand{\includecomic}[2][]{\includegraphics[#1]{#2}}
+\newcommand{\includecomic}[2][]{}
+   % \includecomic[width=0.95\textwidth]{someCopyrightedComicStrip.eps}
+
+\newcommand{\PaulNote}[1]{\PaulOnly{\footnote{\textbf{PM:} #1}}}
+\newcommand{\PaulBlock}[1]{\PaulOnly{{\noindent\rule{\textwidth}{0.5pt}}{#1}{\noindent \rule{\textwidth}{0.5pt}}}}
+   % \PaulBlock{This is used to put a bunch of equations of notes interwoven in my lecture notes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Changes to standard formatting and environments. %%%%%%%%%%%%%%%%%%%%%%%%
+%%% TODO(aleeper): Possibly better to switch over to using custom environments e.g. itemizeDense.
+%-----------------------------------------------------------------
+% The following has to do with tables/figures
+\renewcommand\floatpagefraction{0.3}
+\renewcommand\topfraction{0.9}
+\renewcommand\bottomfraction{0.9}
+\renewcommand\textfraction{0.1}
+\makeatletter
+   \newcommand\figcaption{\def\@captype{figure}\caption}
+   \newcommand\tabcaption{\def\@captype{table}\caption}
+\makeatother
+%-----------------------------------------------------------------
+% Redefine \begin{enumerate} so there is less vertical spacing
+\makeatletter
+\def\enumerate{%
+  \ifnum \@enumdepth >\thr@@\@toodeep\else
+    \advance\@enumdepth\@ne
+    \edef\@enumctr{enum\romannumeral\the\@enumdepth}%
+      \expandafter
+      \list
+        \csname label\@enumctr\endcsname
+        {\usecounter\@enumctr\def\makelabel##1{\hss\llap{##1}}%
+        \setlength{\topsep}{0.3\topsep}%
+        \setlength{\itemsep}{0pt}%
+        }%
+  \fi}
+\makeatother
+%-----------------------------------------------------------------
+% Redefine \begin{itemize} so there is less vertical spacing
+\makeatletter
+\def\itemize{%
+  \ifnum \@itemdepth >\thr@@\@toodeep\else
+    \advance\@itemdepth\@ne
+    \edef\@itemitem{labelitem\romannumeral\the\@itemdepth}%
+    \expandafter
+    \list
+      \csname\@itemitem\endcsname
+      {\def\makelabel##1{\hss\llap{##1}}%
+       \setlength{\topsep}{0.3\topsep}%
+       \setlength{\itemsep}{0pt}%
+      }%
+  \fi}
+\makeatother
+%-----------------------------------------------------------------
+
+%\usepackage{/mitiguy/LargeMedium/Latex2e/paralist}    % May be required for enumitem.sty (but do not think so).
+%\usepackage{/mitiguy/LargeMedium/Latex2e/enumitem}    % macrosMitiguy command \beginItemizeNoIndent.  enumitem.sty may also require paralist.sty
+%\def\beginItemizeNoIndent{\begin{itemize}[leftmargin=*]}  % Requires enumitem.sty and for me NOT to redefine \itemize as above.
+%\def\endItemizeNoIndent{\end{itemize}}

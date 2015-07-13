@@ -1,0 +1,79 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  COMMON FONTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{commonFonts}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+%\RequirePackage{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+% No options...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  FONTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Families:      \rmfamily \sffamily \ttfamily
+%Series         \bfseries \mdseries
+%Shapes:        \itshape  \scshape \slshape \upshape
+%Fonts:         \textrm{} \textbf{} \texttt{} \textit{} \textsc{} \textsl{} \textsf{} \textup{} \emph{text}
+%               \mathrm{} \mathbf{} \mathtt{} \mathit{} \mathcal{} (caligraphy)
+%Sizes:         \tiny \scriptsize \footnotesize \small \normalsize \large \Large \LARGE \huge \Huge
+%Sizes in math: \displaystyle,  \textstyle,  \scriptstyle,  \scriptscriptstyle   Selecting font size in formulas.  See page 141 of "A Guide to Latex2E"
+%Delimiters:    \bigl( someText \bigr)  or  \Bigl[ someText \BigR]  or  \biggl( someText \biggr)  or  \Biggl| someText \Biggr|
+%---------------------------------------------------------------------------
+% To increase the readability of sub-subscripts and super-superscripts,
+% LaTeX makes the default sub/superscript size rather large.
+% If you have few sub-subscripts, you may want smaller subscripts
+% To change size, include the following lines in your document preamble:
+\DeclareMathSizes{10}{10}{6}{5}
+\DeclareMathSizes{11}{11}{6}{5}
+\DeclareMathSizes{12}{12}{6}{5}
+% This causes 10pt font to have math size=10pt, scriptsize=6pt, and scriptscript size=5pt.
+% Many math fonts cannot be smaller than 5pt, and anything less than 5pt is replaced with 5pt.
+% For reference, LaTeX uses the following defaults
+%\DeclareMathSizes{10}{10}{7.5}{6}
+%\DeclareMathSizes{11}{11}{8}{6}
+%\DeclareMathSizes{12}{12}{9}{7}
+
+%---------------------------------------------------------------------------
+% See page 414 of "A Guide to Latex2E"
+% Scaling factors 1000=1.0, 1095, 1200, 1440, 1728, 2074, 2488, 2986, 3583
+% There are various fonts, for Roman, bold, italic, etc.
+%---------------------------------------------------------------------------
+\newfont{\FontCMRTwelveD}{cmr12  scaled 1440}  % Computer Modern Roman 12pt scaled 1.440x
+\newfont{\FontCMRTwelveE}{cmr12  scaled 1728}  % Computer Modern Roman 12pt scaled 1.728x
+\newfont{\FontCMRTwelveF}{cmr12  scaled 2074}  % Computer Modern Roman 12pt scaled 2.074x
+\newfont{\FontCMRTwelveG}{cmr12  scaled 2488}  % Computer Modern Roman 12pt scaled 2.488x
+\newfont{\FontCMRTwelveH}{cmr12  scaled 2986}  % Computer Modern Roman 12pt scaled 2.986x
+\newfont{\FontCMRTwelveI}{cmr12  scaled 3583}  % Computer Modern Roman 12pt scaled 3.583x
+\newfont{\FontCMBTwelveD}{cmbx12 scaled 1440}  % Computer Modern Bold  12pt scaled 1.440x
+\newfont{\FontCMBTwelveE}{cmbx12 scaled 1728}  % Computer Modern Bold  12pt scaled 1.728x
+\newfont{\FontCMBTwelveF}{cmbx12 scaled 2074}  % Computer Modern Bold  12pt scaled 2.074x
+\newfont{\FontCMBTwelveG}{cmbx12 scaled 2488}  % Computer Modern Bold  12pt scaled 2.488x
+\newfont{\FontCMBTwelveH}{cmbx12 scaled 2986}  % Computer Modern Bold  12pt scaled 2.986x
+\newfont{\FontCMBTwelveI}{cmbx12 scaled 3583}  % Computer Modern Bold  12pt scaled 3.583x
+
+%---------------------------------------------------------------------------
+% Selecting font size in formulas.  See page 141 of "A Guide to Latex2E"
+% \displaystyle, \textstyle, \scriptstyle, \scriptscriptstyle
+%---------------------------------------------------------------------------
+\newcommand{\leftSuperscriptWithBase}[2]{\ensuremath{{\vphantom{#2}}^{#1}{#2}}}
+\newcommand{\leftSuperscriptPhantomBase}[2]{\ensuremath{{\vphantom{#2}}^{#1}}}
+\newcommand{\fracDisplaystyle}[2]{\ensuremath{\displaystyle{\frac{#1}{#2}}}}
+\newcommand{\fracScriptStyle}[2]{\ensuremath{{\scriptstyle\frac{#1}{#2}}}}
+\newcommand{\fracDisplaystyleOld}[2]{\ensuremath{\frac{\displaystyle{#1}}{\displaystyle{#2}}}}
+%\newcommand{\fracScriptStyle}[2]{\ensuremath{\frac{\scriptstyle{#1}}{\scriptstyle{#2}}}}
+%\newcommand{\fracTextstyle}[2]{\ensuremath{\frac{\textstyle{#1}}{\textstyle{#2}}}}
+   % test: \leftSuperscriptWithBase{upper}{Base}      % Produces {}^{upper}{\phantom{Base}}{Base}
+   % test: \leftSuperscriptPhantomBase{upper}{Base}   % Produces {}^{upper}{\phantom{Base}}
+   % test: \fracDisplaystyle{numerator}{denominator}  % Large  size font for numerator and denominator.
+   % test: \fracScriptStyle{numerator}{denominator}   % Small  size font for numerator and denominator.
+   %       \fracTextStyle{numerator}{denominator}     % ??     size font for numerator and denominator.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

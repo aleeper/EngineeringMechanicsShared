@@ -1,0 +1,72 @@
+%----------------------------------------------------------------------------
+%     File: PackagesMitiguy.sty
+%  Purpose: Latex packages used in most tex files
+%   Author: Paul Mitiguy
+%     Note: Many Latex packages can be downloaded from:
+%           http://www.ctan.org/tex-archive/systems/win32/miktex/tm/packages/
+%----------------------------------------------------------------------------
+%
+%%%%%%%%%% CHECK FOR UPDATES TO THESE Packages IF THEY STOP WORKING %%%%%
+%\usepackage{geometry}                                 % Margins
+\usepackage{geometry}      % Margins
+\usepackage{fancyhdr}      % Headers and footers on page (old: fancyheadings.sty)
+\usepackage{comment}       % Defines \begin{comment}...\end{comment} and other tricks
+\usepackage{placeins}      % Forces floats to appear before certain place in text
+% \usepackage{textcase}    % Enables \MakeTextUppercase{someText}  \MakeTextLowercase{someText}
+%%%%%%%%%%%%%%%%%%%%%%%%%%  Standard Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This next set of .sty files are _supposed_ to be in a "standard" package in the Miktex distribution - but I had to use the MikTex 2.5 update on the Internet to get it to work.
+\usepackage[final]{pdfpages}
+\usepackage{listings}                       % Allows for syntax highlighting in Fortran C, C++, csh, HTML, Java, Matlab, Mathematica, Pascal, Perl, SQL, XML, Delphi, PHB, VBScript, and event LaTex
+\usepackage{graphicx}                       % Including .eps files, rotating figures + text (old epsfig.sty)
+%\usepackage[dvips]{graphicx}               % Including .eps files, rotating figures + text (old epsfig.sty)
+%\usepackage[pdftex]{graphicx}              % Including .pdf and .jpg files [For use with pdflatex (instead of using latex at command line)
+\usepackage{amsmath}                        % General math, equations, aligning equations etc.
+\usepackage{amssymb}                        % Better symbols (may require installing fonts too)
+\usepackage{afterpage}
+\usepackage{ifthen}                         % Allows for conditional texing
+\usepackage{flafter}                        % Prevents floats (figs, tables, etc.) to not appear before they are referenced
+\usepackage{longtable}                      % Allows for tables to exceed one page with nice headings
+\usepackage{lscape}                         % Allows for both portrait and landscape output
+\usepackage{color}                          % Allows for color in text
+%\usepackage[Smaller]{cancel}                % Allows for \cancelTo{someValue}{someExpression} with Smaller fonts for someValue.
+\usepackage[Smaller,makeroom]{cancel}      % Allows for \cancelTo{someValue}{someExpression} with horizontal room for someValue.
+%------------------------------------------------------------------------------------------
+% The next two packages are used with the command \makeindex (which is in the preamble)
+% If you want to put something in the index, e.g., you want Euler in the index on a certain
+% page, just use the command \index{Euler}.  I currently use the \index command with my \newname macro
+%------------------------------------------------------------------------------------------
+\usepackage{multirow}                       % Need for SummaryOfODEMethods.tex by Hung LE
+%------------------------------------------------------------------------------------------
+% The next two packages are used with the command \makeindex (which is in the preamble)
+% If you want to put something in the index, e.g., you want Euler in the index on a certain
+% page, just use the command \index{Euler}.  I currently use the \index command with my \newname macro
+%------------------------------------------------------------------------------------------
+\usepackage{makeidx}                        % Allows for index generation (index of words)
+\usepackage{multicol}                       % Used for two-column index
+%------------------------------------------------------------------------------------------
+%\usepackage{colortbl}                      % Allows for color in tables ?
+%\usepackage{psfrag}                        % Allows for replacing text in .eps files with Latex text
+                                            % To create .ps, also need psfrag.pro.  Put psfrag.pro in current directory or in latex2e/dvips/base
+%\usepackage[hang]{caption2}                % Customizing captions under tables, figures, etc.
+%\usepackage{2up}                           % Puts two pages side by side
+%\usepackage{fancybox}                      % Puts boxes around pictures/text etc.
+%\usepackage{calc}                          % Allows addition, subtraction, etc.
+%\usepackage{rotating}                      % Allows landscape figures
+%\usepackage{subfigure}                     % Allows labeling and stacking parts inside a figure
+%\usepackage{color}                         % Allows color text, figures, etc.
+%\usepackage{latexsym}                      % Additional math + greek symbols (needs fonts too)
+%\usepackage{setspace}                      % Allows for double vertical spacing, etc.
+%\usepackage{tabularx}                      % Widths of the columns of column are calculated automatically
+%\usepackage{dbm,mathrsfs,bbold,mathbbol}   % Additional math symbols (need fonts too)
+%\usepackage{lastpage}                      % Defines a label on the last page of the document allowing page numbers like "3 of 7".
+%\usepackage{seminar}                       % for making presentation/seminar slides
+%\usepackage{moreverb}                      % additional verbatim capability
+%\usepackage{verbatim}                      % adds verbatim capability
+%\usepackage{draftcopy}                     % Allows for simple watermarks (part of default installation - or downloadable)
+%\usepackage{pifont}                        % Allows for use of ding-bat fonts.
+%\usepackage{url}
+%\usepackage{xfrac}                         % Defines \sfrac ?
+\usepackage{eso-pic}                       % Allows for complex watermarks (part of default installation - or downloadable)
+%\usepackage{VerbatimFile}  % Allows including file (newer: moreverb.sty)
+\usepackage{xfrac}                         % Defines the \sfrac command, for fractions of style 1/2.
+

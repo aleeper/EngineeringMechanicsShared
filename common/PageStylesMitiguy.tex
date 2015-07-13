@@ -1,0 +1,193 @@
+%   File: PageStylesMitiguy.tex
+% Shared: E15.tex, E14.tex, ME80.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PAGE STYLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set up header and footer stuff ( See page 96 of LaTeX companion )
+% \afterpage{\fancyhead[L]{\scshape Chapter \thechapter}}
+% \renewcommand{\chaptermark}[1]{\markleft{\bf \hfill{\sc \thechapter. #1 \hspace{0.5cm} }} }
+% \renewcommand{\sectionmark}[1]{\markright{\bf \hfill{\thesection. #1 \hspace{0.5cm} }} }
+%---------------------------------------------------------------------------
+
+%%%%%%%%%%%%%% This redefines what happens on \pagestyle{plain} %%%%%%%%%%%%
+\fancypagestyle{plain}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{}
+}
+
+%%%%%%%%%%%%%% Define \pagestyle{copyrightWithChapterTitleOnLowerRight} %%%%%%%%%%%%
+\fancypagestyle{copyrightWithChapterTitleOnLowerRight}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.3pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\tiny\textit{\copyrightText}\ }}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{\markFancyFootRight}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{copyrightMGWithMarkFancyFootRight}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.3pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{\raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}~{\tiny\textit{\copyrightTextMGOnly}\ }}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{\markFancyFootRight}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{copyrightWithPageNumber}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\scriptsize\textit{\copyrightText}\/}}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{{\scriptsize\textrm{\MGWebsiteName}}~\raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{copyrightStrongWithPageNumber}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\scriptsize\textit{\copyrightText}\/}}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{{\scriptsize\boldDarkBlue{No part to be copied or posted to Internet, etc.}}}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{MitiguyNotCopyrightWithPageNumber}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\scriptsize\textit{Last updated \today{} by Paul Mitiguy}\ }}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{copyrightOnlyNoPageNumber}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\scriptsize\textit{\copyrightText}\/}}
+   \fancyfoot[C]{}
+   \fancyfoot[R]{{\scriptsize\textrm{\MGWebsiteName}}~\raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{copyrightMGNoPageNumberWithMarkFancyFootRight}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.3pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{\raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}~{\tiny\textit{\copyrightTextMGOnly}\ }}
+   \fancyfoot[C]{}
+   \fancyfoot[R]{\markFancyFootRight}
+}
+
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{pageNumberInCenterWithMarkFancyFootRight}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{\markFancyFootRight}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{pageNumberInCenterWithMarkFancyFootLeftPortionsCopyrightMitiguy}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\scriptsize\textit{\copyrightTextPaulMitiguyPortionsYearOnly}\ }}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{\raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}\hspace{2.85em}\markFancyFootRight}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{MitiguyTeachingTipsLearningByDesign}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.0pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\scriptsize\textbf{Learning by design: Value to society through education and STEAM. \smallerDescriptionParens[\tiny]{Mitiguy, \today}} \ } \raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}}
+%  \fancyfoot[L]{{\scriptsize \textit{\copyrightText}\ }}
+   \fancyfoot[C]{}
+   \fancyfoot[R]{\thepage}
+}
+
+%-----------------------------------------------------------------------------------
+\fancypagestyle{ManiMitiguyMotionGenesisWithPageNumberOnLowerRight}
+{
+   \renewcommand{\headrulewidth}{0.0pt}
+   \renewcommand{\footrulewidth}{0.3pt}
+   \fancyhead{}
+   \fancyhead[C]{}
+   \fancyhead[L]{}
+   \fancyhead[R]{}
+   \fancyfoot{}
+   \fancyfoot[L]{{\scriptsize\textit{Kaushik Mani \& Paul Mitiguy}\ } \raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}}
+%  \fancyfoot[L]{{\scriptsize \textit{\copyrightText}\ }}
+   \fancyfoot[C]{\thepage}
+   \fancyfoot[R]{}
+}
+
+

@@ -1,0 +1,287 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         File: macrosMitiguy.tex
+%    Copyright: Copyright 1991-2015 by Paul Mitiguy.  All rights reserved.
+%               Permission to use, modify, and distribute this file and macros is
+%               granted provided this copyright notice appears in all uses,
+%               modifications, translations, and distributions.
+% Contributors: Keith Reckdahl, Salma Saeed, Greg Woodward, Kurt Anderson, Adam Leeper
+%         Note: Extra spaces within {} make a difference in text mode.
+%               Be careful in removing spaces in macros especially outside mbox.
+%        Note:  Useful information about Latex and graphics conversion programs, e.g.,
+%               .jpg to .eps  and various formats to .jpg, can be found on:
+%               http://mpej.unige.ch/~coppex/FCHome-links-eng.htm
+%   Convention: Use upper case letters to denote the names of:  Systems, Bodies, Frames, Coordinate systems, Particles, and Points
+%               Use lower case letters to denote the names of:  bases, unit vectors associated with basis
+%               For example \dircos{b}{a} relates bx>, by>, bz> with ax>, ay>, az>
+%         Use:  \input{/Mitiguy/packagesMitiguy.tex}
+%               \input{/Mitiguy/macrosMitiguy.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------
+
+
+\usepackage{bigbold}      % Provides \bigbold, for extra big and bold symbols.
+\usepackage{ifthenCustom} % Provides \ifthen, a 2-argument version of \ifthenelse
+\usepackage{commonFonts}
+\usepackage{textStyles}
+\usepackage{customOperators}
+\usepackage{customMathScalars}
+\usepackage{vectorsCommon}
+\usepackage{customMath}
+\usepackage{mechanics}   % Has an order-dependency on customMath.
+\usepackage{customSections}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EDUCATIONAL STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\providecommand\StudentTeacherPaul{1}  % 0=students       1=teachers  2=me (Paul)
+\def\ShowWork{1}                       % 0=HideWork       1=ShowWork (for students who want answers in main part of textbook)
+\def\ForGraduate{0}                    % 0=undergraduate  1=graduate
+\def\ForDynamicSystems{0}              % 0=not ME161      1=ME161
+\def\ForDynamics{0}                    % 0=not dynamics   1=dynamics
+\def\ForStatics{1}                     % 0=not statics    1=statics
+\def\ForPhysics{0}                     % 0=not physics    1=physics    (e.g., Physics 41 Mechanics at Stanford)
+\def\ForMaterials{0}                   % 0=not materials  1=materials  (e.g., ME80, Mechanics of materials at Stanford)
+\def\ForHighSchool{0}                  % 0=HigherEd       1=HighSchool
+\def\ForBioE{0}                        % 0=not BioE       1=BioE
+\def\ForMGBook{0}                      % 0=not MG book    1=MG book
+\def\ForMGTutorial{0}                  % 0=not MGTutorial 1=MGTutorial -- only used when just creating MGTutorial, not for books with it.
+\def\ForDukePerreria{0}                % 0=not Duke       1=Duke
+\def\USMetricUnitSystem{0}             % 0=US             1=Metric (SI) (For Interactive Physics)
+\def\ForUnitedStates{1}                % 1=US             0=NotUS
+%\def\ForMaterials{0}                  % 0=not physics    1=strength of material (e.g., ME80 at Stanford)
+
+\ifthen{ \StudentTeacherPaul=0 }                          % STUDENTS
+       { \newcommand{\PaulOnly}[1]{}                      % Do not show Paul tip
+         \newcommand{\customFormattingOption}{student}
+       }    % Instructor/Student Edition
+\ifthen{ \StudentTeacherPaul=1 }                          % TEACHERS
+       { \newcommand{\PaulOnly}[1]{}                      % Do not show Paul tip
+         \newcommand{\customFormattingOption}{instructor}
+       } % Instructor/Student Edition
+\ifthen{ \StudentTeacherPaul=2 }                          % PAUL
+       { \newcommand{\PaulOnly}[1]{#1}                    % Show Paul tip
+         \newcommand{\customFormattingOption}{instructor}
+       } % Instructor/Student Edition
+
+\usepackage[\customFormattingOption]{customFormatting}
+\usepackage{multipleChoiceEquationTypes} % Has an order-dependency on customFormatting.
+
+% This contains stuff that is probably just specific to Paul.
+\input{paulStuff.tex}
+
+%%% Stuff that is basically just text:
+% \input{latexExamples.tex}
+% \input{oldCommands.tex}
+% \input{usefulInformation.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% TODO(aleeper): Figure out where to put this stuff...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% US or Metric units %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ipsetting}[1]{\textbfEmph{#1}\/}    % \ipsetting{Some text}  For Interactive Physics sliders or what-not in small Instructions
+\def\SIMetric{SI}                                % SI metric system
+\def\amu{amu}                                    % Atomic Mass Unit (change this to a better symbol later)
+\def\angstrom{\ensuremath{\stackrel{\circ}{\textstyle{\textrm{A}}}}}  % Angstrom (change this to a circle over an A later)
+\def\gUSUnits{\ensuremath{g_{\textrm{\,\smallCaps{us}}}}}  % g_{US units}
+\def\gSIMetric{\ensuremath{g_{\textrm{\,\smallCaps{si}}}}} % g_{SI units}
+\ifthen{ \USMetricUnitSystem=0 }                           % US unit system
+       { \newcommand{\USUnits}[1]{#1}                      % Show US units
+         \newcommand{\MetricUnits}[1]{}                    % Do not show Metric units
+         \newcommand{\USMetric}[2]{#1}                     % Do not show Metric info
+         \newcommand{\includegraphicsUSMetric}[3][]{\includegraphics[#1]{#2}}
+         \newcommand{\includegraphicsUSMetricAB}[5][]{\includegraphicsAB[#1]{#2}{#3}} }
+\ifthen{ \USMetricUnitSystem=1 }                           % Metric unit system
+       { \newcommand{\USUnits}[1]{}                        % Do not show US units
+         \newcommand{\MetricUnits}[1]{#1}                  % Show Metric units
+         \newcommand{\USMetric}[2]{#2}                     % Do not show US info
+         \newcommand{\includegraphicsUSMetric}[3][]{\includegraphics[#1]{#3}}
+         \newcommand{\includegraphicsUSMetricAB}[5][]{\includegraphicsAB[#1]{#4}{#5}} }
+   % \USUnits{    \valueUnits{1}{in}} makes 1 in show up if using US units
+   % \MetricUnits{\valueUnits{1}{cm}} makes 1 cm show up if using SI units (metric)
+   % \USMetric{US info}{Metric info}  makes either US info or Metric info show up
+   % \includegraphicsUSMetric[width=0.85\textwidth]{USFile.eps}{MetricFile.eps}
+   % \includegraphicsUSMetricAB[width=0.85\textwidth]{USTeacher.eps}{USStudent.eps}{MetricTeacher.eps}{MetricStudent.eps}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%  E15 BIOMECHANICS TISHYA %%%%%%%%%%%%%%%%%%%%%%%%%
+\def\RASIS{\ensuremath{R_\texttt{ASIS}}}
+\def\LASIS{\ensuremath{L_\texttt{ASIS}}}
+\def\RPSIS{\ensuremath{R_\texttt{PSIS}}}
+\def\LPSIS{\ensuremath{L_\texttt{PSIS}}}
+\def\SACRAL{{\small \texttt{SACRAL}}}
+\def\TOR{\textbf{\texttt{TOR}}}
+\def\ROT{\textbf{\texttt{ROT}}}
+\def\qPelvisElevation{\ensuremath{\phi}}
+\def\qPelvisProgression{\ensuremath{\psi}}
+\def\qPelvisLean{\ensuremath{\gamma}}
+\def\qTilt{\ensuremath{\theta_\texttt{t}}}       % \def\qTilt{\ensuremath{\theta_texttt{tilt}}}
+\def\qObliquity{\ensuremath{\theta_\texttt{o}}}  % \def\qObliquity{\ensuremath{\theta_\texttt{obliquity}}}
+\def\qRotation{\ensuremath{\theta_\texttt{r}}}   % \def\qRotation{\ensuremath{\theta_texttt{rotation}}}
+\def\cosqTilt{\ensuremath{\cos\qTilt}}
+\def\sinqTilt{\ensuremath{\sin\qTilt}}
+\def\cosqObliquity{\ensuremath{\cos\qObliquity}}
+\def\sinqObliquity{\ensuremath{\sin\qObliquity}}
+\def\cosqRotation{\ensuremath{\cos\qRotation}}
+\def\sinqRotation{\ensuremath{\sin\qRotation}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  MISCELLANEOUS STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\timeGeneric}[1]{#1}                                       % \timeGeneric{3:15}
+\newcommand{\timeam}[1]{\timeGeneric{#1}\hspace{3.5pt}a.m.}            % \timeam{3:15}
+\newcommand{\timepm}[1]{\timeGeneric{#1}\hspace{3.5pt}p.m.}            % \timepm{3:15}
+
+% Note trademark.sty has a command \tm which gives trademark within a circle
+% \textregistered gives R within a circle
+% TODO(aleeper): Is this still needed?
+\def\registeredTrademarkSymbol{\textregistered}
+\def\superscriptRegisteredTrademarkSymbol{\ensuremath{^{\textrm{\registeredTrademarkSymbol}}}}
+\def\trademark{\raisebox{1ex}{\tiny TM}}
+
+% TODO(aleeper): Consider putting this in mechanics.sty?
+\def\goldenRuleForVectorDifferentiation{golden rule for vector differentiation}  % Old was \millionDollarFormula
+\def\GoldenRuleForVectorDifferentiation{Golden rule for vector differentiation}
+
+\def\EitReview{\textrm{FE/EIT~Review}}
+\def\appliedMath{\textrm{engineering}}
+\def\AppliedMath{\textrm{Engineering}}
+
+\def\SVD{\texttt{svd}}
+\def\LU{\texttt{lu}}
+\def\LUP{\texttt{lup}}
+\def\PLU{\texttt{plu}}
+\def\QR{\texttt{qr}}
+
+\def\US{U.S.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MG STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Animake{\textrm{Animake}}
+\def\AutolevOld{\textrm{Autolev}}           % This is referring to the old program
+\def\MGKane{\textrm{MGKane}}
+\def\MotionGenesisProgramNameShort{\textrm{MG}}
+\def\MotionGenesisProgramNameNormal{\textrm{\textbf{M}otion\textbf{G}enesis}}
+\def\MotionGenesisProgramNameNormalTrademark{\MotionGenesisProgramNameNormal\textrm{\trademark}}
+\def\MotionGenesisCompanyNameShort{\textrm{\textbf{M}otion~\textbf{G}enesis}}
+\def\MotionGenesisCompanyNameLLC{\textrm{\textbf{M}otion~\textbf{G}enesis}~LLC}
+\def\MotionGenesisKane{\MotionGenesisProgramNameNormal~\textrm{Kane}}
+\def\MotionGenesisKaneTrademark{\MotionGenesisProgramNameNormalTrademark~\textrm{Kane}}
+\def\MotionGenesis{\textrm{\textbf{M}{\footnotesize{otion}}\textbf{G}{\footnotesize{enesis}}}}  % This refers to new program
+\def\PlotGenesis{\textrm{\textbf{P}{\footnotesize{lot}}\textbf{G}{\footnotesize{enesis}}}}      % This refers to new program
+\def\Autolev{\MotionGenesis}
+\def\MGWebsiteName{\textrm{www.MotionGenesis.com}}            %\MGWebsiteName{}
+\def\MGResourcesName{\textrm{Resources}}
+\def\MGTextbooksName{\textrm{Textbooks}}
+\def\MGWebsiteLink{\weblink{\MGWebsiteName}}
+\def\MGWebsiteGetStarted{\weblink{\textrm{Get~Started}}}
+\def\MGWebsiteTextbooks{\weblink{\MGTextbooksName}}
+\def\MGWebsiteResources{\weblink{\MGResourcesName}}
+\def\MGWebsiteAndTextbooks{\MGWebsiteLink~\RRightArrow{\/}~\MGWebsiteTextbooks}
+\def\MGWebsiteTextbookResourcesForTOC{\MGWebsiteName~\RRightArrow{\/}~\MGTextbooksName~\RRightArrow{\/}~\MGResourcesName}
+\def\MGWebsiteTextbookResources{\MGWebsiteAndTextbooks~\RRightArrow{\/}~\MGWebsiteResources}
+\def\MGWebsiteAndTextbookDynamicSystems{\MGWebsiteAndTextbooks~\RRightArrow{\/}~\weblink{\textrm{Dynamic~Systems}}}
+\def\MGWebsiteAndTextbookAdvancedDynamics{\MGWebsiteAndTextbooks~\RRightArrow{\/}~\weblink{\textrm{Advanced~Dynamics}}}
+\def\MGWebsiteAndGetStartedName{\MGWebsiteLink~\RRightArrow{\/}~\MGWebsiteGetStarted}
+\def\MGWebsiteAndGetStartedNameBold{\textbf{\MGWebsiteLink}~\RRightArrow{\/}~\textbf{\MGWebsiteGetStarted}}
+\newcommand{\MGWebsiteAndGetStartedNameAndLink}[1]{\MGWebsiteAndGetStartedName~\RRightArrow{\/}~#1}
+\newcommand{\MGWebsiteAndGetStartedNameAndLinkBold}[1]{\MGWebsiteAndGetStartedNameBold~\RRightArrow{\/}~\textbf{#1}}
+\def\MGIsMatlabConnectionsPartner{\textrm{\MotionGenesisProgramNameNormalTrademark{} is a \MatlabConnectionsPartner}}
+\def\AutolevWebsiteNameOld{\textrm{www.Autolev.com}}
+\def\AutolevWebsiteLinkOld{\weblink{\AutolevWebsiteName}}
+\def\AutolevTutorial{\Autolev{Tutorial}}
+%\newcommand{\Autolev}[1][1.0em]{\hspace{-0.01em}{\includegraphics[totalheight=#1]{/Mitiguy/Autolev/Documentation/AutolevTutorial/ProgramKaneLogo.eps}}\hspace*{-0.9em}}
+\def\AutolevTM{\Autolev\trademark}
+\def\AutolevV{\Autolev~4.2}
+\def\AutolevTMV{\Autolev\texttrademark{}~4.2}
+\def\Alplot{\textrm{PlotGenesis}}
+%\def\AlplotTM{\textrm{MGPlot}\texttrademark{}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% GENERIC TOOLS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\cLanguage{C}
+\def\cpp{\cLanguage$^{++}$}
+\def\gcc{gcc}
+\def\gpp{g$^{++}$}
+\def\Java{Java}
+\def\Fortran{Fortran}
+\def\Gnuplot{\textrm{Gnuplot}}
+\def\ONLINEBOOK{\textrm{Dynamics Online: Theory and Implementation with \AutolevTM}}
+\def\ExcelNoTrademark{\textrm{Excel}}
+\def\ExcelTrademark{\mbox{\ExcelNoTrademark\superscriptRegisteredTrademarkSymbol}}
+\def\MicrosoftExcelNoTrademark{\textrm{Microsoft~\ExcelNoTrademark}}
+\def\MicrosoftExcelTrademark{\textrm{Microsoft~\ExcelTrademark}}
+\def\GoogleTrademark{\textrm{Google~\superscriptRegisteredTrademarkSymbol}}
+\def\TheMathWorks{\mbox{\textrm{The~MathWorks}}}                            % Also see \ForMathWorks
+\def\MatlabNoTrademark{\mbox{\textsc{MATLAB}}}                              % Also see \ForMathWorks
+\def\Matlab{\mbox{\MatlabNoTrademark\superscriptRegisteredTrademarkSymbol}} % Also see \ForMathWorks
+\def\MatlabConnectionsPartner{\Matlab{} connections partner}
+\def\Octave{\textrm{Octave}}
+\def\Simulink{\textrm{Simulink}}
+\def\Lapack{\textrm{Lapack}}
+\def\Maple{\textrm{Maple}}
+\def\Mathematica{\textrm{Mathematica}}
+\def\WolframAlpha{\textrm{WolframAlpha}}
+\def\MSC{MSC.Software}
+\def\IP{Interactive Physics}
+\def\WorkingModel{Working~Model}
+\def\WM{\WorkingModel}
+\def\WMTM{\WorkingModel\trademark{}}
+\def\WMThreeDTM{\WorkingModel~3D\trademark{}}
+\def\VisualNastran{MSC.visualNastran~4D}
+\def\VisualNastranTM{MSC.visualNastran~4D\trademark{}}
+\def\DynamicDesigner{Dynamic~Designer}
+\def\DynamicDesignerTM{Dynamic~Designer~4D\trademark{}}
+\def\Nastran{Nastran}
+\def\Marc{MARC}
+\def\Ansys{Ansys}
+\def\AnsysTM{Ansys\trademark{}}
+\def\AutoSim{AutoSim}
+\def\Adams{MSC.Adams}
+\def\AdamsTM{MSC.Adams\trademark{}}
+\def\Dads{\textrm{Dads}}
+\def\DadsTM{\textrm{Dads}\trademark{}}
+\def\ProMechanica{\textrm{ProMechanica}}
+\def\ProMechanicaTM{\textrm{ProMechanica}\trademark{}}
+\def\SolidWorks{\textrm{SolidWorks}}
+\def\SolidEdge{\textrm{Solid~Edge}}
+\def\Inventor{\textrm{Inventor}}
+\def\ProE{\textrm{Pro/E}}
+%------------------------------------
+\def\CMake{\textbf{\textrm{CMake}}}
+\def\SimTKorg{\textrm{Simtk.org}}
+\def\SimTK{\textrm{SimTK}}
+\def\VTK{\textrm{VTK}}
+\def\Simbody{\textrm{Simbody}}
+\def\SimTKSimbody{\textrm{SimTK~Simbody}}
+\def\SimTKLapack{\textrm{SimTK~Lapack}}
+\def\SimTKSimmatrix{\textrm{SimTK~Simmatrix}}
+\def\OpenSim{\textrm{OpenSim}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ATTRIBUTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\courtesy}[2]{\textbfSize{#1}{#2}}
+\newcommand{\courtesyUSNavy}[1][\footnotesize]{\courtesy{#1}{Courtesy of United States Navy}}
+\newcommand{\courtesyMSC}[1][\footnotesize]{\courtesy{#1}{Courtesy of \MSC}}
+\newcommand{\courtesyDOD}[1][\footnotesize]{\courtesy{#1}{Courtesy Department of Defense}}
+\newcommand{\courtesyDOI}[1][\footnotesize]{\courtesy{#1}{Courtesy~U.S.~Department~of~Interior}}
+\newcommand{\courtesyNASA}[1][\footnotesize]{\courtesy{#1}{Courtesy NASA}}
+\newcommand{\courtesyNASASTSCI}[1][\footnotesize]{\courtesy{#1}{Courtesy NASA/STSci}}
+\newcommand{\courtesyUSGS}[1][\footnotesize]{\courtesy{#1}{Courtesy USGS}}
+\newcommand{\courtesyNASACaltech}[1][\footnotesize]{\courtesy{#1}{Courtesy NASA/JPL-Caltech}}
+\newcommand{\courtesyUSFishWildlife}[1][\footnotesize]{\courtesy{#1}{Courtesy U.S. Fish and Wildlife Service}}
+\newcommand{\courtesyNASADryden}[1][\footnotesize]{\courtesy{#1}{Courtesy NASA Dryden Flight Research Center Photo Collection}}
+\newcommand{\courtesyUSNOAA}[1][\footnotesize]{\courtesy{#1}{Courtesy NOAA}}  %National Oceanic and Atmospheric Administration
+\newcommand{\courtesyUSAirForce}[1][\footnotesize]{\courtesy{#1}{Courtesy USAF}} % U.S. Air Force
+\newcommand{\courtesyJorgeCham}[1][\footnotesize]{\courtesy{#1}{Courtesy~Jorge~Cham}}
+\newcommand{\courtesyJorgeChamPortions}[1][\footnotesize]{\courtesy{#1}{Portions~courtesy~Jorge~Cham}}
+\newcommand{\courtesyDougSchwandt}[1][\footnotesize]{\courtesy{#1}{Courtesy~Doug~Schwandt}}
+\newcommand{\courtesyPavelSmrz}[1][\footnotesize]{\courtesy{#1}{Courtesy~Pavel~Smrz (SJSU)}}
+\newcommand{\courtesyBetaiKoffi}[1][\footnotesize]{\courtesy{#1}{Courtesy Betai Koffi}}
+\newcommand{\courtesyApoorvaRajagopalAndOpenSim}[1][\footnotesize]{\courtesy{#1}{Courtesy~Apoorva~Rajagopal~and~\OpenSim}}
+\newcommand{\courtesyApoorvaRajagopal}[1][\footnotesize]{\courtesy{#1}{Courtesy~Apoorva~Rajagopal}}
+\newcommand{\courtesyArturoFreye}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy Arturo Freyre}}} % {Courtesy Arturo Freyre Rodr\'{i}guez}}
+\newcommand{\courtesyDSTSimWise}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy~Design~Simulation~Technology~(SimWise)}}}
+\newcommand{\courtesyOpenSim}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy~\OpenSim}}}
+\newcommand{\courtesyAccuray}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy~Accuray~Inc.}}}
+\newcommand{\courtesySamHamner}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy~Dr.~Sam~Hamner}}}
+\newcommand{\courtesyAdamLeeper}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy~Dr.~Adam~Leeper}}}
+\newcommand{\courtesyAlainLaderach}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy~Dr.~Alain~Laderach}}}
+\newcommand{\courtesyClaudeRheaume}[1][\footnotesize]{\courtesy{#1}{\mbox{Courtesy~Claude~Rheaume~LaSalette~Enfield~NH}}}
+   % \courtesy[\tiny]{Courtesy of Somebody}   % Puts {\tiny Courtesy of Somebody}
+   % \courtesyNASA[\tiny]                     % Puts {\tiny Courtesy NASA}

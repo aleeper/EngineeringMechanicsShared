@@ -1,0 +1,709 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CUSTOM MATH %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{customMath}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{bigbold}
+%\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{textStyles}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+% No options...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MATHEMATICAL QUANTITIES %%%%%%%%%%%%%%%%%%%%%
+\def\ldotsTwo{\ensuremath{.\,.}}
+\def\vdotsTwo{\ensuremath{\stackrel{\hbox{.}}{\hbox{.}}}}
+   % \ldotsTwo  puts two dots next to   each other (like \ldots except only two dots)
+   % \vdotsTwo  puts two dots on top of each other (like \vdots except only two dots)
+
+\def\mathComma{\mbox{\ensuremath{,\hspace{-0.12pt}}}}
+   % \mathComma produces a comma in a number such as 1,200,000
+
+\newcommand{\magnitude}[1]{\ensuremath{\bigl|{#1}\bigr|}}
+%\newcommand{\magnitude}[1]{\ensuremath{\left|{#1}\right|}}
+%\newcommand{\magnitude}[1]{\vert{#1}\vert}
+   % \magnitude{ \bvec{v} }  produces vertical lines around the vector v
+
+\newcommand{\squareRoot}[1]{\ensuremath{\sqrt{#1}}}
+\newcommand{\positiveSquareRoot}[2][0.67pc]{\ensuremath{\positive[#1]{\!\!\sqrt{#2}}}}
+   % \squareRoot{x}                   produces \sqrt{x}
+   % \positiveSquareRoot{x}           produces +\sqrt{x}
+   % \positiveSquareRoot[0.70pc]{x}   produces +\sqrt{x}
+
+\def\gradientVectorSymbol{\ensuremath{\boldNablaVector}}
+\newcommand{\gradientOfSymbol}[1]{\ensuremath{\gradientVectorSymbol{#1}}}
+\newcommand{\gradient}[2][]{\ensuremath{\gradientVectorSymbol_{\!#1}{#2}}}
+   % \gradientVectorSymbol    produces \nabla
+   % \gradientOfSymbol{F}     produces \nabla F
+   % \gradient[\bvec{v}]{F}   produces \nabla_{\bvec{v}}F
+
+\newcommand{\Exp}[1]{\ensuremath{{e}^{#1}}}
+   % \Exp{x}        produces exponent of x e.g., e^x
+
+\newcommand{\tenToPower}[1]{\ensuremath{10^{#1}}}
+\newcommand{\tenToPowerNegative}[1]{\ensuremath{10^{\negative[0.3pt]{#1}}}}
+\newcommand{\sn}[3][\,]{\ensuremath{{#2}{#1}\textrm{x}{#1}10^{#3}}}
+\newcommand{\snNegative}[3][\,]{\sn[#1]{#2}{\negative[0.3pt]{#3}}}
+   % \tenToPower{5}              produces 10^5
+   % \tenToPowerNegative{5}      produces 10^{-5}
+   % \sn{3.2}{5}                 produces scientific notation e.g., 3.2 x 10^5
+   % \sn[]{3.2}{5}               produces scientific notation e.g., 3.2x10^5
+   % \sn[\,]{3.2}{\negative{5}}  produces scientific notation e.g., 3.2\,x\,10^-5
+   % \snNegative{3}{5}           produces scientific notation e.g., 3 x 10^{-5}
+   % \snNegative[]{3}{5}         produces scientific notation e.g., 3x10^{-5}
+
+\newcommand{\abs}{\ensuremath{\mathop{\mathrm{abs}}}}
+\newcommand{\cotan}{\ensuremath{\mathop{\mathrm{cotan}}}}
+\newcommand{\asin}{\ensuremath{\mathop{\mathrm{asin}}}}
+\newcommand{\asinh}{\ensuremath{\mathop{\mathrm{asinh}}}}
+\newcommand{\acos}{\ensuremath{\mathop{\mathrm{acos}}}}
+\newcommand{\acosh}{\ensuremath{\mathop{\mathrm{acosh}}}}
+\newcommand{\atan}{\ensuremath{\mathop{\mathrm{atan}}}}
+\newcommand{\atanh}{\ensuremath{\mathop{\mathrm{atanh}}}}
+\newcommand{\atantwo}{\ensuremath{\mathop{\mathtt{atan2}}}}
+\newcommand{\sinc}{\ensuremath{\mathop{\mathrm{sinc}}}}
+\newcommand{\sgn}{\ensuremath{\mathop{\mathrm{sign}}}}
+\newcommand{\sign}{\ensuremath{\mathop{\mathrm{sign}}}}
+\newcommand{\trace}{\ensuremath{\mathop{\mathrm{trace}}}}
+%\newcommand{\Cosh}{\ensuremath{\mathop{\mathrm{cosh}}}}                 % \cosh is already defined in Latex
+%\newcommand{\Sinh}{\ensuremath{\mathop{\mathrm{sinh}}}}                 % \sinh is already defined in Latex
+\newcommand{\cosSquared}[1]{\ensuremath{\mathop{\mathrm{cos}^2(#1)}}}
+\newcommand{\sinSquared}[1]{\ensuremath{\mathop{\mathrm{sin}^2(#1)}}}
+\newcommand{\tanSquared}[1]{\ensuremath{\mathop{\mathrm{tan}^2(#1)}}}
+\newcommand{\coshSquared}[1]{\ensuremath{\mathop{\mathrm{cosh}^2(#1)}}}
+\newcommand{\sinhSquared}[1]{\ensuremath{\mathop{\mathrm{sinh}^2(#1)}}}
+\newcommand{\LogTen}{\ensuremath{\mathop{\mathrm{log}_{10}}}}
+\newcommand{\Ln}{\ensuremath{\mathop{\mathrm{ln}}}}
+   % \sinc           produces function defined to be sinx/x, e.g., sinc
+   % \sgn            produces function defined to be x/abs(x)
+   % \cosSquared{x}  produces cos^2(x)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SLANTED FRACTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Defined for compatibility -- otherwise use package sfrac.
+\makeatletter
+\def\slantedFraction#1#2{\leavevmode\kern.1em%
+        \raise.5ex\hbox{\the\scriptfont\z@ \ensuremath{#1}}\kern-.1em%
+        /\kern-.15em\lower.25ex\hbox{\the\scriptfont\z@ \,\ensuremath{#2}}}
+\makeatother
+    % \slantedfrac{1}{2}   slanted fraction e.g., 1/2; works in math + text mode   (Old name was \sfrac - but this seems to be redefined in newer packages).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAPLACE & FOURIER TRANSFORM AND TRANSFER FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\LaplaceTransform}{\ensuremath{\mathcal{L}}}
+\def\FourierVarOmega{\ensuremath{\omega}}
+\def\FourierVar{\ensuremath{\FourierVarOmega_{\scriptscriptstyle{\textrm{H}}}}}        % Maybe use Hz instead of H ?
+\def\FourierVarLow{\ensuremath{\FourierVarOmega_{\scriptscriptstyle{\textrm{low}}}}}
+\def\FourierVarHigh{\ensuremath{\FourierVarOmega_{\scriptscriptstyle{\textrm{high}}}}}
+\newcommand{\FourierTransform}{\ensuremath{\mathcal{F}}}
+\newcommand{\InverseFourierTransform}{\inverse{\FourierTransform}}
+\newcommand{\FourierTransformWithVar}{\ensuremath{\FourierTransform(\FourierVar)}}
+    % \LaplaceTransform          produces  \mathcal{L}       for Laplace transforms
+    % \FourierTransform          produces  \mathcal{F}       for Fourier transforms
+    % \InverseFourierTransform   produces  \mathcal{F}^{-1}  for Fourier transforms
+    % \FourierVar                produces  \omega_{Hz}       for Fourier transforms
+
+\newcommand{\Numerator}[2][\,]{\ensuremath{\textrm{Num}\left({#1}{#2}{#1}\right)}}
+\newcommand{\Denominator}[2][\,]{\ensuremath{\textrm{Den}\left({#1}{#2}{#1}\right)}}
+    % \Numerator{G(s)}   produces Num( G(s) )
+    % \Denominator{G(s)} produces Den( G(s) )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMPLEX NUMBERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Dependencies:
+%%% ensureMath
+%%% magnitude
+%%% boldangle
+
+\def\imagii{\ensuremath{i}}
+\def\imagi{\ensuremath{i}}
+\def\imagj{\ensuremath{j}}
+\def\imaginary{\imagi}
+    % \imagi produces an i.
+    % \imagj produces an j
+    % \imaginary produces an i or j (currently it produces i)
+
+\newcommand{\complexImagii}[2][]{\ensuremath{{#2}{#1}\imagi}}
+\newcommand{\complexImagj}[2][]{\ensuremath{{#2}{#1}\imagj}}
+\newcommand{\complexImagi}[2][]{\complexImagii[#1]{#2}}
+\newcommand{\complexRealImagii}[3][]{\ensuremath{{#2}\plus[#1]\complexImagii[]{#3}}}
+\newcommand{\complexRealImagj}[3][]{\ensuremath{{#2}\plus[#1]\complexImagj[]{#3}}}
+\newcommand{\complexRealImagi}[3][]{\complexRealImagii[#1]{#2}{#3}}
+    % \complexImagii[]{b}          produces b\mult[]i
+    % \complexImagj[]{b}           produces b\mult[]j
+    % \complexImagi[]{b}           produces b\mult[]i
+   % \complexRealImagii[\,]{a}{b}  produces the complex number $a\plus[\,]b*i$
+   % \complexRealImagj[\,]{a}{b}   produces the complex number $a\plus[\,]b*j$
+   % \complexRealImagi[\,]{a}{b}   produces the complex number $a\plus[\,]b*i$
+
+\newcommand{\complex}[1]{\ensuremath{#1}}
+\newcommand{\complexMagnitude}[1]{\ensuremath{\magnitude{\complex{#1}}}}
+\newcommand{\complexPhase}[1]{\ensuremath{\boldangle{\complex{#1}}}}
+\newcommand{\complexConjugate}[1]{\ensuremath{\bar{\complex{#1}}}}
+\newcommand{\complexReal}[1]{\ensuremath{\textrm{Real}(\complex{#1})}}
+\newcommand{\complexImag}[1]{\ensuremath{\textrm{Imag}(\complex{#1})}}
+   % \complex{z}            produces a complex number $z$ (right now this is not special)
+   % \complexMagnitude{z}   produces the magnitude of the complex number z
+   % \complexPhase{z}       produces the phase of the complex number z
+   % \complexConjugate{z}   produces the complex conjugate of the complex number z
+   % \complexReal{z}        produces the real part of the complex number z
+   % \complexImag{z}        produces the imaginary part of the complex number z
+
+\def\ode{ODE}                                         % ordinary differential equation
+\def\odes{ODEs}                                       % ordinary differential equations
+\def\ODE{ODE}                                         % Ordinary Differential Equation
+\def\ODEs{ODEs}                                       % Ordinary Differential Equations
+\def\pde{PDE}                                         % partial  differential equation
+\def\pdes{PDEs}                                       % partial  differential equations
+\def\PDE{PDE}                                         % partial  Differential Equation
+\def\PDEs{PDEs}                                       % partial  Differential Equations
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SUMS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\summationNoLimits}[1]{\ensuremath{\sum\nolimits{#1}}}
+\newcommand{\summationSide}[3]{\ensuremath{\sum\nolimits_{#2}^{#3}{#1}}}
+\newcommand{\summation}[3]{\ensuremath{\sum\limits_{#2}^{#3}{#1}}}
+    % \summationNoLimits{x dx}                  produces summation of x dx
+    % \summationSide{x dx}{x \equals[\,] a}{b}  produces summation of x dx with limits from x=a to b
+    % \summation{x dx}{a}{b}                    produces summation of x dx with limits from a   to b
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LIMITS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Limit}[4][\,]{\ensuremath{\lim\limits_{\small\valueTo[#1]{#2}{\,#3}}{#4}}} % Old used \valueApproaches instead of \valueTo
+    % \Limit[\!]{x}{\infty}{f(x)}   produces lim x\!->\!infinity f(x)
+    % \Limit[\,]{x}{\infty}{f(x)}   produces lim x\,->\, infinity f(x)
+    % \Limit{x}{\infty}{f(x)}       produces lim x  ->  infinity f(x)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DIFFERENTIALS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\differential}[1]{\ensuremath{d{#1}}}
+\newcommand{\differentialTensor}[2]{\ensuremath{{}^{\scriptstyle{#1}}}\!{\differential{#2}}}
+    % \differential{x} produces dx
+    % \differentialTensor{A}{\bvec{v}} produces differential of \bvec{v} in reference frame A
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTEGRALS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newcommand{\intSize}[1]{#1\ensuremath{\int}}}
+\newcommand{\integralSide}[3]{\ensuremath{\int\nolimits_{#2}^{#3}{#1}}}
+\newcommand{\integral}[3]{\ensuremath{\int\limits_{#2}^{#3}{#1}}}
+%\newcommand{\integralSize}[4]{\ensuremath{\intSize{#4}\limits_{#2}^{#3}{#1}}}
+\newcommand{\integralTensor}[4]{\displaystyle{\ensuremath{{\hspace{-1.05em}\phantom{\int}}^{#4}\!\!\!\int\limits_{#2}^{#3}{#1}}}}
+%\newcommand{\integralTensorSize}[5]{\displaystyle{\ensuremath{{\hspace{-1.05em}\phantom{\intSize{#5}}}^{#4}\!\!\!{\intSize{#5}}\limits_{#2}^{#3}{#1}}}}
+    % \integralSide{x \differential{x}}{x=a}{b}             produces integral of x*dx with limits from x=a to b
+    % \integral{    x \differential{x}}{0}{\infty}          produces integral  of x dx with limits from 0 to infinity
+    % \integralSize{x \differential{x}}{0}{\infty}{\small}  produces small integral  of x dx with limits from 0 to infinity
+    % \integralTensor{ \hspace{-0.2em}\bvec{v}\,\differential{t} }{t_i}{t_f}{N}  produces integral of \bvec{v} dt with limits from t_i to t_f in reference frame N
+    % \integralTensorSize{ \hspace{-0.2em}\bvec{v}\,\differential{t} }{t_i}{t_f}{N}{\small}  produces integral of \bvec{v} dt with limits from t_i to t_f in reference frame N
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% ORDINARY DERIVATIVES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newcommand{\dddot}[1]{\ensuremath{\dot{\ddot{#1}}}}   % NOTE LATEX ALREADY DEFINES THIS BETTER !
+    % \dddot{y}:    3rd ordinary derivative of y with 3 dots over it
+
+%\newcommand{\dt}[2][\,]{\ensuremath{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{\displaystyle d{#2}}} {\displaystyle dt}}}  % TRY default of [\,] instead of [] ?
+\newcommand{\dt}[2][]{\ensuremath{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{\displaystyle d{#2}}} {\displaystyle dt}}}
+\newcommand{\ddt}[2][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^2{\displaystyle #2}}{{\displaystyle{dt}}^2}}{}}}
+\newcommand{\dddt}[2][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^3{\displaystyle #2}}{{\displaystyle{dt}}^3}}{}}}
+\newcommand{\ddddt}[2][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^4{\displaystyle #2}}{{\displaystyle{dt}}^4}}{}}}
+\newcommand{\dnt}[3][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^{#3}{\displaystyle #2}}{{\displaystyle{dt}}^{#3}}}{}}}
+    % \dt{y}         1st ordinary derivative of y with respect to t
+    % \ddt{y}        2nd ordinary derivative of y with respect to t
+    % \dddt{y}       3rd ordinary derivative of y with respect to t
+    % \ddddt{y}      4th ordinary derivative of y with respect to t
+    % \dt[N]{y}      1st ordinary derivative of y with respect to t in N
+    % \ddt[N]{y}     2nd ordinary derivative of y with respect to t in N
+    % \dddt[N]{y}    3rd ordinary derivative of y with respect to t in N
+    % \dnt{y}{n}     nth ordinary derivative of y with respect to t
+    % \dn[N]{y}{n}   nth ordinary derivative of y with respect to t in N
+
+\newcommand{\dydx}[3][]{\ensuremath{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{\displaystyle d{#2}}} {\displaystyle d{#3}}}}
+\newcommand{\ddydx}[3][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^2{\displaystyle #2}}{{\displaystyle{d{#3}}}^2}}{}}}
+\newcommand{\dddydx}[3][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^3{\displaystyle #2}}{{\displaystyle{d{#3}}}^3}}{}}}
+\newcommand{\ddddydx}[3][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^4{\displaystyle #2}}{{\displaystyle{d{#3}}}^4}}{}}}
+    % \dydx{y}{x}        1st ordinary derivative of y with respect to x
+    % \ddydx{y}{x}       2nd ordinary derivative of y with respect to x
+    % \dddydx{y}{x}      3rd ordinary derivative of y with respect to x
+    % \ddddydx{y}{x}     4th ordinary derivative of y with respect to x
+    % \dydx[N]{y}{x}     1st ordinary derivative of y with respect to x in N
+    % \ddydx[N]{y}{x}    2nd ordinary derivative of y with respect to x in N
+    % \dddydx[N]{y}{x}   3rd ordinary derivative of y with respect to x in N
+    % \ddddydx[N]{y}{x}  4th ordinary derivative of y with respect to x in N
+
+\newcommand{\dydxEval}[4][]{\ensuremath{\left.\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{\displaystyle d{#2}}} {\displaystyle d{#3}}\right|_{#4}}}
+\newcommand{\ddydxEval}[4][]{\ensuremath{\left.{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^2{\displaystyle #2}}{{\displaystyle{d{#3}}}^2}}{}\right|_{#4}}}
+\newcommand{\dddydxEval}[4][]{\ensuremath{\left.{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle d}}^3{\displaystyle #2}}{{\displaystyle{d{#3}}}^3}}{}\right|_{#4}}}
+    % \dydxEval{y}{x}{x=a}       1st ordinary derivative of y with respect to x evaluated at x=a
+    % \ddydxEval{y}{x}{x=a}      2nd ordinary derivative of y with respect to x evaluated at x=a
+    % \dddydxEval{y}{x}{x=a}     3rd ordinary derivative of y with respect to x evaluated at x=a
+    % \dydxEval[N]{y}{x}{x=a}    1st ordinary derivative of y with respect to x in N evaluated at x=a
+    % \ddydxEval[N]{y}{x}{x=a}   2nd ordinary derivative in N of y with respect to x evaluated at x=a
+    % \dddydxEval[N]{y}{x}{x=a}  3rd ordinary derivative in N of y with respect to x evaluated at x=a
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% PARTIAL DERIVATIVES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\pdydx}[3][]{\ensuremath{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{\displaystyle\partial{#2}}} {\displaystyle\partial{#3}}}}
+\newcommand{\pddydx}[3][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle\partial}}^2{\displaystyle #2}}{{\displaystyle{\partial{#3}}}^2}}{}}}
+\newcommand{\pdddydx}[3][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle\partial}}^3{\displaystyle #2}}{{\displaystyle{\partial{#3}}}^3}}{}}}
+    % \pdydx{y}{x}       1st partial derivative of y with respect to x.
+    % \pddydx{y}{x}      2nd partial derivative of y with respect to x.
+    % \pdddydx{y}{x}     3rd partial derivative of y with respect to x.
+    % \pdydx[N]{y}{x}    1st partial derivative of y with respect to x in N.
+    % \pddydx[N]{y}{x}   2nd partial derivative of y with respect to x in N.
+    % \pdddydx[N]{y}{x}  3rd partial derivative of y with respect to x in N.
+
+\newcommand{\pddydxAB}[4][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle\partial}}^2{\displaystyle #2}}{{\displaystyle{\partial{#3}}}\,{\displaystyle{\partial{#4}}}}}{}}}
+    % \pddydxAB{y}{x_1}{x_2}     2nd partial derivative of y with respect to x_1 and x_2.
+    % \pddydxAB[N]{y}{x_1}{x_2}  2nd partial derivative of y with respect to x_1 and x_2 in N/
+
+%\newcommand{\pdnydxn}[4][]{\ensuremath{{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle\partial}}^{#4}{\displaystyle #2}}{{\displaystyle{\partial{#3}}}^{#4}}}{}}}
+%    % \pdnydxn{y}{x}      nth partial derivative of y with respect to x.
+%    % \pdnydxn[N]{y}{x}   nth partial derivative of y with respect to x in N.
+
+\newcommand{\pdydxEval}[4][]{\ensuremath{\left.\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{\displaystyle\partial{#2}}} {\displaystyle\partial{#3}}\right|_{#4}}}
+\newcommand{\pddydxEval}[4][]{\ensuremath{\left.{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle\partial}}^2{\displaystyle #2}}{{\displaystyle{\partial{#3}}}^2}}{}\right|_{#4}}}
+\newcommand{\pdddydxEval}[4][]{\ensuremath{\left.{}{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{{\displaystyle\partial}}^3{\displaystyle #2}}{{\displaystyle{\partial{#3}}}^3}}{}\right|_{#4}}}
+    % \pdydxEval{y}{x}{x=a}       1st partial derivative of y with respect to x evaluated at x=a
+    % \pddydxEval{y}{x}{x=a}      2nd partial derivative of y with respect to x evaluated at x=a
+    % \pdddydxEval{y}{x}{x=a}     3rd partial derivative of y with respect to x evaluated at x=a
+    % \pdydxEval[N]{y}{x}{x=a}    1st partial derivative in N of y with respect to x evaluated at x=a
+    % \pddydxEval[N]{y}{x}{x=a}   2nd partial derivative in N of y with respect to x evaluated at x=a
+    % \pdddydxEval[N]{y}{x}{x=a}  3rd partial derivative in N of y with respect to x evaluated at x=a
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MATRICES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\arraySize}[3][\!]{\mbox{\ensuremath{{#2}{#1}\times{#1}{#3}}}}  % Can use either \textrm{x} or \times (\times seems to give better spacing)
+\newcommand{\arraySizeInSize}[4][\!]{\smallerDescription[#4]{\arraySize[#1]{#2}{#3}}}
+\newcommand{\underMatrixArraySizeScriptsize}[4][]{\mbox{\underMath{#2}{\arraySizeInSize[#1]{#3}{#4}{\scriptsize}}}}
+   % \arraySize{m}{n}                              produces m x n
+   % \arraySize[]{m}{n}                            produces m  x  n
+   % \arraySize[\,]{m}{n}                          produces m\,x\,n
+   % \arraySizeInSize[\,]{m}{n}{\scriptsize}       produces m\,x\,n in scriptsize font-size
+   % \underMatrixArraySizeScriptsize[\!]{A}{m}{n}  produces m\!x\!n under the A matrix
+
+\newcommand{\matrixName}[1]{\ensuremath{#1}}
+\newcommand{\matrixNameInsideBrackets}[1]{\ensuremath{\left[\,{#1}\,\right]}}
+\def\zeroMatrix{\matrixName{0}}
+\def\zeroMatrixInBrackets{\matrixNameInsideBrackets{0}}
+\def\identityMatrix{\matrixName{I}}
+\def\identityMatrixInBrackets{\matrixNameInsideBrackets{I}}
+   % \matrixName{A}                  produces the matrix name A.
+   % \matrixNameInsideBrackets{A}    produces the matrix name [A], like putting vectors in bold-face or dyadics in bold-face with an underline
+   % \zeroMatrix                     produces the matrix name 0
+   % \zeroMatrixInBrackets           produces the matrix name [0]
+   % \identityMatrix                 produces the matrix name I
+   % \identityMatrixInBrackets       produces the matrix name [I]
+
+\newcommand{\rank}{\ensuremath{\mathop{\mathrm{rank}}}}
+\newcommand{\transpose}[1]{\ensuremath{{#1}^{T}}}
+\newcommand{\transposeAsFunction}[1]{\ensuremath{\mathrm{transpose}(#1)}}
+\newcommand{\inverse}[1]{\ensuremath{{#1}^{\negative[0.05em]{1}}}}
+\newcommand{\pseudoInverse}[1]{\ensuremath{{#1}^{+}}}
+\newcommand{\inverseShort}{\mathop{\mathrm{inv}}}
+\newcommand{\inverseAsFunction}[1]{\ensuremath{\mathrm{inverse}(#1)}}
+   % \rank                          produces rank
+   % \transposeAsFunction{A}        produces transpose(A)
+   % \transpose{A}                  produces A^T
+   % \inverse{A}                    produces A^{-1}
+   % \pseudoInverse{A}              produces A^{+}
+   % \inverseShort                  produces inv
+   % \inverseAsFunction{A}          produces inverse(A)
+
+\newcommand{\submatrix}[2]{\ensuremath{\mathop{\mathrm{submatrix}}(#1_{#2})}}
+\newcommand{\minor}[2]{\ensuremath{\mathop{\mathrm{minor}}(#1_{#2})}}
+\newcommand{\cofactor}[2]{\ensuremath{\mathop{\mathrm{cofactor}}(#1_{#2})}}
+\newcommand{\adjugate}{\mathop{\mathrm{adj}}}
+\newcommand{\determinantShort}{\mathop{\mathrm{det}}}
+\newcommand{\norm}[1]{\ensuremath{\bigl|\bigl|{#1}\bigr|\bigr|}}
+   % \submatrix{A}{ij}    produces submatrix(A_{ij}), i.e., the submatrix corresponding to the i^th row and j^th column of A
+   % \minor{A}{ij}        produces minor(A_{ij}), i.e., the minor corresponding to the i^th row and j^th column of A
+   % \cofactor{A}{ij}     produces cofactor(A_{ij}), i.e., the cofactor corresponding to the i^th row and j^th column of A
+   % \adjugate            (classical adjoint for matrices)
+   % \determinantShort    produces det     % Note: \det for the determinate of a matrix is already defined by Latex)
+   % \norm{A}             ||A||
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COLUMN MATRICES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\colOne}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}\end{array}\right]}}
+\newcommand{\colTwo}[3][c]{\ensuremath{\left[\begin{array}{#1}{#2}\\[0.0pc]{#3}\end{array}\right]}}
+\newcommand{\colThree}[4][c]{\ensuremath{\left[\begin{array}{#1}{#2}\\[0.0pc]{#3}\\[0.0pc]{#4}\end{array}\right]}}
+\newcommand{\colFour}[5][c]{\ensuremath{\left[\begin{array}{#1}{#2}\\[0.0pc]{#3}\\[0.0pc]{#4}\\[0.0pc]{#5}\end{array}\right]}}
+\newcommand{\colFive}[6][c]{\ensuremath{\left[\begin{array}{#1}{#2}\\[0.0pc]{#3}\\[0.0pc]{#4}\\[0.0pc]{#5}\\[0.0pc]{#6}\end{array}\right]}}
+\newcommand{\colSix}[7][c]{\ensuremath{\left[\begin{array}{#1}{#2}\\[0.0pc]{#3}\\[0.0pc]{#4}\\[0.0pc]{#5}\\[0.0pc]{#6}\\[0.0pc]{#7}\end{array}\right]}}
+\newcommand{\colSeven}[8][c]{\ensuremath{\left[\begin{array}{#1}{#2}\\[0.0pc]{#3}\\[0.0pc]{#4}\\[0.0pc]{#5}\\[0.0pc]{#6}\\[0.0pc]{#7}\\[0.0pc]{#8}\end{array}\right]}}
+   % \colTwo{1}{2}     produces a column matrix with the center-justified elements [1; 2]
+   % \colTwo[r]{1}{2}  produces a column matrix with the  right-justified elements [1; 2]
+
+\newcommand{\colTwoSpace}[4][c]{\ensuremath{\left[\begin{array}{#1}{#3}\\[#2]{#4}\end{array}\right]}}
+\newcommand{\colThreeSpace}[5][c]{\ensuremath{\left[\begin{array}{#1}{#3}\\[#2]{#4}\\[#2]{#5}\end{array}\right]}}
+\newcommand{\colFourSpace}[6][c]{\ensuremath{\left[\begin{array}{#1}{#3}\\[#2]{#4}\\[#2]{#5}\\[#2]{#6}\end{array}\right]}}
+\newcommand{\colFiveSpace}[7][c]{\ensuremath{\left[\begin{array}{#1}{#3}\\[#2]{#4}\\[#2]{#5}\\[#2]{#6}\\[#2]{#7}\end{array}\right]}}
+\newcommand{\colSixSpace}[8][c]{\ensuremath{\left[\begin{array}{#1}{#3}\\[#2]{#4}\\[#2]{#5}\\[#2]{#6}\\[#2]{#7}\\[#2]{#8}\end{array}\right]}}
+\newcommand{\colSevenSpace}[9][c]{\ensuremath{\left[\begin{array}{#1}{#3}\\[#2]{#4}\\[#2]{#5}\\[#2]{#6}\\[#2]{#7}\\[#2]{#8}\\[#2]{#9}\end{array}\right]}}
+   % \colThreeSpace[c]{0.1pc}{1}{2}{3}  produces a column matrix with center-justified elements and 0.1pc between rows
+
+\newcommand{\colTwof}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1\\{#2}_2\end{array}\right]}}
+\newcommand{\colThreef}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1\\{#2}_2\\{#2}_3\end{array}\right]}}
+\newcommand{\colFourf}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1\\{#2}_2\\{#2}_3\\{#2}_4\end{array}\right]}}
+\newcommand{\colFivef}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1\\{#2}_2\\{#2}_3\\{#2}_4\\{#2}_5\end{array}\right]}}
+\newcommand{\colSixf}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1\\{#2}_2\\{#2}_3\\{#2}_4\\{#2}_5\\{#2}_6\end{array}\right]}}
+\newcommand{\colSevenf}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1\\{#2}_2\\{#2}_3\\{#2}_4\\{#2}_5\\{#2}_6\\{#2}_7\end{array}\right]}}
+   % \colTwof{f(t)}    produces a column matrix with the center-justified elements [f(t)_1; f(t)_2]
+   % \colTwof[r]{f(t)} produces a column matrix with the  right-justified elements [f(t)_1; f(t)_2]
+   % Note the f in colTwof is for Fortran
+
+\newcommand{\colTwoc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0\\{#2}_1\end{array}\right]}}
+\newcommand{\colThreec}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0\\{#2}_1\\{#2}_2\end{array}\right]}}
+\newcommand{\colFourc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0\\{#2}_1\\{#2}_2\\{#2}_3\end{array}\right]}}
+\newcommand{\colFivec}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0\\{#2}_1\\{#2}_2\\{#2}_3\\{#2}_4\end{array}\right]}}
+\newcommand{\colSixc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0\\{#2}_1\\{#2}_2\\{#2}_3\\{#2}_4\\{#2}_5\end{array}\right]}}
+\newcommand{\colSevenc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0\\{#2}_1\\{#2}_2\\{#2}_3\\{#2}_4\\{#2}_5\\{#2}_6\end{array}\right]}}
+   % \colTwoc{f(t)}    produces a column matrix with the center-justified elements [f(t)_0; f(t)_1]
+   % \colTwoc[r]{f(t)} produces a column matrix with the  right-justified elements [f(t)_0; f(t)_1]
+   % Note the c in colTwoc is for the C programming language
+
+\newcommand{\colOneNoBracket}[2][c]{\ensuremath{\begin{array}{#1}{#2}\end{array}}}
+\newcommand{\colTwoNoBracket}[3][c]{\ensuremath{\begin{array}{#1}{#2}\\{#3}\end{array}}}
+\newcommand{\colThreeNoBracket}[4][c]{\ensuremath{\begin{array}{#1}{#2}\\{#3}\\{#4}\end{array}}}
+\newcommand{\colFourNoBracket}[5][c]{\ensuremath{\begin{array}{#1}{#2}\\{#3}\\{#4}\\{#5}\end{array}}}
+\newcommand{\colFiveNoBracket}[6][c]{\ensuremath{\begin{array}{#1}{#2}\\{#3}\\{#4}\\{#5}\\{#6}\end{array}}}
+\newcommand{\colSixNoBracket}[7][c]{\ensuremath{\begin{array}{#1}{#2}\\{#3}\\{#4}\\{#5}\\{#6}\\{#7}\end{array}}}
+\newcommand{\colSevenNoBracket}[8][c]{\ensuremath{\begin{array}{#1}{#2}\\{#3}\\{#4}\\{#5}\\{#6}\\{#7}\\{#8}\end{array}}}
+   % \colTwoNoBracket{1}{2}     produces a column matrix with the center-justified elements 1; 2
+   % \colTwoNoBracket[r]{1}{2}  produces a column matrix with the  right-justified elements 1; 2
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ROW MATRICES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\rowOne}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}\end{array}\right]}}
+\newcommand{\rowTwo}[3][cc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}\end{array}\right]}}
+\newcommand{\rowThree}[4][ccc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}&{#4}\end{array}\right]}}
+\newcommand{\rowFour}[5][cccc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}&{#4}&{#5}\end{array}\right]}}
+\newcommand{\rowFive}[6][ccccc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}&{#4}&{#5}&{#6}\end{array}\right]}}
+\newcommand{\rowSix}[7][cccccc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}&{#4}&{#5}&{#6}&{#7}\end{array}\right]}}
+\newcommand{\rowSeven}[8][ccccccc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}&{#4}&{#5}&{#6}&{#7}&{#8}\end{array}\right]}}
+   % \rowTwo{1}{2}     produces a row matrix with the center-justified elements [ 1  2 ]
+   % \rowTwo[rr]{1}{2} produces a row matrix with the  right-justified elements [ 1   2]
+
+\newcommand{\rowTwoc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0&{#2}_1\end{array}\right]}}
+\newcommand{\rowTwof}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1&{#2}_2\end{array}\right]}}
+\newcommand{\rowThreec}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0&{#2}_1&{#2}_2\end{array}\right]}}
+\newcommand{\rowThreef}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1&{#2}_2&{#2}_3\end{array}\right]}}
+\newcommand{\rowFourc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0&{#2}_1&{#2}_2&{#2}_3\end{array}\right]}}
+\newcommand{\rowFourf}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1&{#2}_2&{#2}_3&{#2}_4\end{array}\right]}}
+\newcommand{\rowFivec}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0&{#2}_1&{#2}_2&{#2}_3&{#2}_4\end{array}\right]}}
+\newcommand{\rowFivef}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1&{#2}_2&{#2}_3&{#2}_4&{#2}_5\end{array}\right]}}
+\newcommand{\rowSixc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0&{#2}_1&{#2}_2&{#2}_3&{#2}_4&{#2}_5\end{array}\right]}}
+\newcommand{\rowSixf}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1&{#2}_2&{#2}_3&{#2}_4&{#2}_5&{#2}_6\end{array}\right]}}
+\newcommand{\rowSevenc}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_0&{#2}_1&{#2}_2&{#2}_3&{#2}_4&{#2}_5&{#2}_6\end{array}\right]}}
+\newcommand{\rowSevenf}[2][c]{\ensuremath{\left[\begin{array}{#1}{#2}_1&{#2}_2&{#2}_3&{#2}_4&{#2}_5&{#2}_6&{#2}_7\end{array}\right]}}
+   % \rowTwoc{f(t)}    produces a row matrix with the center-justified elements [ f(t)_0  f(t)_1 ]
+   % \rowTwoc[r]{f(t)} produces a row matrix with the  right-justified elements [ f(t)_0  f(t)_1 ]  % Note the c in rowTwoc is for the C programming language
+   % \rowTwof{f(t)}    produces a row matrix with the center-justified elements [f(t)_1; f(t)_2]    % Note the f in rowTwof is for Fortran
+   % \rowTwof[r]{f(t)} produces a row matrix with the  right-justified elements [f(t)_1; f(t)_2]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWO DIMENSIONAL MATRICES %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\arrayOneOne}[2][c]{\ensuremath{\left[\begin{array}{#1}{\!#2\!}\end{array}\right]}}
+  \newcommand{\detOneOne}[2][c]{\ensuremath{\left|\begin{array}{#1}{#2}\end{array}\right|}}
+\newcommand{\arrayTwoTwo}[5][cc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}\\{#4}&{#5}\end{array}\right]}}
+\newcommand{\arrayTwoTwoTight}[5][cc]{\ensuremath{\left[\!\!\begin{array}{#1}{#2}\!&\!{#3}\\{#4}\!&\!{#5}\end{array}\!\!\right]}}
+  \newcommand{\detTwoTwo}[5][cc]{\ensuremath{\left|\begin{array}{#1}{#2}&{#3}\\{#4}&{#5}\end{array}\right|}}
+\newcommand{\arrayThreeThree}[9]{\ensuremath{\left[\begin{array}{ccc}{#1}&{#2}&{#3}\\{#4}&{#5}&{#6}\\{#7}&{#8}&{#9}\end{array}\right]}}
+\newcommand{\arrayThreeThreer}[9]{\ensuremath{\left[\begin{array}{rrr}{#1}&{#2}&{#3}\\{#4}&{#5}&{#6}\\{#7}&{#8}&{#9}\end{array}\right]}}
+  \newcommand{\detThreeThree}[9]{\ensuremath{\left|\begin{array}{ccc}{#1}&{#2}&{#3}\\{#4}&{#5}&{#6}\\{#7}&{#8}&{#9}\end{array}\right|}}
+\newcommand{\arrayTwoThree}[7][ccc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}&{#4}\\{#5}&{#6}&{#7}\end{array}\right]}}
+\newcommand{\arrayTwoFour}[9][cccc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}&{#4}&{#5}\\{#6}&{#7}&{#8}&{#9}\end{array}\right]}}
+\newcommand{\arrayThreeTwo}[7][cc]{\ensuremath{\left[\begin{array}{#1}{#2}&{#3}\\{#4}&{#5}\\{#6}&{#7}\end{array}\right]}}
+   % \arraySize{3}{2}         produces the text 3x2
+   % \arrayTwoTwo{ 1 }{ 2 }{ 3 }{ 4 } produces a 2x2 matrix with the center-justified elements [1, 2; 3, 4]
+   % \arrayTwoTwo[rr]{ 1 }{ 2 }{ 3 }{ 4 } produces a 2x2 matrix with the right-justified elements [1, 2; 3, 4]
+   % \arrayThreeThree{ a_{00} }{ a_{01} }{ a_{02} }{ a_{10} }{ a_{11} }{ a_{12} }{ a_{20} }{ a_{21} }{ a_{22} } produces a 3x3 matrix with center-justified elements
+
+\newcommand{\arrayTwoTwof}[2][cc]{\ensuremath{\left[\begin{array}{#1}{#2}_{11}&{#2}_{12}\\{#2}_{21}&{#2}_{22}\end{array}\right]}}
+  \newcommand{\detTwoTwof}[2][cc]{\ensuremath{\left|\begin{array}{#1}{#2}_{11}&{#2}_{12}\\{#2}_{21}&{#2}_{22}\end{array}\right|}}
+\newcommand{\arrayThreeThreef}[2][cc]{\ensuremath{\left[\begin{array}{#1}{#2}_{11}&{#2}_{12}&{#2}_{13}\\{#2}_{21}&{#2}_{22}&{#2}_{23}\\{#2}_{31}&{#2}_{32}&{#2}_{33}\end{array}\right]}}
+  \newcommand{\detThreeThreef}[2][cc]{\ensuremath{\left|\begin{array}{#1}{#2}_{11}&{#2}_{12}&{#2}_{13}\\{#2}_{21}&{#2}_{22}&{#2}_{23}\\{#2}_{31}&{#2}_{32}&{#2}_{33}\end{array}\right|}}
+   % \arrayTwoTwof{m}      produces a 2x2 matrix with the center-justified elements [m_{11}, m_{12}; m_{21}, m_{22}]
+   % \arrayTwoTwof[rr]{m}  produces a 2x2 matrix with the  right-justified elements [m_{11}, m_{12}; m_{21}, m_{22}]
+   % \arrayThreeThreef{m}  produces a 3x3 matrix [m_{11} m_{12} m_{13}; m_{21} m_{22} m_{23}; m_{31} m_{32} m_{33}]
+
+\newcommand{\arrayTwoTwoc}[2][cc]{\ensuremath{\left[\begin{array}{#1}{#2}_{11}&{#2}_{12}\\{#2}_{21}&{#2}_{22}\end{array}\right]}}
+  \newcommand{\detTwoTwoc}[2][cc]{\ensuremath{\left|\begin{array}{#1}{#2}_{11}&{#2}_{12}\\{#2}_{21}&{#2}_{22}\end{array}\right|}}
+\newcommand{\arrayThreeThreec}[2][cc]{\ensuremath{\left[\begin{array}{#1}{#2}_{11}&{#2}_{12}&{#2}_{13}\\{#2}_{21}&{#2}_{22}&{#2}_{23}\\{#2}_{31}&{#2}_{32}&{#2}_{33}\end{array}\right]}}
+  \newcommand{\detThreeThreec}[2][cc]{\ensuremath{\left|\begin{array}{#1}{#2}_{11}&{#2}_{12}&{#2}_{13}\\{#2}_{21}&{#2}_{22}&{#2}_{23}\\{#2}_{31}&{#2}_{32}&{#2}_{33}\end{array}\right|}}
+   % \arrayTwoTwoc{m}      produces a 2x2 matrix with the center-justified elements [m_{11}, m_{12}; m_{21}, m_{22}]
+   % \arrayTwoTwoc[rr]{m}  produces a 2x2 matrix with the  right-justified elements [m_{11}, m_{12}; m_{21}, m_{22}]
+   % \arrayThreeThreec{m}  produces a 3x3 matrix [m_{00} m_{01} m_{02}; m_{10} m_{11} m_{12}; m_{20} m_{21} m_{22}]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  QUATERNION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Dependencies:
+%%% ensuremath
+%%% mult
+
+\def\quati{\ensuremath{\hat{i}}}
+\def\quatj{\ensuremath{\hat{j}}}
+\def\quatk{\ensuremath{\hat{k}}}
+   % \quati produces an i for use with quaternions
+
+\newcommand{\quat}[2][]{\ensuremath{\hat{#2}_{#1}}}
+   % \quat{A}    produces a quaternion  A
+   % \quat[i]{A} produces a quaternion A with subscript i
+
+\newcommand{\quatijk}[5][\,]{\ensuremath{{#2} {#1}+{#1} {#3}\mult[\!]\quati {#1}+{#1} {#4}\mult[\!]\quatj {#1}+{#1} {#5}\mult[\!]\quatk}}
+   % \quatijk{e0,e1,e2,e3}      produces a quaternion e0 + e1*i + e2*j + e3*k
+   % \quatijk[\!]{e0,e1,e2,e3}  produces a quaternion e0+e1*i+e2*j+e3*k
+
+\newcommand{\quaternion}[3][]{\ensuremath{\leftSuperscriptWithBase{#3}{\hat{q}}_{#1}^{#2}{}}}
+\newcommand{\quaterniondot}[3][]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\dot{\hat{q}}}_{#1}^{#2}{}}}
+\newcommand{\quaternionddot}[3][]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\ddot{\hat{q}}}_{#1}^{#2}{}}}
+   % \quaternion{B}{A}      quaternion of B in A
+   % \quaternion[r]{B}{A}   quaternion of B in A with subscript r
+   % \quaterniondot{B}{A}   first time derivative of quaternion of B in A
+   % \quaternionddot{B}{A}  second time derivative of quaternion of B in A
+
+
+%%%%%%%%%%%%%%%%%%%%%% SUBSCRIPTS AND SUPERSCRIPTS %%%%%%%%%%%%%%%%%%%%%%%%%
+\def\zeroth{\mbox{{0}\ensuremath{^{th}}}}
+\def\first{\mbox{{1}\ensuremath{^{st}}}}
+\def\second{\mbox{{2}\ensuremath{^{nd}}}}
+\def\third{\mbox{{3}\ensuremath{^{rd}}}}
+\def\fourth{\mbox{{4}\ensuremath{^{th}}}}
+\def\fifth{\mbox{{5}\ensuremath{^{th}}}}
+\def\sixth{\mbox{{6}\ensuremath{^{th}}}}
+\def\seventh{\mbox{{7}\ensuremath{^{th}}}}
+\def\eighth{\mbox{{8}\ensuremath{^{th}}}}
+\def\ninth{\mbox{{9}\ensuremath{^{th}}}}
+\def\tenth{\mbox{{10}\ensuremath{^{th}}}}
+\newcommand{\ith}[1]{\mbox{{#1}\ensuremath{^{th}}}}
+\newcommand{\nth}[1]{\mbox{{n}\ensuremath{^{th}}}}
+\newcommand{\kth}[1]{\mbox{{k}\ensuremath{^{th}}}}
+   % \first     produces 1st
+   % \second    produces 2nd
+   % \third     produces 3rd
+   % \fourth    produces 4th
+   % \fifth     produces 5th
+   % \ith{7}    produces 7th
+   % \nth       produces nth
+   % \kth       produces kth
+
+%%%%%%%%%%%%%%%%%%%%%% RANGES %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ito}[2][i]{\mbox{(\ensuremath{#1} \equals[] 1, ..., \ensuremath{#2})}}
+\newcommand{\itoFontSize}[3][i]{\mbox{#3(\ensuremath{#1} \equals[] 1, ..., \ensuremath{#2})}}
+\newcommand{\itoFontSizeLdots}[2][i]{\mbox{#2(\ensuremath{#1} \equals[] 1, 2, ...)}}
+\newcommand{\itoFontSizeLdotsPlusMinus}[2][i]{\mbox{#2(\ensuremath{#1} \equals[] 0, \plusminus[]1, \plusminus[]2, ...)}}
+   % \ito{7}                                     produces e.g., (i=1, ..., 7)
+   % \ito[x]{7}                                  produces e.g., (x=1, ..., 7)
+   % \itoFontSize[x]{7}{\scriptsize}             produces e.g., {\scriptsize (x=1, ..., 7)}
+   % \itoFontSizeLdots[x]{\scriptsize}           produces e.g., {\scriptsize (x=1, 2, ...)}
+   % \itoFontSizeLdotsPlusMinus[n]{\scriptsize}  produces e.g., {\scriptsize (n=0, +-1, +-2, ...)}
+
+\newcommand{\ifromto}[3][i]{\mbox{(\ensuremath{#1}\equals[]\ensuremath{#2}, ..., \ensuremath{#3})}}
+\newcommand{\ifromtoFontSize}[4][i]{\mbox{{#4(\ensuremath{#1}\equals[\,]\ensuremath{#2}, ..., \ensuremath{#3})}}}
+\newcommand{\ifromtoABFontSize}[4]{\mbox{{#4(\ensuremath{#1}\equals[]\ensuremath{#2}, \ensuremath{#3})}}}
+\newcommand{\ifromtoABCFontSize}[5]{\mbox{{#5(\ensuremath{#1}\equals[]\ensuremath{#2}, \ensuremath{#3}, \ensuremath{#4})}}}
+\newcommand{\ifromtoABCDFontSize}[6]{\mbox{{#6(\ensuremath{#1}\equals[]\ensuremath{#2}, \ensuremath{#3}, \ensuremath{#4}, \ensuremath{#5})}}}
+\newcommand{\ifromtoExactFontSize}[4][i]{\mbox{{#4(\ensuremath{#1}\equals[]\ensuremath{#2}, \ensuremath{#3})}}}
+   % \ifromtoABFontSize{i}{1}{2}{\scriptsize}         produces e.g., (i=1,2)
+   % \ifromtoABCFontSize{i}{1}{2}{3}{\scriptsize}     produces e.g., (i=1,2,3)
+   % \ifromtoABCDFontSize{i}{1}{2}{3}{4}{\scriptsize} produces e.g., (i=1,2,3,4)
+   % \ifromto{2}{7}                                   produces e.g., (i=2, ..., 7)
+   % \ifromtoFontSize[x]{2}{7}{\scriptsize}           produces e.g., (x=2, ..., 7)
+   % \ifromtoExactFontSize[x]{2}{3}{\scriptsize}      produces e.g., {\scriptsize (x=2,3) }
+
+\newcommand{\ijto}[4]{\mbox{(\ensuremath{#1}=1, ..., \ensuremath{#2},} \mbox{\ensuremath{\:#3}=1, ..., \ensuremath{#4})}}
+\newcommand{\ijtoFontSize}[5]{\mbox{#5(\ensuremath{#1}=1, ..., \ensuremath{#2},} \mbox{\ensuremath{\:#3}=1, ..., \ensuremath{#4})}}
+\newcommand{\ijToNParensFontSize}[4]{\mbox{#4\ensuremath{({#1},{#2} \equals[] 1, ..., {#3})}}}
+\newcommand{\ijToNijNotEqualsParensFontSize}[4]{\mbox{#4\ensuremath{({#1},{#2} \equals[] 1, ..., {#3}\hspace{0.75em}{#1} \notEquals[] {#2})}}}
+   % \ijto{i}{5}{j}{7}                                      produces              (i=1, ..., 5, j=1, ..., 7)
+   % \ijtoFontSize{i}{5}{j}{7}{\scriptsize}                 produces {\scriptsize (i=1, ..., 5, j=1, ..., 7) }
+   % \ijToNParensFontSize{i}{j}{n}{\scriptsize}             produces {\scriptsize (i,j = 1, ..., n)}
+   % \ijToNijNotEqualsParensFontSize{i}{j}{n}{\scriptsize}  produces {\scriptsize (i,j = 1, ..., n \hspace{0.75em} i \notEquals j}
+
+\newcommand{\xixj}[2]{\ensuremath{#1, ..., #2}}
+\newcommand{\xixjParens}[2]{\mbox{\ensuremath{(\xixj{#1}{#2})}}}
+\newcommand{\xixjParensFontSize}[3]{{#1\ensuremath{\xixjParens{#1}{#2}}}}
+   % \xixj{q_1}{q_n}                               produces  q1, ..., qn
+   % \xixjParens{x_1}{x_n}                         produces (x1, ..., xn)
+   % \xixjParensFontSize{\footnotesize}{x_1}{x_n}  produces {\footnotesize(x_1, ... x_n)}
+
+\newcommand{\ixy}[1][]{\textrm{\ensuremath{i\equals[#1]{x,y}}}}
+\newcommand{\ixyz}[1][]{\textrm{\ensuremath{i\equals[#1]{x,y,z}}}}
+\newcommand{\ijxyz}[1][]{\textrm{\ensuremath{i,j\equals[#1]\xvec,\yvec,\zvec}}}
+\newcommand{\jkxyz}[1][]{\textrm{\ensuremath{j,k\equals[#1]\xvec,\yvec,\zvec}}}
+\newcommand{\ixyzParens}[1][]{\textrm{\ensuremath{(i\equals[#1]{x,y,z})}}}
+\newcommand{\ixyzFontSize}[2][]{{#2\textrm{\ensuremath{i\equals[#1]{x,y,z}}}}}
+\newcommand{\ixyzParensFontSize}[2][]{{#2\textrm{\ensuremath{(i\equals[#1]{\xvec,\yvec,\zvec})}}}}
+\newcommand{\ixyParensFontSize}[2][]{{#2\textrm{\ensuremath{(i\equals[#1]{\xvec,\yvec})}}}}
+\newcommand{\ijxyzFontSize}[2][]{{#2\textrm{\ensuremath{i,j\equals[#1]{x,y,z}}}}}
+\newcommand{\jkxyzFontSize}[2][]{{#2\textrm{\ensuremath{j,k\equals[#1]{x,y,z}}}}}
+\newcommand{\ijxyzParensFontSize}[2][]{{#2\textrm{\ensuremath{(i,j\equals[#1]{\xvec,\yvec,\zvec})}}}}
+\newcommand{\jkxyzParensFontSize}[2][]{{#2\textrm{\ensuremath{(j,k\equals[#1]{\xvec,\yvec,\zvec})}}}}
+\newcommand{\ijkxyzParensFontSize}[2][]{{#2\textrm{\ensuremath{(i,j,k\equals[#1]{\xvec,\yvec,\zvec})}}}}
+   % \ixy[\,]                              produces  i \equals[\,] x,y
+   % \ixyz[\,]                             produces  i \equals[\,] x,y,z
+   % \ixyz                                 produces  i \equals[]   x,y,z
+   % \ixyzFontSize{\tiny}                  produces  {\tiny i \equals[]   x,y,z}
+   % \ixyzFontSize[\,]{\scriptsize}        produces  {\scriptsize i \equals[\,] x,y,z}
+   % \ixyzParensFontSize[]{\scriptsize}    produces ({\scriptsize i     \equals[] x,y,z})
+   % \ixyParensFontSize[]{\scriptsize}     produces ({\scriptsize i     \equals[] x,y})
+   % \ijxyz[\,]                            produces i,j \equals[\,] x,y,z
+   % \ijxyzFontSize[\,]{\scriptsize}       produces  {\scriptsize i,j \equals[\,] x,y,z}
+   % \ijxyzParensFontSize[]{\scriptsize}   produces ({\scriptsize i,j   \equals[] x,y,z})
+   % \jkxyzParensFontSize[]{\scriptsize}   produces ({\scriptsize j,k   \equals[] x,y,z})
+   % \ijkxyzParensFontSize[]{\scriptsize}  produces ({\scriptsize i,j,k \equals[] x,y,z})
+
+\newcommand{\iOneTwoLdots}[2][]{\valueEquals[#1]{\mathrm{#2}}{1,2,\ldots}}
+\newcommand{\iOneTwoLdotsParens}[2][]{(\iOneTwoLdots[#1]{#2})}
+\newcommand{\iOneTwoLdotsParensFontSize}[3][]{{#3\iOneTwoLdotsParens[#1]{#2}}}
+   % \iOneTwoLdots[\,]{i}                      produces          i \equals[\,] 1,2,...
+   % \iOneTwoLdotsParens[\,]{i}                produces         (i \equals[\,] 1,2,...)
+   % \iOneTwoLdotsParensFontSize[\,]{n}{\tiny} produces  {\tiny (n \equals[\,] 1,2,...)}
+
+\newcommand{\iOneTwo}[1][]{\valueEquals[#1]{\mathrm{i}}{1,2}}
+\newcommand{\jOneTwo}[1][]{\valueEquals[#1]{\mathrm{j}}{1,2}}
+\newcommand{\iOneTwoParens}[1][]{(\iOneTwo[#1])}
+\newcommand{\jOneTwoParens}[1][]{(\jOneTwo[#1])}
+\newcommand{\iOneTwoFontSize}[2][]{{#2\iOneTwo[#1]}}
+\newcommand{\jOneTwoFontSize}[2][]{{#2\jOneTwo[#1]}}
+\newcommand{\iOneTwoParensFontSize}[2][]{{#2\iOneTwoParens[#1]}}
+\newcommand{\jOneTwoParensFontSize}[2][]{{#2\jOneTwoParens[#1]}}
+\newcommand{\iZeroOneTwoParens}[1][]{(\valueEquals[#1]{i}{0,1,2})}
+\newcommand{\iZeroOneTwoParensFontSize}[2][]{{#2(\valueEquals[#1]{i}{0,1,2})}}
+\newcommand{\iOneTwoThree}[1][]{\valueEquals[#1]{\mathrm{i}}{1,2,3}}
+\newcommand{\jOneTwoThree}[1][]{\valueEquals[#1]{\mathrm{j}}{1,2,3}}
+\newcommand{\iOneTwoThreeParens}[1][]{(\iOneTwoThree[#1])}
+\newcommand{\jOneTwoThreeParens}[1][]{(\jOneTwoThree[#1])}
+\newcommand{\iOneTwoThreeFontSize}[2][]{{#2\iOneTwoThree[#1]}}
+\newcommand{\jOneTwoThreeFontSize}[2][]{{#2\jOneTwoThree[#1]}}
+\newcommand{\iOneTwoThreeParensFontSize}[2][]{{#2\iOneTwoThreeParens[#1]}}
+\newcommand{\jOneTwoThreeParensFontSize}[2][]{{#2\jOneTwoThreeParens[#1]}}
+\newcommand{\iZeroOneTwoThreeParens}[1][]{(\valueEquals[#1]{i}{0,1,2,3})}
+\newcommand{\iZeroOneTwoThreeParensFontSize}[2][]{{#2(\valueEquals[#1]{i}{0,1,2,3})}}
+   % \iOneTwo[\,]                             produces          i \equals[\,] 1,2
+   % \iOneTwo[\,]                             produces          i \equals[\,] 1,2
+   % \iOneTwoFontSize{\tiny}                  produces  {\tiny  i \equals[]   1,2}
+   % \iOneTwoFontSize[\,]{\tiny}              produces  {\tiny  i \equals[\,] 1,2}
+   % \iOneTwoParensFontSize[\,]{\scriptsize}  produces  {\scriptsize( i \equals[\,] 1,2)}
+   % \iOneTwoThree[\,]                             produces          i \equals[\,] 1,2,3
+   % \iOneTwoThree[\,]                             produces          i \equals[\,] 1,2,3
+   % \iOneTwoThreeFontSize{\scriptsize}            produces  {\scriptsize  i \equals[]   1,2,3}
+   % \iOneTwoThreeFontSize[\,]{\scriptsize}        produces  {\scriptsize  i \equals[\,] 1,2,3}
+   % \iOneTwoThreeParensFontSize[\,]{\scriptsize}  produces  {\scriptsize( i \equals[\,] 1,2,3)}
+
+\newcommand{\ijOneTwoThree}[1][]{\valueEquals[#1]{i,j}{1,2,3}}
+\newcommand{\ijOneTwoThreeParens}[1][]{(\valueEquals[#1]{i,j}{1,2,3})}
+\newcommand{\ijOneTwoThreeParensFontSize}[2][]{{#2(\valueEquals[#1]{i,j}{1,2,3})}}
+   % \ijOneTwoThree[\,]                             produces  i,j \equals[\,] 1,2,3
+   % \ijOneTwoThree                                 produces  i,j \equals[]   1,2,3
+   % \ijOneTwoThreeParensFontSize[\,]{\scriptsize}  produces {\scriptsize (i,j \equals[\,]   1,2,3)}
+
+\newcommand{\ijOneTwoThreeFour}[1][]{\valueEquals[#1]{i,j}{1,2,3,4}}
+\newcommand{\ijOneTwoThreeFourParens}[1][]{(\valueEquals[#1]{i,j}{1,2,3,4})}
+\newcommand{\ijOneTwoThreeFourParensFontSize}[2][]{{#2(\valueEquals[#1]{i,j}{1,2,3,4})}}
+   % \ijOneTwoThreeFour[\,]                             produces  i,j \equals[\,] 1,2,3,4
+   % \ijOneTwoThreeFour                                 produces  i,j \equals[]   1,2,3,4
+   % \ijOneTwoThreeFourParensFontSize[\,]{\scriptsize}  produces {\scriptsize (i,j \equals[\,]   1,2,3,4)}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% VALUES AND UNITS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\units}[1]{\mbox{\ensuremath{\mathrm{#1}}}}
+\newcommand{\unitsSmallerParens}[2]{{#2\mbox{\ensuremath{(\mathrm{#1})}}}}
+   % \units{m/sec}                              produces m/sec
+   % \unitsSmallerParens{m/sec}{\footnotesize}  produces {\footnotesize (m/sec)}
+
+\newcommand{\Value}[1]{\mbox{\ensuremath{#1}}}
+\newcommand{\valueUnits}[2]{\mbox{\ensuremath{#1\;\units{#2}}}}
+\newcommand{\valueUnitsUSMetric}[4]{\USUnits{\valueUnits{#1}{#2}}\MetricUnits{\valueUnits{#3}{#4}}}
+\newcommand{\valueDefined}[3][\hspace{-0.2pt}]{\mbox{\ensuremath{#2}\deff[#1]\ensuremath{#3}}}
+\newcommand{\valueDefinedNegative}[3][\hspace{-0.2pt}]{\valueDefined[#1]{#2}{\hspace*{3.0pt}\negative{#3}}}
+\newcommand{\valueEquals}[3][\hspace{-0.02eM}]{\mbox{\ensuremath{#2}\equals[#1]\ensuremath{#3}}}
+\newcommand{\valueEqualsNegative}[3][\hspace{-0.01eM}]{\valueEquals[#1]{#2}{\hspace*{3.0pt}\negative{#3}}}
+\newcommand{\valueEqualsNegativeUnits}[3]{\valueEqualsNegative{#1}{#2}{\ensuremath{\;\units{#3}}}}
+\newcommand{\valueApprox}[3][\hspace{-0.2pt}]{\mbox{\ensuremath{{#2}{#1}\approx{#1}{#3}}}}
+\newcommand{\valueNotEquals}[3][\!]{\mbox{\ensuremath{{#2}\notEquals[#1]{#3}}}}
+\newcommand{\valueTo}[3][\,]{\ensuremath{{#2}{#1}\to{#1}{#3}}}
+\newcommand{\valueApproaches}[3][\!]{\ensuremath{{#2}\rrightarrow{#1}{#3}}}
+\newcommand{\valueEqualsUnits}[4][\,]{\mbox{\ensuremath{#2}\equals[#1]\valueUnits{#3}{#4}}}
+\newcommand{\valueDefinedUnits}[4][\,]{\mbox{\ensuremath{#2}\deff[#1]\valueUnits{#3}{#4}}}
+\newcommand{\valueApproxUnits}[4][]{\mbox{\ensuremath{#2}\Approx[#1]\valueUnits{#3}{#4}}}
+\newcommand{\approxValue}[2][]{\mbox{\Approx[#1]\Value{#2}}}
+\newcommand{\approxValueUnits}[3][]{\mbox{\Approx[#1]\valueUnits{#2}{#3}}}
+   % \Value{10} produces 10 (note \value already defined in latex)
+   % \valueUnits{10}{m} produces 10 m
+   % \valueUnitsUSMetric{10}{inch}{25.4}{cm} produces 10 inch if US units or 25.4 cm if Metric
+   % \valueDefined{x}{10}   produces x \deff[\hspace{-0.2pt}] 10
+   % \valueDefined[]{x}{10} produces x \deff[] 10
+   % \valueDefinedNegative{x}{10}     produces x \deff -10
+   % \valueDefinedNegative[\,]{x}{10} produces x \deff[\,] -10
+   % \valueEquals{x}{10}    produces x \equals[\hspace{-0.2pt}] 10
+   % \valueEquals[]{x}{10}  produces x \equals[] 10
+   % \valueEqualsNegative{x}{10} produces x = -10
+   % \valueEqualsNegativeUnits{x}{10}{meters} produces x = -10 meters
+   % \valueApprox[]{x}{10} produces x \approx 10
+   % \valueNotEquals{x}{10} produces x != 10
+   % \valueNotEquals[\;]{x}{10} produces x \;\neq\; 10
+   % \valueTo{x}{10}      produces x  ->    10
+   % \valueTo[\:]{x}{10}  produces x \:->\: 10
+   % \valueApproaches{x}{10}      produces x \!->\! 10
+   % \valueApproaches[\:]{x}{10}  produces x \:->\: 10
+   % \valueEqualsUnits{x}{10}{m}      produces x \equals[]   10 m
+   % \valueEqualsUnits[\,]{x}{10}{m}  produces x \equals[\,] 10 m
+   % \valueDefinedUnits[\,]{x}{10}{m} produces x \deff[\,] 10 m
+   % \valueApproxUnits{x}{10}{m}     produces x \Approx[]   10 m
+   % \valueApproxUnits[\,]{x}{10}{m} produces x \Approx[\,] 10 m
+   % \approxValue{10}           produces   \Approx[]   10
+   % \approxValue[\,]{10}       produces   \Approx[\,] 10
+   % \approxValueUnits{x}{10}{m}     produces   \Approx[]   10 m
+   % \approxValueUnits[\,]{10}{m}    produces   \Approx[\,] 10 m
+
+\newcommand{\valueGreaterThan}[3][\hspace{-0.10pt}]{\mbox{\ensuremath{#2}\greaterThan[#1]\ensuremath{#3}}}
+\newcommand{\valueGreaterGreaterThan}[3][]{\mbox{\ensuremath{{#2}\ggreaterThan[#1]{#3}}}}
+\newcommand{\valueGreaterThanEquals}[3][\!]{\mbox{\ensuremath{{#2}\greaterThanEquals[#1]{#3}}}}
+\newcommand{\valueGreaterThanLessThan}[4][\hspace{-0.10pt}]{\mbox{\ensuremath{#3}\lessThan[#1]\ensuremath{#2}\lessThan[#1]\ensuremath{#4}}}
+\newcommand{\valueGreaterThanEqualsLessThan}[4][\hspace{0.01pt}]{\mbox{\ensuremath{#3}\lessThanEquals[#1]\ensuremath{#2}\lessThan[#1]\ensuremath{#4}}}
+\newcommand{\valueGreaterThanLessThanEquals}[4][\hspace{0.01pt}]{\mbox{\ensuremath{#3}\lessThan[#1]\ensuremath{#2}\lessThanEquals[#1]\ensuremath{#4}}}
+\newcommand{\valueGreaterThanEqualsLessThanEquals}[4][\hspace{0.01pt}]{\mbox{\ensuremath{#3}\lessThanEquals[#1]\ensuremath{#2}\lessThanEquals[#1]\ensuremath{#4}}}
+\newcommand{\valueLessThan}[3][\hspace{-0.10pt}]{\mbox{\ensuremath{{#2}\lessThan[#1]{#3}}}}
+\newcommand{\valueLessLessThan}[3][]{\mbox{\ensuremath{{#2}\llessThan[#1]{#3}}}}
+\newcommand{\valueLessThanEquals}[3][\!]{\mbox{\ensuremath{{#2}\lessThanEquals[#1]{#3}}}}
+   % \valueGreaterThan{x}{10} produces x > 10
+   % \valueGreaterGreaterThan{x}{10}      produces x >> 10
+   % \valueGreaterGreaterThan[\:]{x}{10}  produces x  >>  10
+   % \valueGreaterThanEquals{x}{10} produces x >= 10
+   % \valueGreaterThanLessThan{x}{0}{10}     produces 0   <   x   <   10
+   % \valueGreaterThanLessThan[\!]{x}{0}{10} produces 0 \!<\! x \!<\! 10
+   % \valueGreaterThanEqualsLessThan{x}{0}{10} produces 0 <= x < 10
+   % \valueGreaterThanLessThanEquals{x}{0}{10} produces 0 < x <= 10
+   % \valueGreaterThanEqualsLessThanEquals{x}{0}{10} produces 0 <= x <= 10
+   % \valueLessThan{x}{10} produces x < 10
+   % \valueLessLessThan{x}{10}      produces x << 10
+   % \valueLessLessThan[\:]{x}{10}  produces x << 10
+   % \valueLessThanEquals{x}{10} produces x <= 10
+
+
+\def\ohms{\ensuremath{\Omega}}
+\newcommand{\valueOhms}[1]{\ensuremath{#1\,\Omega}}
+   % \ohms           produces \Omega
+   % \valueOhms{27}  produces 27 ohms
+
+\newcommand{\percent}[1]{\ensuremath{{#1}{\%}}}
+   % \percent{27}   produces e.g., 27%
+
+\def\degreeF{\ensuremath{{}^{\circ}\textrm{F}}}
+\def\degreeC{\ensuremath{{}^{\circ}\textrm{C}}}
+\newcommand{\rads}[1]{\ensuremath{{#1}\:\textrm{rads}}}
+\newcommand{\degrees}[1]{\ensuremath{{#1}^{\circ}}}
+\newcommand{\degreesFahrenheit}[1]{\ensuremath{{#1}^{\circ}\textrm{F}}}
+\newcommand{\degreesCelsius}[1]{\ensuremath{{#1}^{\circ}\textrm{C}}}
+\newcommand{\degreesKelvin}[1]{\ensuremath{{#1}^{\circ}\textrm{K}}}
+   % \degrees{x}             produces e.g., x^o
+   % \degreeF                produces e.g., ^o F
+   % \degreeC                produces e.g., ^o C
+   % \degreesFahrenheit{32}  produces e.g., 32^o F
+   % \degreesCelsius{25}     produces e.g., 25^o C
+   % \degreesKelvin{25}      produces e.g., 25^o K
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

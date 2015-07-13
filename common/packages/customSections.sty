@@ -1,0 +1,276 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CUSTOM FORMATTING %%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{customSections}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{textStyles}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+%\DeclareOption{foo}{}
+
+\DeclareOption*{\PackageError{customFormatting}{Unknown option: `\CurrentOption'}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%  My way of starting a new chapter  %%%%%%%%%%%%%%%%%%%%%%%%%%
+% Easiest way is to issue the command NewChapter(SomeChapterName}
+% Alternately, add this in each chapter, e.g., after issuing the command \chapter{SomeChapterName}
+% \renewcommand{\markFancyFootRight}[0]{\scriptsize \chaptername \ \thechapter: SomeChapterName}
+\newcommand{\markFancyFootRight}[0]{}
+\newcommand{\NewChapterNoNumber}[1]{\chapter*{#1}\renewcommand{\markFancyFootRight}[0]{\scriptsize #1}}
+\newcommand{\NewChapterWithDifferentFancyFootRight}[2]{\chapter{#1}\renewcommand{\markFancyFootRight}[0]{{\tiny{Chapter \thechapter:} }\scriptsize #2}}
+\newcommand{\NewChapter}[1]{\NewChapterWithDifferentFancyFootRight{#1}{#1}}
+\newcommand{\NewChapterWithThisPageStyle}[2]{\NewChapter{#1}\thispagestyle{#2}}
+\newcommand{\NewChapterWithThisPageStyleAndDifferentFancyFootRight}[3]{\NewChapterWithDifferentFancyFootRight{#1}{#2}\thispagestyle{#3}}
+\newcommand{\ScoreOutOfPointsOnBottomRightOfPage}[1]{\renewcommand{\markFancyFootRight}[0]{\large /{#1}}}
+% \NewChapterWithDifferentFancyFootRight{SomeChapterTitle}{SomeChapterFooter}
+
+
+\newcommand{\Chapter}[1]{Chapter~\ref{#1}}
+\newcommand{\Chapters}[1]{Chapters~{#1}}
+\newcommand{\ChapterShort}[1]{Chap.~\ref{#1}}
+\newcommand{\ChaptersShort}[1]{Chap.~{#1}}
+\newcommand{\Section}[1]{Section~\ref{#1}}
+\newcommand{\Sections}[1]{Sections~{#1}}
+   % \Chapter{Fred}                                   produces e.g., Chapter 7
+   % \ChapterShort{Fred}                              produces e.g., Ch. 7
+   % \Chapters{\ref{Joe}, \ref{Sue}, and \ref{Fred}}  produces e.g., Chapters 7, 8, and 9
+   % \Chapters{\ref{Joe}, \ref{Sue}, and \ref{Fred}}  produces e.g., Chs. 7, 8, and 9
+   % \Section{section:Joe}                            produces e.g., Section 7    for articles
+   % \Section{section:Joe}                            produces e.g., Section 7.2  for textbooks
+   % \Sections{\ref{Joe}, \ref{Sue}, and \ref{Fred}}  produces e.g., Sections 7,  8, and 9
+
+\newcommand{\Figure}[1]{Figure~\ref{#1}}
+\newcommand{\Figures}[1]{Figures~{#1}}
+\newcommand{\Fig}[1]{Fig.~\ref{#1}}
+   % \Figure{Fred} produces e.g., Figure 7
+   % \Figures{\ref{Joe} and \ref{Fred}} produces e.g., Figures 7 and 8
+   % \Fig{Fred} produces e.g., Fig. 7
+
+\newcommand{\Table}[1]{Table~\ref{#1}}
+\newcommand{\Tables}[1]{Tables~{#1}}
+   % \Table{Fred} produces e.g., Table 7
+   % \Tables{\ref{Joe} and \ref{Fred}} produces e.g., Tables 7 and 8
+
+\newcommand{\Appendix}[1]{Appendix~\ref{#1}}
+   % \Appendix{Fred} produces e.g., Appendix B
+
+
+\def\LabName{Lab}
+\newcommand{\Lab}[1]{\LabName~\ref{#1}}
+\newcommand{\LabProblem}[2]{\LabName~\reff{#1}{#2}}
+\newcommand{\labProblem}[2]{\LabName~\reff{#1}{#2}}
+\newcommand{\labProblems}[1]{\LabName~{#1}}
+\newcommand{\LabProblems}[1]{\LabName~{#1}}
+   % \Lab{Fred}                       produces e.g., Lab 7
+   % \LabProblem{Joe}{Fred}           produces e.g., Lab 7.2
+   % \labProblem{lab:Lab01}{lab:Fred} produces e.g., Lab 7.2
+   % \labProblems{\reff{chapter:Lab01}{lab:Fred} and \reff{chapter:Lab02}{lab:Joe}} produces e.g., Lab 1.2 and 3.5
+
+\newcommand{\Homework}[1]{Homework~\ref{#1}}
+\newcommand{\Homeworks}[1]{Homeworks~{#1}}
+\newcommand{\HwShort}[1]{\textrm{Hw}~\ref{#1}}
+\newcommand{\HwShorts}[1]{\textrm{Hw}~#1}
+\newcommand{\hwProblemShort}[2]{\textrm{Hw}~\reff{#1}{#2}}
+\newcommand{\hwProblemShortItem}[2]{\hwProblemShort{#1}{#2}}
+\newcommand{\hwProblemsShort}[1]{\textrm{Hw}~{#1}}
+\newcommand{\hwProblem}[2]{Homework~\reff{#1}{#2}}
+\newcommand{\hwProblemItem}[2]{Homework~\reff{#1}{#2}}
+\newcommand{\hwpartItem}[1]{part~\pref{#1}}
+\newcommand{\problem}[2]{problem~\reff{#1}{#2}}
+\newcommand{\Problem}[2]{Problem~\reff{#1}{#2}}
+\newcommand{\problemItem}[2]{problem~\reff{#1}{#2}}
+\newcommand{\problems}[1]{problems~{#1}}
+\newcommand{\Problems}[1]{Problems~{#1}}
+\newcommand{\hwProblems}[1]{Homeworks~{#1}}
+   % \Homework{Fred} produces e.g., Homework 7
+   % \HwShort{hw:HwName}                                                                    produces e.g., Hw 7
+   % \HwShorts{\ref{hw:HwName},~\ref{hw:HwName2}}                                           produces e.g., Hw 7,8
+   % \hwProblemShort{hw:HwName}{hw:SineCosine}                                              produces e.g., Hw 7.2
+   % \hwProblemShortItem{hw:HwName}{hwItem:SineCosineItem}                                  produces e.g., Hw 7.2b
+   % \hwProblemsShort{\reff{hw:HwName}{hw:SineCosine}~and~\reff{hw:HwName}{hw:SineCosine}}  produces e.g., Hw 7.2~and~8.3
+   % \hwProblem{hw:Hw01}{hw:SineCosine}                                                     produces e.g., Homework 7.2
+   % \hwProblemItem{hw:Hw01}{hwItem:SineCosine}                                             produces e.g., Homework 7.2(e)
+   % \hwpartItem{hwItem:SineCosine}                                                         produces e.g., part~(e)
+   % \problem{hw:Hw01}{hw:SineCosine}                                                       produces e.g., problem 7.2
+   % \problems{\reff{hw:Hw01}{hw:SineCosine}~and~\reff{hw:Hw01}{hw:Other}}                  produces e.g., problems 7.2 and 7.3
+   % \hwProblems{\reff{chapter:Hw01}{hw:SineCosine} and \reff{chapter:Hw02}{hw:SomeOther}}  produces e.g., Homeworks 1.2 and 3.5
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Adding a homework marker to footer  %%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\HwFooter}[1]{\renewcommand{\markFancyFootRight}[0]{\scriptsize \Homework{#1}}}
+\newcommand{\HwFooterWithText}[2]{\renewcommand{\markFancyFootRight}[0]{\scriptsize \Homework{#1}: {#2}}}
+\newcommand{\LabFooter}[1]{\renewcommand{\markFancyFootRight}[0]{\scriptsize \Lab{#1}}}
+% Example: \HwFooter{hw:HwODEHomo1}
+% Example: \HwFooterWithText{hw:HwRigidBodies}{Rigid bodies}
+
+
+\newcommand{\indexOnly}[1]{\index{#1}}
+\newcommand{\newnameNoIndex}[1]{\textColorBoldEmph{darkBlue}{#1}}               % Used to be \newnameOnly
+\newcommand{\newnameNoIndexNoEmph}[1]{\textColorBold{darkBlue}{#1}}             % Used to be \newnameOnly
+\newcommand{\newname}[1]{\newnameNoIndex{#1}\indexOnly{#1}}
+\newcommand{\newnameIndex}[2]{\newnameNoIndex{#1}\indexOnly{#2}}
+\newcommand{\newnameIndexNoEmph}[2]{\newnameNoIndexNoEmph{#1}\indexOnly{#2}}
+\newcommand{\newnameSeeIndex}[3]{\newnameNoIndex{#1}\indexOnly{#2 (see #3)}\indexOnly{#3}}
+\newcommand{\newnameBoldOnly}[1]{\boldDarkBlue{#1}\indexOnly{#1}}
+   % \newnameNoIndex{coefficient of restitution}                                Use this to make it appear in same font/color as index words - but without appearing in index.
+   % \newname{coefficient of restitution}                                       Use this every time you introduce a new term
+   % \newnameIndex{someName}{actual entry in index}
+   % \newnameSeeIndex{someNameMaybeCaps}{seeThisIndexName}{actualEntryInIndex}  \newnameSeeIndex{Tension}{tension}{compression, tension}  will make \boldEmphDarkBlue{Tension}, puts tension (see compression, tension) into index.
+   % \indexOnly{SomeWordOrPhrase}                                               Puts SomeWordOrPhrase into a file which must subsequently be processed by typing the command  makeindex  at the OS prompt
+   % I formerly used \glossary{#1}  instead of  \index{#1}, but I do not understand the differences
+   % For this to work correctly, must also use the following .sty package files (include this in the preamble)
+   % \usepackage{makeidx}
+   % \usepackage{multicol}
+   % Also, must put the command  \makeindex in the preamble
+   % See LatexIndexExample.tex for more details.
+
+\newcommand{\newnameMath}[1]{\mathColorBold{darkBlue}{#1}\indexOnly{\ensuremath{#1}}}
+\newcommand{\newnameMathBolder}[1]{\mathColorBBold{darkBlue}{#1}\indexOnly{\ensuremath{#1}}}
+   % \newnnameMath{e}         use this every time you introduce a new term that is in math mode
+   % \newnnameMathBolder{\pi} use this every time you introduce a new term that is in math mode and is Greek letter
+
+\def\optionalSingleStar{\ensuremath{{}^{\mathbf{*}}}}
+\def\optionalDoubleStar{\ensuremath{{}^{\mathbf{**}}}}
+\def\optional{\optionalDoubleStar}
+\def\Optional{Optional}
+\def\OptionalColon{\Optional:\/}
+\def\ChallengeDagger{\mathBBoldDarkRed{\dagger}}
+\def\DoubleDagger{\mathBBoldDarkRed{\dagger\,\dagger}}
+   % \Optional{}           puts the word Optional and superscripted, boldfaced ** (for optional homework and reading sections)
+   % \OptionalColon{}      puts Optional:**
+   % \ChallengeDagger{}    puts one Red dagger with extra space after it.
+   % \DoubleDagger{\/}     puts two Red dagger with extra space after it.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  EQUATION NUMBERING %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% Note, the tildes prevent line and page breaks %%%%%%%%%%%%%%%%%
+\newcommand{\reff}[2]{\ref{#1}.\ref{#2}}
+\newcommand{\pref}[1]{(\ref{#1})}
+\newcommand{\preff}[2]{(\reff{#1}{#2})}
+\newcommand{\refA}[2]{\ref{#1}{#2}}
+\newcommand{\prefA}[2]{(\ref{#1}{#2})}
+   % \reff{ChapFred}{EqnJoe}   produces e.g., 7.2     % References equations from another chapter
+   % \pref{EqnFred}            produces e.g., (7)     % Puts parentheses around referenced equation
+   % \preff{ChapFred}{EqnJoe}  produces e.g., (7.2)   % Puts parentheses around referenced equations from another chapter
+
+\newcommand{\eqn}[1]{equation~\pref{#1}}
+\newcommand{\Eqn}[1]{Equation~\pref{#1}}
+\newcommand{\eqnShort}[1]{eqn\pref{#1}}
+\newcommand{\eqns}[1]{equations~#1}
+\newcommand{\eqnsShort}[1]{eqns~#1}
+\newcommand{\Eqns}[1]{Equations~#1}
+\newcommand{\definition}[1]{equation~\pref{#1}}
+\newcommand{\eqnn}[2]{equation~\preff{#1}{#2}}
+\newcommand{\Eqnn}[2]{Equation~\preff{#1}{#2}}
+\newcommand{\eqnnShort}[2]{eqn~\preff{#1}{#2}}
+\newcommand{\EqnnShort}[2]{Eqn~\preff{#1}{#2}}
+\newcommand{\definitionn}[2]{definition~\preff{#1}{#2}}
+\newcommand{\eqnfromto}[2]{equations~(\ref{#1}-\ref{#2})}
+\newcommand{\Eqnfromto}[2]{Equations~(\ref{#1}-\ref{#2})}
+\newcommand{\eqnA}[2]{equation~\prefA{#1}{#2}}
+\newcommand{\EqnA}[2]{Equation~\prefA{#1}{#2}}
+   % \eqn{EqnFred}                   produces e.g., equation~(7)
+   % \Eqn{EqnFred}                   produces e.g., Equation (7)
+   % \eqns{\ref{Fred},\ref{Joe}}     produces e.g., equations 7,9
+   % \definition{EqnFred}            produces e.g., definition~(7)
+   % \eqnn{chap:Fred}{EqnJoe}        produces e.g., equation~(7.2)
+   % \eqnnShort{chap:Fred}{EqnJoe}   produces e.g., eqn~(7.2)
+   % \definitionn{chap:Fred}{EqnJoe} produces e.g., definition~(7.2)
+   % \eqnfromto{EqnFred}{EqnJoe}     produces e.g., equations (7-9)
+   % \eqnA{EqnFred}{a}               produces e.g., equation~(7a)
+   % \matrixEqn{Fred}{a}             produces e.g., matrix equation~(7)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FAKE FOOTNOTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\fakeFootnoteSuperscript}[1]{\ensuremath{{}^{#1}}}
+\newcommand{\fakeFootnoteText}[2]{\fakeFootnoteSuperscript{#1\,}\smallerDescription[\footnotesize]{#2}}
+\newcommand{\fakeFootnoteTextAtBottomOfPage}[2][0]{\footnotetext[#1]{#2}}           % Effectively same as \footnotetext.
+   % \fakeFootnoteSuperscript{a}                                                      Produces superscript a
+   % \fakeFootnoteText{a}{Some text}                                                  Produces superscript a\smallerDescription[\footnotesize]{Some text}
+   % \fakeFootnoteTextAtBottomOfPage[0]{Some text}                                    Produces superscript 0\footnotetext[0]{Some text at bottom of page}.
+   % \\[0.65pc]\rule{0.30\textwidth}{0.70pt}\\[-0.21pc]\fakeFootnoteText{a}{SomeText} Typically used after minipage.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% TODO(aleeper): There is probably a better place for this stuff.
+
+%-----------------------------------------------------------------
+% \begin{narrow}{1.0in}{0.5in}   produces text which is narrowed
+%        by 1.0 on left margin and 0.5 inches on right margin
+% \begin{narrow}{-1.0in}{-0.5in} produces text which is widened
+%        by 1.0 on left margin and 0.5 inches on right margin
+% Narrow environments can be nested and are ended by \end{narrow}
+%-----------------------------------------------------------------
+\newenvironment{narrow}[2]{%
+ \begin{list}{}{%
+  \setlength{\topsep}{0pt}%
+  \setlength{\leftmargin}{#1}%
+  \setlength{\rightmargin}{#2}%
+  \setlength{\listparindent}{\parindent}%
+  \setlength{\itemindent}{\parindent}%
+  \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+
+%-----------------------------------------------------------------
+\newcommand{\verbatimFile}[2]{% must include \usepackages{verbatim}
+ \begin{list}{}{%
+  \setlength{\topsep}{0pt}%
+  \setlength{\itemindent}{0pt}%
+  \setlength{\listparindent}{0pt}%
+  \setlength{\rightmargin}{0.0in}%
+  \setlength{\leftmargin}{0.0in} }%
+  \item#2     %%% (set fontsize)
+  \verbatimfile{#1}
+  \end{list} }%
+   % \verbatimFile{/directory/fileName.ext}{\small} (or \footnotesize or \small or \normalsize or ...)
+   % includes the specified file in verbatim form
+
+%-----------------------------------------------------------------
+\newcommand{\fontChangeBaselineStretch}[4]{\renewcommand\baselinestretch{#2}{#1{#4}}\renewcommand\baselinestretch{#3}}
+   % \fontChangeBaselineStretch{\footnotesize}{0.80}{1.00}{someText}
+   % This DOES NOT seem to change the baseline stretch yet
+
+%-----------------------------------------------------------------
+\newcommand{\verbatimFileBaselineStretch}[4]{ %
+   \renewcommand\baselinestretch{#3}   % Sets line spacing
+   \verbatimFile{#1}{#2}
+   \renewcommand\baselinestretch{#4}}  % Resets line spacing
+   % \verbatimFileBaselineStretch{fileName.ext}{\small}{0.80}{1.0}
+
+%-----------------------------------------------------------------
+\newcommand{\verbatimFileBaselineStretchFlushrightFigure}[6]{ %
+   \begin{flushright}
+      \vspace{1.0pc}                         % Push the picture down a little to avoid page break.
+      \includegraphics[totalheight=#6]{#5}
+   \end{flushright}
+   \nopagebreak
+   \vspace{-#6}
+   \vspace{-1.0pc}                           % Pull the text up a little to align with top of picture.
+   {\renewcommand\baselinestretch{#3}        % Sets line spacing
+   \verbatimFile{#1}{#2}
+   \renewcommand\baselinestretch{#4}}}       % Resets line spacing
+   % \verbatimFileBaselineStretchFlushrightFigure{fileName.ext}{\small}{0.80}{1.0}{pictureFile.eps}{8.0pc}
+
+%-----------------------------------------------------------------
+\newcommand{\verbatimFileBaselineStretchFlushrightTwoFigures}[9]{ %
+   \begin{flushright}
+      \vspace{0.7pc}                         % Push the picture down a little to avoid page break.
+                \includegraphics[totalheight=#6]{#5}
+      \\[1.00pc]\includegraphics[totalheight=#8]{#7}
+   \end{flushright}
+   \nopagebreak
+   \vspace{-#9}                              % Figure out how to add #6 and #8 in latex and lose this parameter (i.e., #9 = #6 + #8
+   \vspace{-1.0pc}                           % Pull the text up a little to align with top of picture.
+   {\renewcommand\baselinestretch{#3}        % Sets line spacing
+   \verbatimFile{#1}{#2}
+   \renewcommand\baselinestretch{#4}}}       % Resets line spacing
+   % \verbatimFileBaselineStretchFlushrightTwoFigures{fileName.ext}{\small}{0.80}{1.0}{pictureAFile.eps}{8.0pc}{pictureBFile.eps}{8.0pc}{17.7pc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

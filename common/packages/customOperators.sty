@@ -1,0 +1,115 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CUSTOM MATH %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{customOperators}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{bigbold}
+%\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{mathtools}
+\RequirePackage{textStyles}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+% No options...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% THINGS UNDER AND OVER MATH %%%%%%%%%%%%%%%%%
+\newcommand{\underMath}[2]{\ensuremath{\mathrel{\mathop{\kern0pt{#1}}\limits_{#2}}}}
+\newcommand{\underMathTextrm}[3][]{\ensuremath{{#1}\mathrel{\mathop{\kern0pt{#2}}\limits_{\textrm{#3}}}{#1}}}  % TODO(aleeper): I had to change this so ensuremath enclosed the whole thing...
+\newcommand{\underMathTextrmSizeNoParens}[4][]{\underMathTextrm[#1]{#2}{\smallerDescription[#3]{#4}}}
+\newcommand{\underMathTextrmSizeParens}[4][]{\underMathTextrm[#1]{#2}{\smallerDescriptionParens[#3]{#4}}}
+   % test: \underMath{stuff}{7, 9}                            % produces 7,9 under stuff.   Designed by Greg Woodward using \buildrel (p. 361, line 3) as a basis.
+   % test: \underMathTextrm[\;]{=}{Hello}                     % produces Hello under equals sign with extra space around the equals sign
+   % test: \underMathTextrmSizeParens[\;]{=}{\tiny}{Hello}    % produces {\tiny(Hello)} under equals sign with extra space around the equals sign
+   % test: \underMathTextrmSizeNoParens[\;]{=}{\tiny}{Hello}  % produces {\tiny Hello}  under equals sign with extra space around the equals sign
+
+% TODO(aleeper): It appears overbrace and overbracket should use ^ instead of _.
+\newcommand{\overBrace}[2]{\ensuremath{\overbrace{#1}_{#2}}}
+\newcommand{\underBrace}[2]{\ensuremath{\underbrace{#1}_{#2}}}
+   % test: \overBrace{some stuff}{other things}
+   % test: \underBrace{some stuff}{other things}
+
+\newcommand{\overBracket}[2]{\ensuremath{\overbracket{#1}_{#2}}}
+\newcommand{\underBracket}[2]{\ensuremath{\underbracket{#1}_{#2}}}
+   % test: \overBracket{some stuff}{other things}
+   % test: \underBracket{some stuff}{other things}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  OPERATORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% TODO(aleeper): Can we get rid of these old definitions?
+%\newcommand{\deff}[1][]{\ensuremath{{#1}{\stackrel{\scriptstyle\bigtriangleup}{=}}{#1}}} % \deff                   or \deff[\:] (this is same as old \Deff)
+%\newcommand{\Deff}[1][\:]{{#1}\defineSymbol{#1}}                                         % \Deff                    or \Deff[\;]
+%\newcommand{\defineSymbol}[1][]{\ensuremath{\equiv}}                                     % \defineSymbol            or \equiv for 3 horizontal lines.
+%\newcommand{\defineSymbol}[1][]{\ensuremath{\buildrel{\scriptstyle\Delta}\over{=}}}      % \defineSymbol            or \equiv for 3 horizontal lines.
+
+\newcommand{\defineSymbol}{\ensuremath{\triangleq}} % use this one for triangle over equal sign.
+%\newcommand{\defineSymbol}{\ensuremath{\eqiv}}     % use this one for 3 horizontal lines.
+\newcommand{\deff}[1][]{\ensuremath{{#1}{\defineSymbol}{#1}}}
+   % test: \defineSymbol
+   % test: \deff
+   % test: \deff[\:]      % (this is same as old \Deff)
+
+\newcommand{\equals}[1][\ ]{{#1}={#1}}                                                    % test: \equals[]
+\newcommand{\overEquals}[2][\,]{\ensuremath{{#1}{\buildrel{#2}\over{=}}{#1}}}             % test: \overEquals[]{a}
+\newcommand{\equalsQuestion}[1][\;]{\ensuremath{{#1}{\stackrel{\scriptstyle ?}{=}}{#1}}}  % test: \equalsQuestion[]
+\newcommand{\Approx}[1][\ ]{\ensuremath{{#1}\approx{#1}}}                                 % test: \Approx[]
+\newcommand{\notEquals}[1][\ ]{\ensuremath{{#1}\neq{#1}}}                                 % test: \notEquals[]
+
+\newcommand{\Perpendicular}[1][\;]{\ensuremath{{#1}\perp{#1}}}                            % test: \Perpendicular[]
+\newcommand{\notPerpendicular}[1][\;]{\ensuremath{{#1}\not\perp{#1}}}                     % test: \notPerpendicular[]
+
+\newcommand{\greaterThan}[1][\;]{\ensuremath{{#1}>{#1}}}                                  % test: \greaterThan[]
+\newcommand{\greaterThanEquals}[1][\ ]{\ensuremath{{#1}\geq{#1}}}                         % test: \greaterThanEquals[]
+\newcommand{\ggreaterThan}[1][\ ]{\ensuremath{{#1}\gg{#1}}}                               % test: \ggreaterThan[]
+\newcommand{\lessThan}[1][\;]{\ensuremath{{#1}<{#1}}}                                     % test: \lessThan[]
+\newcommand{\lessThanEquals}[1][\ ]{\ensuremath{{#1}\leq{#1}}}                            % test: \lessThanEquals[]
+\newcommand{\llessThan}[1][\ ]{\ensuremath{{#1}\ll{#1}}}                                  % test: \llessThan[]
+\newcommand{\lessThanValue}[1]{\ensuremath{<{#1}}}                                        % test: \lessThanValue{2}
+
+\newcommand{\plus}[1][\ ]{{#1}+{#1}}                                                      % test: \plus[]
+\newcommand{\minus}[1][\ ]{{#1}-{#1}}                                                     % test: \minus[]
+\newcommand{\plusminus}[1][\:]{\ensuremath{{#1}\pm{#1}}}                                  % test: \plusminus[]
+\newcommand{\minusplus}[1][\:]{\ensuremath{{#1}\mp{#1}}}                                  % test: \minusplus[]
+\newcommand{\mult}[1][\!]{\ensuremath{#1*#1}}                                             % test: \mult[]
+\newcommand{\division}[1][\:]{{#1}/{#1}}                                                  % test: \division[]
+\newcommand{\caretSymbol}[1]{\char`\^{#1}}                                                % test: \caretSymbol{2}
+
+\newcommand{\CrossProduct}[1][\,]{\ensuremath{{#1}{\times}{#1}}}                          % test: \CrossProduct[]
+\newcommand{\Cross}[1][\,]{\ensuremath{{#1}{\times}{#1}}}                                 % test: \Cross[]
+\newcommand{\DotProduct}[1][\,]{\ensuremath{{#1}{\bigbold\cdot}{#1}}}                     % test: \DotProduct[]
+% CONFLICTS WITH A LATEX COMMAND
+% \def\Dot{\DotProduct[\,]}
+
+\newcommand{\upArrow}[1]{\mbox{\ensuremath{{#1}\uparrow{#1}}}}                            % test: \upArrow{\;}
+\newcommand{\UpArrow}[1]{\mbox{\ensuremath{{#1}\Uparrow{#1}}}}                            % test: \UpArrow{\;}
+\newcommand{\downArrow}[1]{\mbox{\ensuremath{{#1}\downarrow{#1}}}}                        % test: \downArrow{\;}
+\newcommand{\DownArrow}[1]{\mbox{\ensuremath{{#1}\Downarrow{#1}}}}                        % test: \DownArrow{\;}
+\newcommand{\rrightarrow}[1]{\mbox{\ensuremath{{#1}\rightarrow{#1}}}}                     % test: \rrightarrow{\;}
+\newcommand{\RRightarrow}[1]{\mbox{\ensuremath{{#1}\Rightarrow{#1}}}}                     % test: \RRightarrow{\;}
+\newcommand{\RRightArrow}[1]{\mbox{\ensuremath{{#1}\Rightarrow{#1}}}}                     % test: \RRightArrow{\;}
+\newcommand{\underRRightArrow}[2][]{\mbox{\ensuremath{{#1}\underMath{\Rightarrow}{#2}{#1}}}}                  % test: \underRRightArrow[\;]{\textrm{Something}}
+\newcommand{\LeftRightArrow}[1]{\mbox{\ensuremath{{#1}\Longleftrightarrow{#1}}}}          % test: \LeftRightArrow{\;}
+\newcommand{\ShortLeftRightArrow}[1]{\mbox{\ensuremath{{#1}\Leftrightarrow{#1}}}}         % test: \ShortLeftRightArrow{\;}
+
+\newcommand{\factorial}[1]{\ensuremath{{#1}\,!}}                                          % \factorial{5} produces 5!.
+\newcommand{\negative}[2][0.15em]{{\ensuremath{\raisebox{#1}{\normalsize{-}}\hspace{-0.20pt}{#2}}}} % \negative{5} or \negative[0.25em]{5} produces -5  Note: this needs extra {}.
+\newcommand{\positive}[2][0.20em]{{\ensuremath{\raisebox{#1}{\scriptsize{+}}\hspace{-0.70pt}{#2}}}} % \positive{5} or \positive[0.25em]{5} produces +5  Note: this needs extra {}.
+\newcommand{\positiveBoldRedPlus}[2][0.20em]{{\ensuremath{\raisebox{#1}{\scriptsize{\mathBBoldDarkRed{+}}}\hspace{-0.70pt}{#2}}}} % \positive{5} or \positive[0.25em]{5} produces +5  Note: this needs extra {}.
+\newcommand{\positiveBoldRedPlusTextrm}[2][0.20em]{\positiveBoldRedPlus[#1]{\textrm{#2}}}
+
+\newcommand{\increase}[1][\Large]{{{#1}\ensuremath{\mathbf{+}}}}
+\newcommand{\decrease}[1][\Large]{{{#1}\ensuremath{\mathbf{-}}}}
+\newcommand{\noEffect}[1][\large]{{{#1}\ensuremath{\mathbf{0}}}}
+\newcommand{\complicated}[1][\large]{{{#1}\ensuremath{\mathbf{?}}}}
+
+\newcommand{\Bullet}[1]{\mbox{\ensuremath{{#1}\bullet{#1}}}}                              % \Bullet{\;\;}     or \Bullet{\hspace{1.0cm}}
+\newcommand{\BulletNoLeftSpace}[1]{\mbox{\ensuremath{\bullet{#1}}}}                       % \BulletNoLeftSpace{\;\;}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

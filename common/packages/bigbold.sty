@@ -1,0 +1,59 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%  EXTRA HEAVY BOLD SYMBOL %%%%%%%%%%%%%%%%%%%%%%
+% Use \bigbold for heavy bold math  (designed by Kurt Anderson's pmb "Poor man's boldface" - page 386).
+% Paul Mitiguy's macros uses \bigbold for bold Greek letters (instead of \mathbf and \boldmath).
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bigbold}[2015/07/02]
+
+%%% Required packages go here.
+%\RequirePackage{}
+
+%%% No options...
+
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+\def\bigbold#1{\setbox0=\hbox{$#1$}
+   \kern-.025em\copy0\kern-\wd0
+   \kern.0125em\copy0\kern-\wd0
+   \kern.0125em\copy0\kern-\wd0
+   \kern.0125em\copy0\kern-\wd0
+   \kern.0125em\copy0\kern-\wd0
+   \kern-.050em\raise.0433em\copy0\kern-\wd0
+   \kern.0125em\raise.0433em\copy0\kern-\wd0
+   \kern.0125em\raise.0433em\copy0\kern-\wd0
+   \kern.0125em\raise.0433em\copy0\kern-\wd0
+   \kern.0125em\raise.0433em\copy0\kern-\wd0
+   \kern-.050em\raise.0216em\copy0\kern-\wd0
+   \kern.025em\raise.0216em\copy0\kern-\wd0
+   \kern.025em\raise.0216em\box0}
+
+\newcommand{\boldalpha}{\ensuremath{\bigbold{\alpha}}}
+\newcommand{\boldbeta}{\ensuremath{\bigbold{\beta}}}
+\newcommand{\boldgamma}{\ensuremath{\bigbold{\gamma}}}
+\newcommand{\boldlambda}{\ensuremath{\bigbold{\lambda}}}
+\newcommand{\boldlambdaHat}{\ensuremath{\bigbold{\widehat{\lambda}}}}
+\newcommand{\boldepsilon}{\ensuremath{\bigbold{\epsilon}}}
+\newcommand{\bolddelta}{\ensuremath{\bigbold{\delta}}}
+\newcommand{\boldtheta}{\ensuremath{\bigbold{\theta}}}
+\newcommand{\boldtau}{\ensuremath{\bigbold{\tau}}}
+\newcommand{\boldangle}{\ensuremath{\bigbold{\angle}}}
+\newcommand{\boldnabla}{\ensuremath{\bigbold{\nabla}}}
+\newcommand{\boldrho}{\ensuremath{\bigbold{\rho}}}
+\newcommand{\boldomega}{\ensuremath{\bigbold{\omega}}}
+  % test: \boldalpha
+  % test: \boldbeta
+  % test: \boldgamma
+  % test: \boldlambda
+  % test: \boldlambdaHat
+  % test: \boldepsilon
+  % test: \bolddelta
+  % test: \boldtheta
+  % test: \boldtau
+  % test: \boldangle
+  % test: \boldnabla
+  % test: \boldrho
+  % test: \boldomega
+
+%%% This must be the last command.
+\endinput

@@ -1,0 +1,185 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%% USEFUL LATEX2E INFORMATION %%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[options]{class}    example: documentclass[11pt,dvips]{article}
+%              class= article, report, book, slide (big letters)
+%              options = 10pt, 11pt, 12pt, dvips, oneside, twoside, twocolumn,
+%                        letterpaper (U.S.), a4paper (Europe),
+%                        fleqn (left aligned formulas), leqno (equation #s on left),
+%                        openright (chapters open on right page only), openany
+%Packages:     \usepackage{a,b,...}        % e.g., graphicx, lscape, calc, fancyheadings, verbatim
+%Geometry      \geometry{ left=0.85in,          % width of left margin
+%                         right=0.85in,         % width of right margin
+%                         top=0.65in,           % height of top margin
+%                         bottom=0.45in,        % height of bottom margin
+%                         twosideshift=0.5in,   % extra space near bound side of two-sided documents
+%                         headheight=18pt,      % height of header (usually put page and chapter info in header)
+%                         headsep=18pt,         % space between header and text
+%                         footskip=30pt,        % space between baseline of bottom of text and baseline of footer
+%                         marginparsep=0.0in,   % horizontal distance between marginal notes and body of text (for notes in margins away from binding)
+%                         marginparwidth=0.0in} % horizontal width of marginal note (for notes in margins away from binding) \marginpar{blah} puts blah in margin
+%Input:        \input{filename}            % puts filename right here in texfile
+%              \include{filename}          % starts new page, works with \includeonly
+%              \includeonly{file1,file2}   % only includes file1,file2 in final tex document
+%Sectioning:   \part{}, \chapter{}         % not used with article
+%              \section{}, \subsection{}, \subsubsection{}
+%              \paragraph{}, \subparagraph{}
+%              \appendix                   % causes change of chapter/section numbers to letters
+%Table of      \section*{stuff}            % causes a section title without adding to table of contents
+%contents:     \tableofcontents            % automatically generates table of contents for chapters, sections, etc.
+%              \setcounter{section}{0}     % sets section counter to 0
+%              \addtocounter{chapter}{1}   % adds 1 to chapter counter
+%              \addcontentsline{toc}{chapter}{\arabic{chapter} STUFF}
+%                adds {the current chapter number in arabic and STUFF to toc
+%                {toc}=table of contents {lof}=list of figures {lot}=list of tables)
+%Page Numbers: \pagestyle{option} option=plain (#s in bottom middle), headings (chapter#, pg# on top), empty, fancyplain
+%              \thispagestyle{option}      % temporarily overides current page style
+%              \pagenumbering{option}      % style = arabic, roman, Roman, alpha, Alpha
+%White space:  \AnyCommand{}               % empty closing braces will cause blank space at end of command
+%              \mbox{text here}            % does not allow "text here" to be broken across lines
+%              ~                           % acts as a full white space where lines cannot be broken
+%              \! \, \; \: \ \quad \qquad  % math mode \! is negative space
+%              \setlength{\parindent}{7pt} % for paragraph indenting
+%              \setlength{\parskip}{1pt}   % for extra spacangle=45angle=45e before paragraph
+%              \indent  \noindent          % for forcing/restricting paragraph indenting
+%              \hspace{1cm}                % intraline horizontal blank space
+%              \hspace*{1cm}               % horizontal blank space including begin/end of line
+%              \vspace{1cm}                % intrapage vertical blank space
+%              \vspace*{1cm}               % vertical blank space including top/bottom of page
+%              \\  \newline  \\*           % extra blank line, * means no pagebreak
+%              \\[3pc]                     % in same paragraph endOfLine followed by vertical white space = 3x space
+%              \newpage                    % forces new page
+%              \@.                         % specifies that . terminates sentence even when it follows a capital letter
+%              \renewcommand{\baselinestretch}{1.3} % percentage increase/decrease in distance between lines 1.6=double spacing
+%              \baselineskip = 1.3pc   % Spacing Single, Double, Triple Space etc.  This is a function of font size
+%              \linespread[1.3]        % spacing*1.3 (similar to baselineskip)
+%              Spacing between the lines = baselinestretch * baselineskip
+%Hyphenation:  \brokenpenalty=10000 % something to do with hyphenation
+%              \sloppy or \fussy    % \sloppy is o.k. to put extra white space around words
+%Environments: \begin{itemize} or enumerate or description
+%                \renewcommand{\baselinestretch}{0.9} % resets spacing between lines on same item
+%                \normalsize                          % some global font change must follow baselinestretch to toggle it
+%                \setlength{\itemsep}{-0.25pc}        % controls item separation
+%                \item[some text] blah blah
+%                \item blah blah
+%              \end{itemize}
+%              \begin{flushright or flushleft or center}
+%              \begin{equation}  \begin{eqnarray}
+%              \centering does same as \begin{center} without extra vertical space
+%Minipage:     \begin{minipage}[t]{0.25\textwidth} [t] aligns tops of graphics, [b] aligns bottom, but use \par\vspace{0pt} after text rather than \vspace{0pt} before text
+%                \vspace{0pt}
+%                text goes here
+%              \end{minipage}
+%              \hfill or \hspace usually between minipages or \hspace*{\fill}
+%              \begin{minipage}[t]{0.25\textwidth}
+%                \vspace{0pt}
+%                more text here
+%              \end{minipage}
+%              Note: \begin{figure} \begin{table}, etc. go OUTSIDE \begin{minipage}
+%Tables:       \begin{tabular}{tableSpec}
+%                tableSpec, e.g., {lrcp{4.7cm}|},
+%                l=leftJustified, r=rightJustified, c=centerJustfied, p{width}=denoting specific column width
+%                {@{} l @{text} }  @{} kills leading/trailing space @{text} puts text between columns @{\hspace{0.55cm}} puts space between columns
+%                {|r|r|} | puts vertical line through columns , \hline makes horizontal line \cline{2-4} puts a horizontal line in columns 2-4
+%                \multicolumn{2}{c}{text} replaces several columns in a table
+%                \renewcommand{\arraystretch}{1.7} increases spacing between rows by factor of 1.5
+%                \renewcommand{\tabcolsep}{1.5}    increases spacing between rows by factor of 1.5 (Paul - yes this is a strange name)
+%              \begin{table}[!ht] % Optional !ht is used to place Here or at Top of page
+%                \caption{stuff} or \caption[TextForTableOfContents]{TextOnTable}
+%                \label{table:Hi} % Note: labels MUST be after caption
+%              \end{table}     % note, \listoftables in preamble for automatic table of contents
+%%Figures:     \renewcommand{\printlandscape}{\special{landscape}}
+%              \begin{figure}[!htb] % Optional !htbp is used to place Here, Top, Bottom, or create figure Page (P is not an option typically used)
+%                \includegraphics[scale=1,origin=lb,angle=45,totalheight=2in,width=0.80\textwidth]{file.eps} %usually specifiy only scale, height, or width, not both
+%                \caption{stuff} or \caption[TextForTableOfContents]{TextOnGraph}
+%                \label{fig:Hi} % note: includegraphics needs \usepackage{graphicx} in preamble
+%                \rotatebox[options]{angle}{figure, text, etc.}
+%              \end{figure}     % note: \listoffigures in preamble automatically table of contents
+%Verbatim      \begin{verbatim}  or  \verb| stuff |
+%              \begin{verbatim*} or  \verb*|stuff | puts underscore for spaces
+%Scaling:      \scalebox[v-2.0]{h-2.0}{figure, text, whatever to be scaled here}
+%              \resizebox*{width}{totalheight}{figure, text, etc.} width or totalheight=! keeps same aspect ratio
+%Rotate:       \rotatebox[options]{angle}{figure, text, etc.}
+%                options [lt,x=2.0pt,y=3.0pt] rotates about an origin located 2.0,3.0 from LeftTop
+%                         l=left, c=center, r=right, t=top, c=center, B=Baseline, b=bottom
+%Quotes:       ``hi''  `hi'
+%Dashes:       sh-ort  med--ium  lo---ng
+%Dots          \ldot \ldots (lower dots) \cdot \cdots (center dots) \ddots  (diagonal dots)
+%Special       \$, \&, \%, \#, \_, \{, \}, ^, ~, \
+%References:   \label{}, \ref{}, \pageref{}, \footnote{}
+%Titles:       \title{stuff} \author{a\thanks{Stanford} \and b\thanks{Lockheed} \and c}  \date{}
+%              \maketitle
+%Math stuff:   \overline{text}, \underline{text} \overbrace{text}, \underbrace{text}
+%              \widetilde{text} \overrightarrow{text} \overleftarrow{text}
+%              \frac{1}{2}, {x \atop y+2}
+%              \left( text here \right)  puts correctly sized paraenthesis
+%                                        around text  same for [ \{ etc.
+%              \nonumber prevents equation numbering
+%              \int for integral, \sum for sum
+%Equation #s:  \makeatletter        % Need this because "@" is now O.K. for TEX
+%              \@addtoreset{equation}{chapter} % Reset equation counter to 0 at each chapter
+%              \makeatother         % "@" is restored as a non-letter for TEX
+%              \def\theequation{\arabic{equation}}% Redefined. In REPORT.STY it is 3.7
+%Header/footer: \renewcommand{\chaptermark}[1]{\markright{\bf \hfill{\sc \thechapter. #1 \hspace{0.5cm} }} }
+%               \renewcommand{\sectionmark}[1]{\markright{\bf \hfill{\sc \thesection. #1 \hspace{0.5cm} }} }
+%               \renewcommand{\subsectionmark}[1]{\markright{\bf \hfill{\sc \thesubsection. #1 \hspace{0.5cm} }} }
+%               \setlength{\headrulewidth}{0.5pt}    % thickness of line in header rule
+%               \setlength{\footrulewidth}{0pt}      % thickness of line in footer rule
+%               \setlength{\plainheadrulewidth}{0pt} % thickness of plain header rule
+%               \setlength{\plainfootrulewidth}{0pt} % thickness of plain footer rule
+%Vertical/Horizontal lines
+%               \hline                        % horizontal line the width of the page
+%               \rule{2.5cm}{1mm}             % box of ink 2.5cm wide and 2mm high
+%               \rule{0.99\textwidth}{1.2pt}  % box of ink width of page and 1.2pt high
+%Superscripts   $a^b$  % puts superscript of b
+%               $a^{\raisebox{1pt}{\scriptsize b}}    % elevates a small b 1 pt
+%               $a^{\raisebox{0.5pc}{\scriptsize b}}  % elevates a small b 0.5 a line space.
+%               $a^{\raisebox{1.2\ex}{\scriptsize b}} % elevates a small b 1.2 times the size of the letter x in the current font
+%Conditional Text
+%               \ifthenelse{test}{then_text}{else_text}
+%Landscape Mode - To be used with with package lscape.sty
+%               \landscape{ large amount of text here }
+%Bibliography   \bibliographystyle{unsrt} makes it so bibliography is not sorted alphabetically
+%
+%
+%% Hi Paul.
+%% Here are the "belated" macros that I promised to send you:
+%% They are simply macro commands that let you insert a figure or table
+%% with given parameters that will not let Latex screw up the location of the figures/tables.
+%% Thanks, Abe
+%%
+%% \newcommand{\panatableParam}[5]
+%% {
+%% \vbox{
+%% \begin{center}
+%% \refstepcounter{table}\label{#3}  %#3=label
+%% \includegraphics[#2]{#1}
+%% %#1=table location
+%% %#2=includegraphics parameters
+%% \addcontentsline{lot}{table}{\numberline {\ref{#3}}#5}
+%% %#5=small caption
+%% \\[0.5pc]
+%% \begin{minipage}{0.8\textwidth}
+%% Table \ref{#3}: \textit{#4}
+%% %#4=caption text
+%% \end{minipage}
+%% \end{center}
+%% } %end of /vbox
+%% }
+%%
+%% \newcommand{\panafigureParam}[5]
+%% {
+%% \vbox{
+%% \begin{center}
+%% \refstepcounter{table}\label{#3}  %#3=label
+%% \includegraphics[#2]{#1}
+%% %#1=table location
+%% %#2=includegraphics parameters
+%% \addcontentsline{lof}{figure}{\numberline {\ref{#3}}#5}
+%% %#5=small caption
+%% \\[0.5pc]
+%% \begin{minipage}{0.8\textwidth}
+%% Figure \ref{#3}: \textit{#4}
+%% %#4=caption text
+%% \end{minipage}
+%% \end{center}
+%% } %end of /vbox
+%% }

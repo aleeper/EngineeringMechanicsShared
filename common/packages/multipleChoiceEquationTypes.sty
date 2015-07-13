@@ -1,0 +1,207 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EQUATION TYPE MULTIPLE CHOICE %%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{multipleChoiceEquationTypes}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+% TODO need to figure out how to deal with this.
+%\RequirePackage[instructor]{customFormatting}
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{customFormatting}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+\@ifpackageloaded{customFormatting}
+{} % Nothing to do if true.
+{\PackageError{multipleChoiceEquationTypes}{Must first load `customFormatting' with desired options}{}}
+
+\DeclareOption*{\PackageError{multipleChoiceEquationTypes}{Unknown option: `\CurrentOption'}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+% TODO duplicated here because customMath.sty is still a mess. Should refactor.
+\providecommand{\first}{\mbox{{1}\ensuremath{^{st}}}}
+\providecommand{\second}{\mbox{{2}\ensuremath{^{st}}}}
+\providecommand{\third}{\mbox{{3}\ensuremath{^{st}}}}
+\providecommand{\fourth}{\mbox{{4}\ensuremath{^{st}}}}
+
+%-----------------------------------------------------------------
+\newcommand{\stableUnstable}[1]{\choiceAB{stable}{unstable}{#1}}
+% test: \stableUnstable{0} or \stableUnstable{1}
+
+\newcommand{\stableNeutrallyStableUnstable}[1]{\choiceABC{stable}{\mbox{neutrally~stable}}{unstable}{#1}}
+\newcommand{\stableNeutrallyStableUnstableStudentToo}[1]{\choiceABCStudentToo{stable}{\mbox{neutrally~stable}}{unstable}{#1}}
+   % test: \stableNeutrallyStableUnstable{2}
+   % test: \stableNeutrallyStableUnstableStudentToo{2}
+
+\newcommand{\undampedUnderdampedCriticallyDampedOverDamped}[1]{\choiceABCD{undamped}{underdamped}{critically-damped}{overdamped}{#1}}
+   % test: \undampedUnderdampedCriticallyDampedOverDamped{1}
+
+
+%-----------------------------------------------------------------
+\newenvironment{uncoupledLinearHomoConstantFirstOrdinaryAlgebraic}[7]{
+{\noindent\begin{center}\vspace{-0.25pc}\bf\footnotesize
+  \begin{tabular}{|ccc|ccc|}
+             \hline \teacherFrameBooll{Uncoupled}{#1=0}  &\teacherFrameBooll{Linear}{#2=0}    &  \teacherFrameBooll{Homogeneous}{#3=0}   & \teacherFrameBooll{Constant-coefficient}{#4=0}  &  \teacherFrameBooll{\first-order}{#5=0}  &  \teacherFrameBooll{Algebraic}{#7=0}
+    \\[0.0pc]       \teacherFrameBooll{Coupled}{#1=1}    &\teacherFrameBooll{Nonlinear}{#2=1} &  \teacherFrameBooll{Inhomogeneous}{#3=1} & \teacherFrameBooll{Variable-coefficient}{#4=1}  &  \teacherFrameBooll{\second-order}{#5=1} &  \teacherFrameBooll{Differential}{#7=1}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\uncoupledLinearHomoConstantFirstOrdinaryAlgebraic{1}{1}{0}{0}{1}{0}{1}}
+
+%-----------------------------------------------------------------
+\newenvironment{linearHomoConstantFirstOrdinaryAlgebraic}[6]{
+{\noindent\begin{center}\vspace{-0.25pc}\bf\footnotesize
+  \begin{tabular}{|cc|cccc|}
+             \hline \teacherFrameBooll{Linear}{#1=0}    &  \teacherFrameBooll{Homogeneous}{#2=0}   & \teacherFrameBooll{Constant-coefficient}{#3=0}  &  \teacherFrameBooll{\first-order}{#4=0}   &  \teacherFrameBooll{Ordinary}{#5=0}  &  \teacherFrameBooll{Algebraic}{#6=0}
+    \\[0.0pc]       \teacherFrameBooll{Nonlinear}{#1=1} &  \teacherFrameBooll{Inhomogeneous}{#2=1} & \teacherFrameBooll{Variable-coefficient}{#3=1}  &  \teacherFrameBooll{\second-order}{#4=1}  &  \teacherFrameBooll{Partial}{#5=1}   &  \teacherFrameBooll{Differential}{#6=1}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\linearHomoConstantFirstOrdinaryAlgebraic{1}{0}{0}{1}{0}{1}}
+
+
+%-----------------------------------------------------------------
+\newenvironment{linearHomoConstantSecondFourthOrdinaryAlgebraic}[6]{
+{\noindent\begin{center}\vspace{-0.25pc}\bf\footnotesize
+  \begin{tabular}{|cc|cccc|}
+             \hline\teacherFrameBooll{Linear}{#1=0}    &  \teacherFrameBooll{Homogeneous}{#2=0}   & \teacherFrameBooll{Constant-coefficient}{#3=0}  &  \teacherFrameBooll{\second-order}{#4=0}  &  \teacherFrameBooll{Ordinary}{#5=0}  &  \teacherFrameBooll{Algebraic}{#6=0}
+    \\[0.0pc]      \teacherFrameBooll{Nonlinear}{#1=1} &  \teacherFrameBooll{Inhomogeneous}{#2=1} & \teacherFrameBooll{Variable-coefficient}{#3=1}  &  \teacherFrameBooll{\fourth-order}{#4=1}  &  \teacherFrameBooll{Partial}{#5=1}   &  \teacherFrameBooll{Differential}{#6=1}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\linearHomoConstantSecondFourthOrdinaryAlgebraic{1}{0}{0}{1}{0}{1}}
+
+%-----------------------------------------------------------------
+\newenvironment{uncoupledLinearHomoConstantFirstOrdinaryDAE}[5]{
+{\noindent\begin{center}\vspace{-0.25pc}\bf\footnotesize
+  \begin{tabular}{|ccc|ccc|}
+             \hline\teacherFrameBooll{Uncoupled}{#1=0}  &\teacherFrameBooll{Linear}{#2=0}    &  \teacherFrameBooll{Homogeneous}{#3=0}   & \teacherFrameBooll{Constant-coefficient}{#4=0}  &  \teacherFrameBooll{\first-order}{#5=0}  &  \frameText{Algebraic}
+    \\[0.0pc]      \teacherFrameBooll{Coupled}{#1=1}    &\teacherFrameBooll{Nonlinear}{#2=1} &  \teacherFrameBooll{Inhomogeneous}{#3=1} & \teacherFrameBooll{Variable-coefficient}{#4=1}  &  \teacherFrameBooll{\second-order}{#5=1} &  \frameText{Differential}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\uncoupledLinearHomoConstantFirstOrdinaryDAE{1}{0}{0}{1}{0}}
+
+%-----------------------------------------------------------------
+\newenvironment{uncoupledLinearHomoConstantFirstOrdinary}[6]{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|ccc|cc|}
+             \hline\teacherFrameBooll{Uncoupled}{#1=0}  &\teacherFrameBooll{Linear}{#2=0}    &  \teacherFrameBooll{Homogeneous}{#3=0}   & \teacherFrameBooll{Constant-coefficient}{#4=0}  &  \teacherFrameBooll{\first-order}{#5=0}
+    \\[0.0pc]      \teacherFrameBooll{Coupled}{#1=1}    &\teacherFrameBooll{Nonlinear}{#2=1} &  \teacherFrameBooll{Inhomogeneous}{#3=1} & \teacherFrameBooll{Variable-coefficient}{#4=1}  &  \teacherFrameBooll{\second-order}{#5=1}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\uncoupledLinearHomoConstantFirstOrdinary{1}{1}{1}{0}{1}{0}}
+
+%-----------------------------------------------------------------
+\newenvironment{linearHomoConstantFirstAlgebraic}[5]{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|cc|ccc|}
+              \hline \teacherFrameBooll{Linear}{#1=0}    &  \teacherFrameBooll{Homogeneous}{#2=0}   & \teacherFrameBooll{Constant-coefficient}{#3=0}  &  \teacherFrameBooll{\first-order}{#4=0}   &  \teacherFrameBooll{Algebraic}{#5=0}
+     \\[0.0pc]       \teacherFrameBooll{Nonlinear}{#1=1} &  \teacherFrameBooll{Inhomogeneous}{#2=1} & \teacherFrameBooll{Variable-coefficient}{#3=1}  &  \teacherFrameBooll{\second-order}{#4=1}  &  \teacherFrameBooll{Differential}{#5=1}
+     \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\linearHomoConstantFirstAlgebraic{0}{0}{0}{1}{1}}
+
+%-----------------------------------------------------------------
+\newenvironment{linearHomoConstantFirstAlgebraicShow}[5]{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|cc|ccc|}
+             \hline \frameBooll{Linear}{#1=0}    &  \frameBooll{Homogeneous}{#2=0}   & \frameBooll{Constant-coefficient}{#3=0}  &  \frameBooll{\first-order}{#4=0}   &  \frameBooll{Algebraic}{#5=0}
+    \\[0.0pc]       \frameBooll{Nonlinear}{#1=1} &  \frameBooll{Inhomogeneous}{#2=1} & \frameBooll{Variable-coefficient}{#3=1}  &  \frameBooll{\second-order}{#4=1}  &  \frameBooll{Differential}{#5=1}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\linearHomoConstantFirstAlgebraicShow{0}{0}{0}{1}{1}}
+
+
+%-----------------------------------------------------------------
+\newenvironment{uncoupledLinearFirstAlgebraic}[4]{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|cc|cc|}
+              \hline \teacherFrameBooll{Uncoupled}{#1=0}  &\teacherFrameBooll{Linear}{#2=0}    &  \teacherFrameBooll{\first-order}{#3=0}  & \teacherFrameBooll{Algebraic}{#4=0}
+     \\[0.0pc]       \teacherFrameBooll{Coupled}{#1=1}    &\teacherFrameBooll{Nonlinear}{#2=1} &  \teacherFrameBooll{\second-order}{#3=1} & \teacherFrameBooll{Differential}{#4=1}
+     \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\uncoupledLinearFirstAlgebraic{1}{1}{0}{0}}
+
+%-----------------------------------------------------------------
+\newenvironment{uncoupledLinearAlgebraic}[3]{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|ccc|}
+             \hline \teacherFrameBooll{Uncoupled}{#1=0}  &\teacherFrameBooll{Linear}{#2=0}    & \teacherFrameBooll{Algebraic}{#3=0}
+    \\[0.0pc]       \teacherFrameBooll{Coupled}{#1=1}    &\teacherFrameBooll{Nonlinear}{#2=1} & \teacherFrameBooll{Differential}{#3=1}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\uncoupledLinearAlgebraic{1}{1}{0}}
+
+%-----------------------------------------------------------------
+\newenvironment{coupledNonlinearAlgebraicNoGuess}{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|ccc|}
+              \hline \frameText{Coupled}  &\frameText{Nonlinear} & \frameText{Algebraic}
+     \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\uncoupledLinearAlgebraic{1}{1}{0}}
+
+%-----------------------------------------------------------------
+\newenvironment{uncoupledLinearHomoAlgebraic}[4]{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|cccc|}
+             \hline \teacherFrameBooll{Uncoupled}{#1=0}  &\teacherFrameBooll{Linear}{#2=0}    &  \teacherFrameBooll{Homogeneous}{#3=0}   & \teacherFrameBooll{Algebraic}{#4=0}
+    \\[0.0pc]       \teacherFrameBooll{Coupled}{#1=1}    &\teacherFrameBooll{Nonlinear}{#2=1} &  \teacherFrameBooll{Inhomogeneous}{#3=1} & \teacherFrameBooll{Differential}{#4=1}
+    \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % test: \parbox{1cm}{\uncoupledLinearHomoAlgebraic{1}{1}{0}{0}}
+
+%-----------------------------------------------------------------
+\newenvironment{LinearHomoAlgebraic}[3]{
+{\noindent\bf\small
+  \begin{center}\vspace{-0.25pc}
+  \begin{tabular}{|ccc|}
+              \hline \teacherFrameBooll{Linear}{#1=0}    &  \teacherFrameBooll{Homogeneous}{#2=0}   & \teacherFrameBooll{Algebraic}{#3=0}
+     \\[0.0pc]       \teacherFrameBooll{Nonlinear}{#1=1} &  \teacherFrameBooll{Inhomogeneous}{#2=1} & \teacherFrameBooll{Differential}{#3=1}
+     \\[0.0pc]\hline
+  \end{tabular}
+  \end{center}}}
+  % TODO parbox needed for this test because this doesn't work in a table environment
+  % \parbox{1cm}{\LinearHomoAlgebraic{1}{1}{0}}
+
+%\newcommand{\uncoupledLinearHomoConstantFirstOrdinaryAlgebraic}[7]{{\centering\bf\footnotesize
+%  \begin{tabular}{|cccccc|}
+%             \hline \teacherFrameBooll{Uncoupled}{#1=0}  &\teacherFrameBooll{Linear}{#2=0}    &  \teacherFrameBooll{Homogeneous}{#3=0}   & \teacherFrameBooll{Constant-coefficient}{#4=0}  &  \teacherFrameBooll{\first-order}{#5=0}  &  \teacherFrameBooll{Algebraic}{#7=0}
+%    \\[0.0pc]       \teacherFrameBooll{Coupled}{#1=1}    &\teacherFrameBooll{Nonlinear}{#2=1} &  \teacherFrameBooll{Inhomogeneous}{#3=1} & \teacherFrameBooll{Variable-coefficient}{#4=1}  &  \teacherFrameBooll{\second-order}{#5=1} &  \teacherFrameBooll{Differential}{#7=1}
+%    \\[0.0pc]\hline
+%  \end{tabular}}}
+%  % \uncoupledLinearHomoConstantFirstOrdinaryAlgebraic{1}{0}{0}{0}{1}{0}{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

@@ -1,0 +1,692 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CUSTOM FORMATTING %%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{customMathScalars}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{amsmath}  % widetilde, among other things
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+%\DeclareOption{foo}{}
+
+\DeclareOption*{\PackageError{customMathScalars}{Unknown option: `\CurrentOption'}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+% TODO(aleeper): There are a few notest lines because a couple commands rely on differential, which is currently in customMath.sty
+% TODO(aleeper): Need to add test lines to some commands.
+
+%%%%%%%%%%%%%%%%%%%%%% PERTURBATION, NOMINAL, DISTURBANCE %%%%%%%%%%%%%%%%%%
+\newcommand{\perturb}[1]{\ensuremath{\widetilde{#1}}}
+\newcommand{\perturbdot}[1]{\ensuremath{\dot{\widetilde{#1}}}}
+\newcommand{\perturbddot}[1]{\ensuremath{\ddot{\widetilde{#1}}}}
+\newcommand{\perturbdddot}[1]{\ensuremath{\dddot{\widetilde{#1}}}}
+   % test: \perturb{x}       % produces a widetilde over x
+   % test: \perturbdot{x}    % produces a widetilde over x and a dot over that
+   % test: \perturbddot{x}   % produces a widetilde over x and a double dot over that
+   % test: \perturbdddot{x}  % produces a widetilde over x and a double dot over that and a dot over that
+
+\newcommand{\Nominal}{\ensuremath{\mathrm{nom}}}
+\newcommand{\Desired}{\ensuremath{\mathrm{des}}}
+\newcommand{\Specified}{\ensuremath{\mathrm{spec}}}
+\newcommand{\Disturbance}{\ensuremath{\mathrm{disturbance}}}
+   % test: \Nominal         % useful for subscript on Taylor series (rather than listing the entire nominal solution)
+   % test: \Desired
+   % test: \Specified
+   % test: \Disturbance
+
+\newcommand{\nominal}[1]{\ensuremath{{\/#1}_\Nominal}}
+\newcommand{\nominaldot}[1]{\ensuremath{{\/\dot{#1}}_\Nominal}}
+\newcommand{\nominalddot}[1]{\ensuremath{{\/\ddot{#1}}_\Nominal}}
+   % test: \nominal{x}      % produces a subscript ``nominal'' to the lower right of x
+   % test: \nominaldot{x}   % produces a subscript ``nominal'' to the lower right of \dot{x}
+   % test: \nominalddot{x}  % produces a subscript ``nominal'' to the lower right of \ddot{x}
+
+\newcommand{\desired}[1]{\ensuremath{{\/#1}_\Desired}}
+\newcommand{\desiredDot}[1]{\ensuremath{{\/\dot{#1}}_\Desired}}
+\newcommand{\desiredDdot}[1]{\ensuremath{{\/\ddot{#1}}_\Desired}}
+
+\newcommand{\specified}[1]{\ensuremath{{\/#1}_\Specified}}
+\newcommand{\specifiedDot}[1]{\ensuremath{{\/\dot{#1}}_\Specified}}
+\newcommand{\specifiedDdot}[1]{\ensuremath{{\/\ddot{#1}}_\Specified}}
+
+\newcommand{\disturbance}[1]{\ensuremath{{\/#1}_\Disturbance}}
+\newcommand{\disturbancedot}[1]{\ensuremath{{\/\dot{#1}}_\Disturbance}}
+   % test: \disturbance{x}     % produces a subscript ``disturbance'' to the lower right of x
+   % test: \disturbancedot{x}  % produces a subscript ``disturbance'' to the lower right of \dot{x}
+
+\newcommand{\naturalLength}[1]{\ensuremath{L^{#1}_{n}}}      % test: \naturalLength{B}     % natural length of spring B
+\newcommand{\equilibriumLength}[1]{\ensuremath{L^{#1}_{eq}}} % test: \equilibriumLength{B} % equilibrium length of spring B
+
+%%%%%%%%%%%%%%%%%%%%%% COMMON CONTROLS CONSTANTS %%%%%%%%%%%%%%%%%%
+
+\newcommand{\timeConstant}{\ensuremath{{\tau_{c}}}}                     % test: \timeConstant % Need extra parens for double subscripting
+\newcommand{\tauPeriod}{\ensuremath{{\tau_{\textrm{period}}}}}          % test: \tauPeriod    % Need extra parens for double subscripting
+\newcommand{\decayRatio}{\ensuremath{\textrm{decayRatio}}}              % test: \decayRatio
+\newcommand{\logarithmicDecrement}{\ensuremath{\textrm{logDecrement}}}  % test: \logarithmicDecrement
+\newcommand{\tsettling}{\ensuremath{t_{\textrm{settling}}}}
+\newcommand{\settlingRatio}{\ensuremath{\textrm{settlingRatio}}}
+\newcommand{\trise}{\ensuremath{t_{\textrm{rise}}}}
+\newcommand{\tdelay}{\ensuremath{t_{\textrm{delay}}}}
+\newcommand{\tpeak}{\ensuremath{t_{\textrm{peak}}}}
+\newcommand{\tfinal}{\ensuremath{t_{\textrm{final}}}}
+\newcommand{\maximumOvershoot}{\ensuremath{M_p}}
+\newcommand{\maximumOvershootPercent}{\ensuremath{\maximumOvershoot^{\%}}}
+\newcommand{\wn}{\ensuremath{\omega_n}}                                       % test: \wn  % Natural frequency
+\newcommand{\wdamped}{\ensuremath{\omega_d}}                                  % test: \wdamped  % Damped natural frequency (\wd is already in use by Latex)
+\newcommand{\wforcing}{\ensuremath{\omega_f}}                                 % test: \wforcing  % Forcing frequency
+\newcommand{\zzeta}{\ensuremath{\zeta}}                                       % test: \zzeta  % Use \zzeta instead of $\zeta$
+
+\newcommand{\kp}{\ensuremath{k_p}}  % test: \kp     % Feedback control constant (scalar)
+\newcommand{\kd}{\ensuremath{k_d}}  % test: \kd     % Feedback control constant (scalar)
+\newcommand{\ki}{\ensuremath{k_i}}  % test: \ki     % Feedback control constant (scalar)
+\newcommand{\kv}{\ensuremath{k_v}}  % test: \kv     % Feedback control constant (scalar)
+\newcommand{\Kp}{\ensuremath{K_p}}  % test: \Kp     % Feedback control constant (matrix)
+\newcommand{\Kd}{\ensuremath{K_d}}  % test: \Kd     % Feedback control constant (matrix)
+\newcommand{\Ki}{\ensuremath{K_i}}  % test: \Ki     % Feedback control constant (matrix)
+\newcommand{\Kv}{\ensuremath{K_v}}  % test: \Kv     % Feedback control constant (matrix)
+
+\newcommand{\FeedForwardName}{\textrm{Feed-forward}}                          % Feed-forward
+\newcommand{\FeedForwardControlName}{\textrm{Feed-forward control}}           % Feed-forward/computed torque control
+\newcommand{\feedForwardControlName}{\textrm{feed-forward control}}           % feed-forward/computed torque control
+\newcommand{\computedTorqueCombo}[1]{\ensuremath{A_{#1}}}             % test: \computedTorqueCombo{1}  % \computedTorqueCombo{} or \computedTorqueCombo{Q} Computed torque desired acceleration with feedback (Keith Reckdahl used A in his thesis)
+
+\newcommand{\differentialS}{\differential{s}}                                  % TODO notest: \differentialS  % Differential of s, i.e., ds
+\newcommand{\differentialT}{\differential{t}}                                  % TODO notest: \differentialT  % Differential of t, i.e., dt
+\newcommand{\tbar}{\ensuremath{\bar{t}}}                                       % test: \tbar  % Dummy variable associated with time t
+\newcommand{\differentialTbar}{\differential{\tbar}}                           % TODO notest: \differentialTbar  % Differential of \tbar, i.e., d{\tbar}
+\newcommand{\DC}{DC}                                                           % test: \DC  % For DC motor
+\newcommand{\AC}{DC}                                                           % test: \AC  % For AC motor
+\newcommand{\kmt}{\ensuremath{k_m}}                                            % test: \kmt  % Motor torque constant
+\newcommand{\kmv}{\ensuremath{k_v}}                                            % test: \kmv  % Motor voltage (speed) constant
+\newcommand{\volt}[1]{{\ensuremath{v_{#1}}}}                          % test: \volt{1}  % \volt{i} produces v_i
+\newcommand{\nVolt}[1]{{\ensuremath{\nominal{\volt{#1}}}}}            % test: \nVolt{1}  % \nVolt{i} Nominal voltage (for control)
+\newcommand{\pVolt}[1]{{\ensuremath{\perturb{\volt{}}_{#1}}}}         % test: \pVolt{1}  % \pVolt{i} Perturbation of voltage (for control)
+\newcommand{\current}[1]{{\ensuremath{i_{#1}}}}                       % test: \current{1}  % \current{a} produces i_a
+\newcommand{\nCurrent}[1]{{\ensuremath{\nominal{\current{#1}}}}}      % test: \nCurrent{1}  % \nCurrent{a} Nominal current (for control)
+\newcommand{\pCurrent}[1]{{\ensuremath{\perturb{\current{}}_{#1}}}}   % test: \pCurrent{1}  % \pCurrent{a} Perturbation of current (for control)
+
+
+\newcommand{\motorOmega}{\ensuremath{\omega_m}}                                % test: \motorOmega  % Motor angular speed w_m
+\newcommand{\motorOmegadot}{\ensuremath{\dot{\omega}_m}}                       % test: \motorOmegadot  % Motor angular speed w_m
+\newcommand{\motorOmegaddot}{\ensuremath{\ddot{\omega}_m}}                     % test: \motorOmegaddot  % Motor angular speed \ddot{w}_m
+\newcommand{\motorVoltage}{\volt{m}}                                           % test: \motorVoltage  % Motor voltage v_m
+\newcommand{\motorCurrent}{\ensuremath{i_m}}                                   % test: \motorCurrent  % Motor current i_m
+\newcommand{\motorCurrentdot}{\ensuremath{\dot{i}_m}}                          % test: \motorCurrentdot  % Motor current \dot{i}_m
+\newcommand{\motorCurrentddot}{\ensuremath{\ddot{i}_m}}                        % test: \motorCurrentddot  % Motor current \ddot{i}_m
+\newcommand{\motorTorque}{\ensuremath{T_m}}                                    % test: \motorTorque  % Motor torque  T_m
+\newcommand{\nMotorTorque}{\ensuremath{\nominal{\motorTorque}}}                % test: \nMotorTorque  % Nominal motor torque (for control)
+\newcommand{\pMotorTorque}{\ensuremath{\perturb{T}_m}}                         % test: \pMotorTorque  % Perturbation of motor torque (for control)
+\newcommand{\motorLoad}{\ensuremath{T_{Load}}}                                 % test: \motorLoad  % Motor load
+\newcommand{\dMotorLoad}{\ensuremath{\dot{T}_{Load}}}                          % test: \dMotorLoad  % 1st-time derivative of motor load
+\newcommand{\ddMotorLoad}{\ensuremath{\ddot{T}_{Load}}}                        % test: \ddMotorLoad  % 2nd-time derivative of motor load
+
+\newcommand{\omegadot}{\ensuremath{\dot\omega}}                                % test: \omegadot  % \dot{\omega}
+\newcommand{\omegaddot}{\ensuremath{\ddot\omega}}                              % test: \omegaddot  % \ddot{\omega}
+\newcommand{\Omegadot}{\ensuremath{\dot\Omega}}                                % test: \Omegadot  % \dot{\Omega}
+\newcommand{\Omegaddot}{\ensuremath{\ddot\Omega}}                              % test: \Omegaddot  % \ddot{\Omega}
+\newcommand{\mOmega}{\ensuremath{\omega}}                                      % test: \mOmega  % Motor omega
+\newcommand{\nOmega}{\nominal{\mOmega}}                                        % test: \nOmega  % Nominal value for omega
+\newcommand{\nOmegadot}{\nominaldot{\mOmega}}                                  % test: \nOmegadot  % Nominal value for \dot{omega}
+\newcommand{\nOmegaddot}{\nominalddot{\mOmega}}                                % test: \nOmegaddot  % Nominal value for \dot{omega}
+\newcommand{\pOmega}{\perturb{\mOmega}}                                        % test: \pOmega  % Perturbation of omega (error in omega)
+\newcommand{\pOmegadot}{\perturbdot{\mOmega}}                                  % test: \pOmegadot  % Perturbation of \dot{omega}
+\newcommand{\pOmegaddot}{\perturbddot{\mOmega}}                                % test: \pOmegaddot  % Perturbation of \ddot{omega}
+\newcommand{\pOmegadddot}{\perturbdddot{\mOmega}}                              % test: \pOmegadddot  % Perturbation of \dddot{omega}
+\newcommand{\disturbT}{\disturbance{T}}                                        % test: \disturbT  % $T_{disturbance}$
+\newcommand{\disturbTdot}{\ensuremath{\dot{T}_\Disturbance}}                   % test: \disturbTdot  % \dot{T}_disturbance
+
+\newcommand{\vdot}{\ensuremath{\dot{v}}}                                       % test: \vdot  % \dot{v}
+\newcommand{\nv}{\nominal{v}}                                                  % test: \nv  % Nominal value for v
+\newcommand{\nvdot}{\nominaldot{v}}                                            % test: \nvdot  % \dot{v}_nominal
+\newcommand{\pv}{\perturb{v}}                                                  % test: \pv  % Perturbation of v (error in v)
+\newcommand{\pvdot}{\perturbdot{v}}                                            % test: \pvdot  % Perturbation of \dot{v}
+\newcommand{\pvddot}{\perturbddot{v}}                                          % test: \pvddot  % Perturbation of \ddot{v}
+\newcommand{\disturbF}{\disturbance{F}}                                        % test: \disturbF  % $F_{disturbance}$
+\newcommand{\disturbFdot}{\ensuremath{\dot{F}_\Disturbance}}                   % test: \disturbFdot  % \dot{F}_disturbance
+\newcommand{\Fc}{\ensuremath{F_c}}                                             % test: \Fc  % $F_c$
+\newcommand{\nFc}{\ensuremath{\nominal{\Fc}}}                                  % test: \nFc  % Nominal $F_c$ (for control)
+\newcommand{\pFc}{\ensuremath{\perturb{F}_c}}                                  % test: \pFc  % Perturbation of $F_c$ (for control)
+
+\newcommand{\rA}{\ensuremath{r_A}}                                             % test: \rA  % $r_A$
+\newcommand{\rB}{\ensuremath{r_B}}                                             % test: \rB  % $r_B$
+
+\newcommand{\Lss}{\ensuremath{\steadystate{L}}}                                % test: \Lss  % \steadystate{L}
+\newcommand{\Hss}{\ensuremath{\steadystate{H}}}                                % test: \Hss  % \steadystate{H}
+\newcommand{\ess}{\ensuremath{\steadystate{e}}}                                % test: \ess  % \steadystate{e}
+\newcommand{\fss}{\ensuremath{\steadystate{f}}}                                % test: \fss  % \steadystate{f}
+\newcommand{\rss}{\ensuremath{\steadystate{r}}}                                % test: \rss  % \steadystate{r}
+\newcommand{\sss}{\ensuremath{\steadystate{s}}}                                % test: \sss  % \steadystate{s}
+\newcommand{\xsst}{\ensuremath{\steadystate{x}}}                               % test: \xsst  % \steadystate{x}
+\newcommand{\yss}{\ensuremath{\steadystate{y}}}                                % test: \yss  % \steadystate{y}
+\newcommand{\zsst}{\ensuremath{\steadystate{z}}}                               % test: \zsst  % \steadystate{z}
+\newcommand{\xssi}[1]{{\ensuremath{{\steadystate{x}}_{#1}}}}                     % test: \xssi{1}  % \steadystate{x}_i TODO(aleeper): Had to remove \xss
+\newcommand{\Xss}{\ensuremath{\steadystate{X}}}                                % test: \Xss  % \steadystate{X}
+\newcommand{\Yss}{\ensuremath{\steadystate{Y}}}                                % test: \Yss  % \steadystate{Y}
+
+\newcommand{\Ldot}{\ensuremath{\dot{L}}}                                       % test: \Ldot  % \dot{L}
+\newcommand{\Hdot}{\ensuremath{\dot{H}}}                                       % test: \Hdot  % \dot{H}
+\newcommand{\fdot}{\ensuremath{\dot{f}}}                                       % test: \fdot  % \dot{f}
+\newcommand{\rdot}{\ensuremath{\dot{r}}}                                       % test: \rdot  % \dot{r}
+\newcommand{\sdot}{\ensuremath{\dot{s}}}                                       % test: \sdot  % \dot{s}
+\newcommand{\xdot}{\ensuremath{\dot{x}}}                                       % test: \xdot  % \dot{x}
+\newcommand{\ydot}{\ensuremath{\dot{y}}}                                       % test: \ydot  % \dot{y}
+\newcommand{\zdot}{\ensuremath{\dot{z}}}                                       % test: \zdot  % \dot{z}
+\newcommand{\xyzdot}{\xdot, \ydot, \zdot}                                      % test: \xyzdot  % $\xdot, \ydot, \zdot$
+\newcommand{\xdoti}[1]{{\ensuremath{\xdot_{#1}}}}                     % test: \xdoti{1}  % \dot{x}_i
+\newcommand{\Xdot}{\ensuremath{\dot{X}}}                                       % test: \Xdot  % \dot{X}
+\newcommand{\Ydot}{\ensuremath{\dot{Y}}}                                       % test: \Ydot  % \dot{Y}
+\newcommand{\xmax}{\ensuremath{x_{\textrm{max}}}}                              % test: \xmax  % $x_{max}$
+\newcommand{\ymax}{\ensuremath{y_{\textrm{max}}}}                              % test: \ymax  % $y_{max}$
+\newcommand{\zmax}{\ensuremath{z_{\textrm{max}}}}                              % test: \zmax  % $z_{max}$
+\newcommand{\xmin}{\ensuremath{x_{\textrm{min}}}}                              % test: \xmin  % $x_{min}$
+\newcommand{\ymin}{\ensuremath{y_{\textrm{min}}}}                              % test: \ymin  % $y_{min}$
+\newcommand{\zmin}{\ensuremath{z_{\textrm{min}}}}                              % test: \zmin  % $z_{min}$
+\newcommand{\xhatmax}{\ensuremath{\widehat{x}_{\textrm{max}}}}                 % test: \xhatmax  % $\hat{x}_{max}$
+\newcommand{\yhatmax}{\ensuremath{\widehat{y}_{\textrm{max}}}}                 % test: \yhatmax  % $\hat{y}_{max}$
+\newcommand{\zhatmax}{\ensuremath{\widehat{z}_{\textrm{max}}}}                 % test: \zhatmax  % $\hat{z}_{max}$
+\newcommand{\xhatmin}{\ensuremath{\widehat{x}_{\textrm{min}}}}                 % test: \xhatmin  % $\hat{x}_{min}$
+\newcommand{\yhatmin}{\ensuremath{\widehat{y}_{\textrm{min}}}}                 % test: \yhatmin  % $\hat{y}_{min}$
+\newcommand{\zhatmin}{\ensuremath{\widehat{z}_{\textrm{min}}}}                 % test: \zhatmin  % $\hat{z}_{min}$
+
+\newcommand{\xA}{\ensuremath{x_A}}                                             % test: \xA  % x_A
+\newcommand{\xB}{\ensuremath{x_B}}                                             % test: \xB  % x_B
+\newcommand{\xC}{\ensuremath{x_C}}                                             % test: \xC  % x_C
+\newcommand{\xD}{\ensuremath{x_D}}                                             % test: \xD  % x_D
+\newcommand{\xN}{\ensuremath{x_N}}                                             % test: \xN  % x_N
+\newcommand{\xP}{\ensuremath{x_P}}                                             % test: \xP  % x_P
+\newcommand{\xQ}{\ensuremath{x_Q}}                                             % test: \xQ  % x_Q
+
+\newcommand{\yA}{\ensuremath{y_A}}                                             % test: \yA  % y_A
+\newcommand{\yB}{\ensuremath{y_B}}                                             % test: \yB  % y_B
+\newcommand{\yC}{\ensuremath{y_C}}                                             % test: \yC  % y_C
+\newcommand{\yD}{\ensuremath{y_D}}                                             % test: \yD  % y_D
+\newcommand{\yN}{\ensuremath{y_N}}                                             % test: \yN  % y_N
+\newcommand{\yP}{\ensuremath{y_P}}                                             % test: \yP  % y_P
+\newcommand{\yQ}{\ensuremath{y_Q}}                                             % test: \yQ  % y_Q
+
+\newcommand{\zA}{\ensuremath{z_A}}                                             % test: \zA  % z_A
+\newcommand{\zB}{\ensuremath{z_B}}                                             % test: \zB  % z_B
+\newcommand{\zC}{\ensuremath{z_C}}                                             % test: \zC  % z_C
+\newcommand{\zD}{\ensuremath{z_D}}                                             % test: \zD  % z_D
+\newcommand{\zN}{\ensuremath{z_N}}                                             % test: \zN  % z_N
+\newcommand{\zP}{\ensuremath{z_P}}                                             % test: \zP  % z_P
+\newcommand{\zQ}{\ensuremath{z_Q}}                                             % test: \zQ  % z_Q
+
+\newcommand{\xyzA}{\xA, \yA, \zA}                                              % test: \xyzA  % xA, yA, zA
+\newcommand{\xyzB}{\xB, \yB, \zB}                                              % test: \xyzB  % xB, yB, zB
+\newcommand{\xyzC}{\xC, \yC, \zC}                                              % test: \xyzC  % xC, yC, zC
+\newcommand{\xyzD}{\xD, \yD, \zD}                                              % test: \xyzD  % xD, yD, zD
+\newcommand{\xyzN}{\xN, \yN, \zN}                                              % test: \xyzN  % xN, yN, zN
+\newcommand{\xyzP}{\xP, \yP, \zP}                                              % test: \xyzP  % xP, yP, zP
+\newcommand{\xyzQ}{\xQ, \yQ, \zQ}                                              % test: \xyzQ  % xQ, yQ, zQ
+\newcommand{\xdotA}{\ensuremath{\xdot_A}}                                      % test: \xdotA  % \dot{x}_A
+\newcommand{\xdotB}{\ensuremath{\xdot_B}}                                      % test: \xdotB  % \dot{x}_B
+\newcommand{\xdotC}{\ensuremath{\xdot_C}}                                      % test: \xdotC  % \dot{x}_C
+\newcommand{\xdotD}{\ensuremath{\xdot_D}}                                      % test: \xdotD  % \dot{x}_D
+\newcommand{\xddotA}{\ensuremath{\xddot_A}}                                    % test: \xddotA  % \ddot{x}_A
+\newcommand{\xddotB}{\ensuremath{\xddot_B}}                                    % test: \xddotB  % \ddot{x}_B
+\newcommand{\xddotC}{\ensuremath{\xddot_C}}                                    % test: \xddotC  % \ddot{x}_C
+\newcommand{\xddotD}{\ensuremath{\xddot_D}}                                    % test: \xddotD  % \ddot{x}_D
+
+\newcommand{\xDesired}{\desired{x}}                                            % test: \xDesired  %             x_{desired} (or nominal)
+\newcommand{\xDesiredDot}{\desiredDot{x}}                                      % test: \xDesiredDot  %       \dot{x}_{desired} (or nominal)
+\newcommand{\xDesiredDdot}{\desiredDdot{x}}                                    % test: \xDesiredDdot  %      \ddot{x}_{desired} (or nominal)
+
+\newcommand{\QDesired}{\desired{Q}}                                            % test: \QDesired  %             Q_{desired} (or nominal)
+\newcommand{\QDesiredDot}{\desiredDot{Q}}                                      % test: \QDesiredDot  %       \dot{Q}_{desired} (or nominal)
+\newcommand{\QDesiredDdot}{\desiredDdot{Q}}                                    % test: \QDesiredDdot  %      \ddot{Q}_{desired} (or nominal)
+
+\newcommand{\XDesired}{\desired{X}}                                            % test: \XDesired  %             X_{desired} (or nominal)
+\newcommand{\XDesiredDot}{\desiredDot{X}}                                      % test: \XDesiredDot  %       \dot{X}_{desired} (or nominal)
+\newcommand{\XDesiredDdot}{\desiredDdot{X}}                                    % test: \XDesiredDdot  %      \ddot{X}_{desired} (or nominal)
+
+\newcommand{\UDesired}{\desired{U}}                                            % test: \UDesired  %             U_{desired} (or nominal)
+\newcommand{\UDesiredDot}{\desiredDot{U}}                                      % test: \UDesiredDot  %       \dot{U}_{desired} (or nominal)
+\newcommand{\vDesired}{\desired{v}}                                            % test: \vDesired  %             v_{desired} (or nominal)
+\newcommand{\vDesiredDot}{\desiredDot{v}}                                      % test: \vDesiredDot  %       \dot{v}_{desired} (or nominal)
+\newcommand{\VDesired}{\desired{V}}                                            % test: \VDesired  %             V_{desired} (or nominal)
+\newcommand{\VDesiredDot}{\desiredDot{V}}                                      % test: \VDesiredDot  %       \dot{V}_{desired} (or nominal)
+\newcommand{\thetaDesired}{\desired{\theta}}                                   % test: \thetaDesired  %        \theta_{desired} (or nominal)
+\newcommand{\thetaDesiredDot}{\desiredDot{\theta}}                             % test: \thetaDesiredDot  %  \dot{\theta}_{desired} (or nominal)
+\newcommand{\thetaDesiredDdot}{\desiredDdot{\theta}}                           % test: \thetaDesiredDdot  % \ddot{\theta}_{desired} (or nominal)
+
+\newcommand{\xSpecified}{\specified{x}}                                       % test: \xSpecified  %             x_{specified} (or nominal)
+\newcommand{\xSpecifiedDot}{\specifiedDot{x}}                                 % test: \xSpecifiedDot  %       \dot{x}_{specified} (or nominal)
+\newcommand{\xSpecifiedDdot}{\specifiedDdot{x}}                               % test: \xSpecifiedDdot  %      \ddot{x}_{specified} (or nominal)
+\newcommand{\QSpecified}{\specified{Q}}                                       % test: \QSpecified  %             Q_{specified} (or nominal)
+\newcommand{\QSpecifiedDot}{\specifiedDot{Q}}                                 % test: \QSpecifiedDot  %       \dot{Q}_{specified} (or nominal)
+\newcommand{\QSpecifiedDdot}{\specifiedDdot{Q}}                               % test: \QSpecifiedDdot  %      \ddot{Q}_{specified} (or nominal)
+\newcommand{\XSpecified}{\specified{X}}                                       % test: \XSpecified  %             X_{specified} (or nominal)
+\newcommand{\XSpecifiedDot}{\specifiedDot{X}}                                 % test: \XSpecifiedDot  %       \dot{X}_{specified} (or nominal)
+\newcommand{\XSpecifiedDdot}{\specifiedDdot{X}}                               % test: \XSpecifiedDdot  %      \ddot{X}_{specified} (or nominal)
+\newcommand{\USpecified}{\specified{U}}                                       % test: \USpecified  %             U_{specified} (or nominal)
+\newcommand{\USpecifiedDot}{\specifiedDot{U}}                                 % test: \USpecifiedDot  %       \dot{U}_{specified} (or nominal)
+\newcommand{\VSpecified}{\specified{V}}                                       % test: \VSpecified  %             V_{specified} (or nominal)
+\newcommand{\VSpecifiedDot}{\specifiedDot{V}}                                 % test: \VSpecifiedDot  %       \dot{V}_{specified} (or nominal)
+\newcommand{\thetaSpecified}{\specified{\theta}}                              % test: \thetaSpecified  %        \theta_{specified} (or nominal)
+\newcommand{\thetaSpecifiedDot}{\specifiedDot{\theta}}                        % test: \thetaSpecifiedDot  %  \dot{\theta}_{specified} (or nominal)
+\newcommand{\thetaSpecifiedDdot}{\specifiedDdot{\theta}}                      % test: \thetaSpecifiedDdot  % \ddot{\theta}_{specified} (or nominal)
+
+
+\newcommand{\xAdot}{\ensuremath{\dot{x}_A}}                               % test: \xAdot  % \dot{x}_A
+\newcommand{\xBdot}{\ensuremath{\dot{x}_B}}                               % test: \xBdot  % \dot{x}_B
+\newcommand{\xCdot}{\ensuremath{\dot{x}_C}}                               % test: \xCdot  % \dot{x}_C
+\newcommand{\xDdot}{\ensuremath{\dot{x}_D}}                               % test: \xDdot  % \dot{x}_D
+\newcommand{\xNdot}{\ensuremath{\dot{x}_N}}                               % test: \xNdot  % \dot{x}_N
+\newcommand{\xPdot}{\ensuremath{\dot{x}_P}}                               % test: \xPdot  % \dot{x}_P
+\newcommand{\xQdot}{\ensuremath{\dot{x}_Q}}                               % test: \xQdot  % \dot{x}_Q
+\newcommand{\yAdot}{\ensuremath{\dot{y}_A}}                               % test: \yAdot  % \dot{y}_A
+\newcommand{\yBdot}{\ensuremath{\dot{y}_B}}                               % test: \yBdot  % \dot{y}_B
+\newcommand{\yCdot}{\ensuremath{\dot{y}_C}}                               % test: \yCdot  % \dot{y}_C
+\newcommand{\yDdot}{\ensuremath{\dot{y}_D}}                               % test: \yDdot  % \dot{y}_D
+\newcommand{\yNdot}{\ensuremath{\dot{y}_N}}                               % test: \yNdot  % \dot{y}_N
+\newcommand{\yPdot}{\ensuremath{\dot{y}_P}}                               % test: \yPdot  % \dot{y}_P
+\newcommand{\yQdot}{\ensuremath{\dot{y}_Q}}                               % test: \yQdot  % \dot{y}_Q
+\newcommand{\zAdot}{\ensuremath{\dot{z}_A}}                               % test: \zAdot  % \dot{z}_A
+\newcommand{\zBdot}{\ensuremath{\dot{z}_B}}                               % test: \zBdot  % \dot{z}_B
+\newcommand{\zCdot}{\ensuremath{\dot{z}_C}}                               % test: \zCdot  % \dot{z}_C
+\newcommand{\zDdot}{\ensuremath{\dot{z}_D}}                               % test: \zDdot  % \dot{z}_D
+\newcommand{\zNdot}{\ensuremath{\dot{z}_N}}                               % test: \zNdot  % \dot{z}_N
+\newcommand{\zPdot}{\ensuremath{\dot{z}_P}}                               % test: \zPdot  % \dot{z}_P
+\newcommand{\zQdot}{\ensuremath{\dot{z}_Q}}                               % test: \zQdot  % \dot{z}_Q
+
+\newcommand{\xyzAdot}{\xAdot, \yAdot, \zAdot}                             % test: \xyzAdot  % \dot{x}_A, \dot{y}_A, \dot{z}_A
+\newcommand{\xyzBdot}{\xBdot, \yBdot, \zBdot}                             % test: \xyzBdot  % \dot{x}_B, \dot{y}_B, \dot{z}_B
+\newcommand{\xyzCdot}{\xCdot, \yCdot, \zCdot}                             % test: \xyzCdot  % \dot{x}_C, \dot{y}_C, \dot{z}_C
+\newcommand{\xyzDdot}{\xDdot, \yDdot, \zDdot}                             % test: \xyzDdot  % \dot{x}_D, \dot{y}_D, \dot{z}_D
+\newcommand{\xyzNdot}{\xNdot, \yNdot, \zNdot}                             % test: \xyzNdot  % \dot{x}_N, \dot{y}_N, \dot{z}_N
+\newcommand{\xyzPdot}{\xPdot, \yPdot, \zPdot}                             % test: \xyzPdot  % \dot{x}_P, \dot{y}_P, \dot{z}_P
+\newcommand{\xyzQdot}{\xQdot, \yQdot, \zQdot}                             % test: \xyzQdot  % \dot{x}_Q, \dot{y}_Q, \dot{z}_Q
+
+\newcommand{\xAddot}{\ensuremath{\ddot{x}_A}}                             % test: \xAddot  % \ddot{x}_A
+\newcommand{\xBddot}{\ensuremath{\ddot{x}_B}}                             % test: \xBddot  % \ddot{x}_B
+\newcommand{\xCddot}{\ensuremath{\ddot{x}_C}}                             % test: \xCddot  % \ddot{x}_C
+\newcommand{\xDddot}{\ensuremath{\ddot{x}_D}}                             % test: \xDddot  % \ddot{x}_D
+\newcommand{\xNddot}{\ensuremath{\ddot{x}_N}}                             % test: \xNddot  % \ddot{x}_N
+\newcommand{\xPddot}{\ensuremath{\ddot{x}_P}}                             % test: \xPddot  % \ddot{x}_P
+\newcommand{\xQddot}{\ensuremath{\ddot{x}_Q}}                             % test: \xQddot  % \ddot{x}_Q
+\newcommand{\yAddot}{\ensuremath{\ddot{y}_A}}                             % test: \yAddot  % \ddot{y}_A
+\newcommand{\yBddot}{\ensuremath{\ddot{y}_B}}                             % test: \yBddot  % \ddot{y}_B
+\newcommand{\yCddot}{\ensuremath{\ddot{y}_C}}                             % test: \yCddot  % \ddot{y}_C
+\newcommand{\yDddot}{\ensuremath{\ddot{y}_D}}                             % test: \yDddot  % \ddot{y}_D
+\newcommand{\yNddot}{\ensuremath{\ddot{y}_N}}                             % test: \yNddot  % \ddot{y}_N
+\newcommand{\yPddot}{\ensuremath{\ddot{y}_P}}                             % test: \yPddot  % \ddot{y}_P
+\newcommand{\yQddot}{\ensuremath{\ddot{y}_Q}}                             % test: \yQddot  % \ddot{y}_Q
+\newcommand{\zAddot}{\ensuremath{\ddot{z}_A}}                             % test: \zAddot  % \ddot{z}_A
+\newcommand{\zBddot}{\ensuremath{\ddot{z}_B}}                             % test: \zBddot  % \ddot{z}_B
+\newcommand{\zCddot}{\ensuremath{\ddot{z}_C}}                             % test: \zCddot  % \ddot{z}_C
+\newcommand{\zDddot}{\ensuremath{\ddot{z}_D}}                             % test: \zDddot  % \ddot{z}_D
+\newcommand{\zNddot}{\ensuremath{\ddot{z}_N}}                             % test: \zNddot  % \ddot{z}_N
+\newcommand{\zPddot}{\ensuremath{\ddot{z}_P}}                             % test: \zPddot  % \ddot{z}_P
+\newcommand{\zQddot}{\ensuremath{\ddot{z}_Q}}                             % test: \zQddot  % \ddot{z}_Q
+
+\newcommand{\xyzAddot}{\xAddot, \yAddot, \zAddot}                         % test: \xyzAddot  % \ddot{x}_A, \ddot{y}_A, \ddot{z}_A
+\newcommand{\xyzBddot}{\xBddot, \yBddot, \zBddot}                         % test: \xyzBddot  % \ddot{x}_B, \ddot{y}_B, \ddot{z}_B
+\newcommand{\xyzCddot}{\xCddot, \yCddot, \zCddot}                         % test: \xyzCddot  % \ddot{x}_C, \ddot{y}_C, \ddot{z}_C
+\newcommand{\xyzDddot}{\xDddot, \yDddot, \zDddot}                         % test: \xyzDddot  % \ddot{x}_D, \ddot{y}_D, \ddot{z}_D
+\newcommand{\xyzNddot}{\xNddot, \yNddot, \zNddot}                         % test: \xyzNddot  % \ddot{x}_N, \ddot{y}_N, \ddot{z}_N
+\newcommand{\xyzPddot}{\xPddot, \yPddot, \zPddot}                         % test: \xyzPddot  % \ddot{x}_P, \ddot{y}_P, \ddot{z}_P
+\newcommand{\xyzQddot}{\xQddot, \yQddot, \zQddot}                         % test: \xyzQddot  % \ddot{x}_Q, \ddot{y}_Q, \ddot{z}_Q
+
+\newcommand{\Lddot}{\ensuremath{\ddot{L}}}                                % test: \Lddot  % \ddot{L}
+\newcommand{\Hddot}{\ensuremath{\ddot{H}}}                                % test: \Hddot  % \ddot{H}
+\newcommand{\fddot}{\ensuremath{\ddot{f}}}                                % test: \fddot  % \ddot{f}
+\newcommand{\rddot}{\ensuremath{\ddot{r}}}                                % test: \rddot  % \ddot{r}
+\newcommand{\sddot}{\ensuremath{\ddot{s}}}                                % test: \sddot  % \ddot{s}
+\newcommand{\xddot}{\ensuremath{\ddot{x}}}                                % test: \xddot  % \ddot{x}
+\newcommand{\xdddot}{\ensuremath{\dddot{x}}}                              % test: \xdddot  % \dddot{x}
+\newcommand{\xZero}{\ensuremath{x_0}}                                     % test: \xZero  % $x_0$
+\newcommand{\xZerodot}{\ensuremath{\dot{x_0}}}                            % test: \xZerodot  % \dot{x_0}
+\newcommand{\xZeroddot}{\ensuremath{\ddot{x_0}}}                          % test: \xZeroddot  % \ddot{x_0}
+\newcommand{\xZerodddot}{\ensuremath{\dddot{x_0}}}                        % test: \xZerodddot  % \dddot{x_0}
+\newcommand{\xOne}{\ensuremath{x_1}}                                      % test: \xOne  % $x_1$
+\newcommand{\xOnedot}{\ensuremath{\dot{x_1}}}                             % test: \xOnedot  % \dot{x_1}
+\newcommand{\xOneddot}{\ensuremath{\ddot{x_1}}}                           % test: \xOneddot  % \ddot{x_1}
+\newcommand{\xOnedddot}{\ensuremath{\dddot{x_1}}}                         % test: \xOnedddot  % \dddot{x_1}
+\newcommand{\xTwo}{\ensuremath{x_2}}                                      % test: \xTwo  % $x_2$
+\newcommand{\xTwodot}{\ensuremath{\dot{x_2}}}                             % test: \xTwodot  % \dot{x_2}
+\newcommand{\xTwoddot}{\ensuremath{\ddot{x_2}}}                           % test: \xTwoddot  % \ddot{x_2}
+\newcommand{\xTwodddot}{\ensuremath{\dddot{x_2}}}                         % test: \xTwodddot  % \dddot{x_2}
+\newcommand{\xThree}{\ensuremath{x_3}}                                    % test: \xThree  % $x_3$
+\newcommand{\xThreedot}{\ensuremath{\dot{x_3}}}                           % test: \xThreedot  % \dot{x_3}
+\newcommand{\xThreeddot}{\ensuremath{\ddot{x_3}}}                         % test: \xThreeddot  % \ddot{x_3}
+\newcommand{\xThreedddot}{\ensuremath{\dddot{x_3}}}                       % test: \xThreedddot  % \dddot{x_3}
+\newcommand{\yddot}{\ensuremath{\ddot{y}}}                                % test: \yddot  % \ddot{y}
+\newcommand{\ydddot}{\ensuremath{\dddot{y}}}                              % test: \ydddot  % \dddot{y}
+\newcommand{\zddot}{\ensuremath{\ddot{z}}}                                % test: \zddot  % \ddot{z}
+\newcommand{\Xddot}{\ensuremath{\ddot{X}}}                                % test: \Xddot  % \ddot{X}
+\newcommand{\Xdddot}{\ensuremath{\dddot{X}}}                              % test: \Xdddot  % \dddot{X}
+\newcommand{\Yddot}{\ensuremath{\ddot{Y}}}                                % test: \Yddot  % \ddot{Y}
+\newcommand{\Ydddot}{\ensuremath{\dddot{Y}}}                              % test: \Ydddot  % \dddot{Y}
+\newcommand{\px}{\ensuremath{\perturb{x}}}                                % test: \px  % \perturb{x}
+\newcommand{\py}{\ensuremath{\perturb{y}}}                                % test: \py  % \perturb{y}
+\newcommand{\pz}{\ensuremath{\perturb{z}}}                                % test: \pz  % \perturb{z}
+\newcommand{\pQ}{\ensuremath{\perturb{Q}}}                                % test: \pQ  % \perturb{Q}
+\newcommand{\pqr}[1][r]{\ensuremath{\perturb{q}_{#1}}}           % test: \pqr{1}  % \perturb{q}_r
+\newcommand{\pqrdot}[1][r]{\ensuremath{\perturbdot{q}_{#1}}}     % test: \pqrdot{1}  % \perturb{q}_r
+\newcommand{\pqrddot}[1][r]{\ensuremath{\perturbddot{q}_{#1}}}   % test: \pqrddot{1}  % \perturb{q}_r
+\newcommand{\pxdot}{\perturbdot{x}}                                       % test: \pxdot  % \perturbdot{x}
+\newcommand{\pydot}{\perturbdot{y}}                                       % test: \pydot  % \perturbdot{y}
+\newcommand{\pzdot}{\perturbdot{z}}                                       % test: \pzdot  % \perturbdot{z}
+\newcommand{\pQdot}{\perturbdot{Q}}                                       % test: \pQdot  % \perturbdot{Q}
+\newcommand{\pxddot}{\perturbddot{x}}                                     % test: \pxddot  % \perturbddot{x}
+\newcommand{\pyddot}{\perturbddot{y}}                                     % test: \pyddot  % \perturbddot{y}
+\newcommand{\pzddot}{\perturbddot{z}}                                     % test: \pzddot  % \perturbddot{z}
+\newcommand{\pQddot}{\perturbddot{Q}}                                     % test: \pQddot  % \perturbddot{Q}
+\newcommand{\qx}{\ensuremath{q_x}}                                        % test: \qx  % q_x
+\newcommand{\qy}{\ensuremath{q_y}}                                        % test: \qy  % q_y
+\newcommand{\qz}{\ensuremath{q_z}}                                        % test: \qz  % q_z
+\newcommand{\qOne}{\ensuremath{q_1}}                                      % test: \qOne  % q_1
+\newcommand{\qTwo}{\ensuremath{q_2}}                                      % test: \qTwo  % q_2
+\newcommand{\qThree}{\ensuremath{q_3}}                                    % test: \qThree  % q_3
+\newcommand{\rx}{\ensuremath{r_x}}                                        % test: \rx  % r_x
+\newcommand{\ry}{\ensuremath{r_y}}                                        % test: \ry  % r_y
+\newcommand{\rz}{\ensuremath{r_z}}                                        % test: \rz  % r_z
+\newcommand{\qOneTwoThree}{\qOne, \qTwo, \qThree}                         % test: \qOneTwoThree  %
+\newcommand{\qOnedot}{\ensuremath{\qdot_1}}                               % test: \qOnedot  % \qdot_1
+\newcommand{\qTwodot}{\ensuremath{\qdot_2}}                               % test: \qTwodot  % \qdot_2
+\newcommand{\qThreedot}{\ensuremath{\qdot_3}}                             % test: \qThreedot  % \qdot_3
+\newcommand{\qOneddot}{\ensuremath{\qddot_1}}                             % test: \qOneddot  % \qddot_1
+\newcommand{\qTwoddot}{\ensuremath{\qddot_2}}                             % test: \qTwoddot  % \qddot_2
+\newcommand{\qThreeddot}{\ensuremath{\qddot_3}}                           % test: \qThreeddot  % \qddot_3
+\newcommand{\qOneTwoThreedot}{\qOnedot, \qTwodot, \qThreedot}
+\newcommand{\qOneTwoThreeddot}{\qOneddot, \qTwoddot, \qThreeddot}
+\newcommand{\qX}{\ensuremath{q_x}}                                        % test: \qX  % q_x
+\newcommand{\qY}{\ensuremath{q_y}}                                        % test: \qY  % q_y
+\newcommand{\qZ}{\ensuremath{q_z}}                                        % test: \qZ  % q_z
+\newcommand{\qXYZ}{\qX, \qY, \qZ}
+\newcommand{\qXdot}{\ensuremath{\qdot_x}}                                 % test: \qXdot  % \qdot_x
+\newcommand{\qYdot}{\ensuremath{\qdot_y}}                                 % test: \qYdot  % \qdot_y
+\newcommand{\qZdot}{\ensuremath{\qdot_z}}                                 % test: \qZdot  % \qdot_z
+\newcommand{\qXddot}{\ensuremath{\qddot_x}}                               % test: \qXddot  % \qddot_x
+\newcommand{\qYddot}{\ensuremath{\qddot_y}}                               % test: \qYddot  % \qddot_y
+\newcommand{\qZddot}{\ensuremath{\qddot_z}}                               % test: \qZddot  % \qddot_z
+\newcommand{\qXYZdot}{\qXdot, \qYdot, \qZdot}
+\newcommand{\qXYZddot}{\qXddot, \qYddot, \qZddot}
+\newcommand{\qA}{\ensuremath{q_A}}                                        % test: \qA  % q_A
+\newcommand{\qB}{\ensuremath{q_B}}                                        % test: \qB  % q_B
+\newcommand{\qC}{\ensuremath{q_C}}                                        % test: \qC  % q_C
+\newcommand{\qD}{\ensuremath{q_D}}                                        % test: \qD  % q_D
+\newcommand{\qE}{\ensuremath{q_E}}                                        % test: \qE  % q_E
+\newcommand{\qF}{\ensuremath{q_F}}                                        % test: \qF  % q_F
+\newcommand{\qG}{\ensuremath{q_G}}                                        % test: \qG  % q_G
+\newcommand{\qH}{\ensuremath{q_\mathrm{H}}}                               % test: \qH  % q_H
+\newcommand{\qL}{\ensuremath{q_\mathrm{L}}}                               % test: \qL  % q_L
+\newcommand{\qS}{\ensuremath{q_\mathrm{S}}}                               % test: \qS  % q_S
+\newcommand{\qxyz}{\qx, \qy, \qz}                                         % test: \qxyz  % qx, qy, qz
+\newcommand{\qdot}{\ensuremath{\dot{q}}}                                  % test: \qdot  % \dot{q}
+\newcommand{\Qdot}{\ensuremath{\dot{Q}}}                                  % test: \Qdot  % \dot{Q}
+\newcommand{\Edot}{\ensuremath{\dot{E}}}                                  % test: \Edot  % \dot{E}
+\newcommand{\Udot}{\ensuremath{\dot{U}}}                                  % test: \Udot  % \dot{U}
+\newcommand{\Vdot}{\ensuremath{\dot{V}}}                                  % test: \Vdot  % \dot{V}
+\newcommand{\qxdot}{\ensuremath{\dot{q}{_x}}}                             % test: \qxdot  % \dot{q}_x  (also allows for double-subscripts)
+\newcommand{\qydot}{\ensuremath{\dot{q}{_y}}}                             % test: \qydot  % \dot{q}_y  (also allows for double-subscripts)
+\newcommand{\qzdot}{\ensuremath{\dot{q}{_z}}}                             % test: \qzdot  % \dot{q}_z  (also allows for double-subscripts)
+\newcommand{\qAdot}{\ensuremath{\dot{q}{_A}}}                             % test: \qAdot  % \dot{q}_A  (also allows for double-subscripts)
+\newcommand{\qBdot}{\ensuremath{\dot{q}{_B}}}                             % test: \qBdot  % \dot{q}_B  (also allows for double-subscripts)
+\newcommand{\qCdot}{\ensuremath{\dot{q}{_C}}}                             % test: \qCdot  % \dot{q}_C  (also allows for double-subscripts)
+\newcommand{\qDdot}{\ensuremath{\dot{q}{_D}}}                             % test: \qDdot  % \dot{q}_D  (also allows for double-subscripts)
+\newcommand{\qEdot}{\ensuremath{\dot{q}{_E}}}                             % test: \qEdot  % \dot{q}_E  (also allows for double-subscripts)
+\newcommand{\qFdot}{\ensuremath{\dot{q}{_F}}}                             % test: \qFdot  % \dot{q}_F  (also allows for double-subscripts)
+\newcommand{\qGdot}{\ensuremath{\dot{q}{_G}}}                             % test: \qGdot  % \dot{q}_G  (also allows for double-subscripts)
+\newcommand{\qHdot}{\ensuremath{\dot{q}{_\mathrm{H}}}}                    % test: \qHdot  % \dot{q}_H  (also allows for double-subscripts)
+\newcommand{\qLdot}{\ensuremath{\dot{q}{_\mathrm{L}}}}                    % test: \qLdot  % \dot{q}_L  (also allows for double-subscripts)
+\newcommand{\qSdot}{\ensuremath{\dot{q}{_\mathrm{S}}}}                    % test: \qSdot  % \dot{q}_S  (also allows for double-subscripts)
+\newcommand{\qxyzdot}{\qxdot, \qydot, \qzdot}                             % test: \qxyzdot  % \dot{q}_x, \dot{q}_y, \dot{q}_z
+\newcommand{\qddot}{\ensuremath{\ddot{q}}}                                % test: \qddot  % \ddot{q}
+\newcommand{\Qddot}{\ensuremath{\ddot{Q}}}                                % test: \Qddot  % \ddot{Q}
+\newcommand{\Eddot}{\ensuremath{\ddot{E}}}                                % test: \Eddot  % \ddot{E}
+\newcommand{\qxddot}{\ensuremath{\ddot{q}{_x}}}                           % test: \qxddot  % \ddot{q}_x  (also allows for double-subscripts)
+\newcommand{\qyddot}{\ensuremath{\ddot{q}{_y}}}                           % test: \qyddot  % \ddot{q}_y  (also allows for double-subscripts)
+\newcommand{\qzddot}{\ensuremath{\ddot{q}{_z}}}                           % test: \qzddot  % \ddot{q}_z  (also allows for double-subscripts)
+\newcommand{\qAddot}{\ensuremath{\ddot{q}{_A}}}                           % test: \qAddot  % \ddot{q}_A  (also allows for double-subscripts)
+\newcommand{\qBddot}{\ensuremath{\ddot{q}{_B}}}                           % test: \qBddot  % \ddot{q}_B  (also allows for double-subscripts)
+\newcommand{\qCddot}{\ensuremath{\ddot{q}{_C}}}                           % test: \qCddot  % \ddot{q}_C  (also allows for double-subscripts)
+\newcommand{\qDddot}{\ensuremath{\ddot{q}{_D}}}                           % test: \qDddot  % \ddot{q}_D  (also allows for double-subscripts)
+\newcommand{\qEddot}{\ensuremath{\ddot{q}{_E}}}                           % test: \qEddot  % \ddot{q}_E  (also allows for double-subscripts)
+\newcommand{\qFddot}{\ensuremath{\ddot{q}{_F}}}                           % test: \qFddot  % \ddot{q}_F  (also allows for double-subscripts)
+\newcommand{\qGddot}{\ensuremath{\ddot{q}{_G}}}                           % test: \qGddot  % \ddot{q}_G  (also allows for double-subscripts)
+\newcommand{\qHddot}{\ensuremath{\ddot{q}{_\mathrm{H}}}}                  % test: \qHddot  % \ddot{q}_H  (also allows for double-subscripts)
+\newcommand{\qLddot}{\ensuremath{\ddot{q}{_\mathrm{L}}}}                  % test: \qLddot  % \ddot{q}_L  (also allows for double-subscripts)
+\newcommand{\qSddot}{\ensuremath{\ddot{q}{_\mathrm{S}}}}                  % test: \qSddot  % \ddot{q}_S  (also allows for double-subscripts)
+\newcommand{\qxyzddot}{\qxddot, \qyddot, \qzddot}                         % test: \qxyzddot  % \ddot{q}_x, \ddot{q}_y, \ddot{q}_z
+\newcommand{\qr}[1][r]{\ensuremath{q_{#1}}}                     % q_r
+\newcommand{\qrdot}[1][r]{\ensuremath{\dot{q}_{#1}}}             % test: \qrdot{1}  % \dot{q}_r
+\newcommand{\qrddot}[1][r]{\ensuremath{\ddot{q}_{#1}}}           % test: \qrddot{1}  % \ddot{q}_r
+\newcommand{\qrdddot}[1][r]{\ensuremath{\dddot{q}_{#1}}}         % test: \qrdddot{1}  % \dddot{q}_r
+\newcommand{\er}[1][r]{\ensuremath{e_{#1}}}                     % e_r
+\newcommand{\erdot}[1][r]{\ensuremath{\dot{e}_{#1}}}             % test: \erdot{1}  % \dot{e}_r
+\newcommand{\erddot}[1][r]{\ensuremath{\ddot{e}_{#1}}}           % test: \erddot{1}  % \ddot{e}_r
+\newcommand{\ur}[1][r]{\ensuremath{u_{#1}}}                      % test: \ur{1}  % \ur    makes $u_r$        and \ur[1]    makes $u_1$
+\newcommand{\urdot}[1][r]{\ensuremath{\dot{u}_{#1}}}             % test: \urdot{1}  % \urdot makes $\dot{u}_r$  and \urdot[1] make  $\dot{u}_1$
+\newcommand{\LA}{\ensuremath{L_A}}                                        % test: \LA  % L_A
+\newcommand{\LB}{\ensuremath{L_B}}                                        % test: \LB  % L_B
+\newcommand{\LC}{\ensuremath{L_C}}                                        % test: \LC  % L_C
+\newcommand{\LD}{\ensuremath{L_D}}                                        % test: \LD  % L_D
+\newcommand{\LE}{\ensuremath{L_E}}                                        % test: \LE  % L_E
+\newcommand{\LF}{\ensuremath{L_F}}                                        % test: \LF  % L_F
+\newcommand{\LM}{\ensuremath{L_M}}                                        % test: \LM  % L_M
+\newcommand{\LN}{\ensuremath{L_N}}                                        % test: \LN  % L_N
+\newcommand{\Lx}{\ensuremath{L_x}}                                        % test: \Lx  % L_x
+\newcommand{\Ly}{\ensuremath{L_y}}                                        % test: \Ly  % L_y
+\newcommand{\Lz}{\ensuremath{L_z}}                                        % test: \Lz  % L_z
+%\newcommand{\Ldot}{\ensuremath{\dot{L}}}                                  % test: \Ldot  % \dot{L}
+\newcommand{\LAdot}{\ensuremath{\dot{L}_A}}                               % test: \LAdot  % \dot{L}_A
+\newcommand{\LBdot}{\ensuremath{\dot{L}_B}}                               % test: \LBdot  % \dot{L}_B
+\newcommand{\LCdot}{\ensuremath{\dot{L}_C}}                               % test: \LCdot  % \dot{L}_C
+\newcommand{\LDdot}{\ensuremath{\dot{L}_D}}                               % test: \LDdot  % \dot{L}_D
+\newcommand{\LEdot}{\ensuremath{\dot{L}_E}}                               % test: \LEdot  % \dot{L}_E
+\newcommand{\LFdot}{\ensuremath{\dot{L}_F}}                               % test: \LFdot  % \dot{L}_F
+\newcommand{\LMdot}{\ensuremath{\dot{L}_M}}                               % test: \LMdot  % \dot{L}_M
+\newcommand{\LNdot}{\ensuremath{\dot{L}_N}}                               % test: \LNdot  % \dot{L}_N
+%\newcommand{\Lddot}{\ensuremath{\ddot{L}}}                                % test: \Lddot  % \ddot{L}
+\newcommand{\LAddot}{\ensuremath{\ddot{L}_A}}                             % test: \LAddot  % \ddot{L}_A
+\newcommand{\LBddot}{\ensuremath{\ddot{L}_B}}                             % test: \LBddot  % \ddot{L}_B
+\newcommand{\LCddot}{\ensuremath{\ddot{L}_C}}                             % test: \LCddot  % \ddot{L}_C
+\newcommand{\LDddot}{\ensuremath{\ddot{L}_D}}                             % test: \LDddot  % \ddot{L}_D
+\newcommand{\LEddot}{\ensuremath{\ddot{L}_E}}                             % test: \LEddot  % \ddot{L}_E
+\newcommand{\LFddot}{\ensuremath{\ddot{L}_F}}                             % test: \LFddot  % \ddot{L}_F
+\newcommand{\LNddot}{\ensuremath{\ddot{L}_N}}                             % test: \LNddot  % \ddot{L}_N
+\newcommand{\kA}{\ensuremath{k_A}}                                        % test: \kA  % k_A
+\newcommand{\kB}{\ensuremath{k_B}}                                        % test: \kB  % k_B
+\newcommand{\kC}{\ensuremath{k_C}}                                        % test: \kC  % k_C
+\newcommand{\kD}{\ensuremath{k_D}}                                        % test: \kD  % k_D
+\newcommand{\kE}{\ensuremath{k_E}}                                        % test: \kE  % k_E
+\newcommand{\kF}{\ensuremath{k_F}}                                        % test: \kF  % k_F
+\newcommand{\kM}{\ensuremath{k_M}}                                        % test: \kM  % k_M
+\newcommand{\kN}{\ensuremath{k_N}}                                        % test: \kN  % k_N
+\newcommand{\kx}{\ensuremath{k_x}}                                        % test: \kx  % k_x
+\newcommand{\ky}{\ensuremath{k_y}}                                        % test: \ky  % k_y
+\newcommand{\kz}{\ensuremath{k_z}}                                        % test: \kz  % k_z
+\newcommand{\Fx}{\ensuremath{F_x}}                                        % test: \Fx  % F_x
+\newcommand{\Fy}{\ensuremath{F_y}}                                        % test: \Fy  % F_y
+\newcommand{\Fz}{\ensuremath{F_z}}                                        % test: \Fz  % F_z
+\newcommand{\Rx}{\ensuremath{R_x}}                                        % test: \Rx  % R_x
+\newcommand{\Ry}{\ensuremath{R_y}}                                        % test: \Ry  % R_y
+\newcommand{\Rz}{\ensuremath{R_z}}                                        % test: \Rz  % R_z
+\newcommand{\Fxyz}{\Fx, \Fy, \Fz}                                         % test: \Fxyz  % F_x, F_y, F_z
+\newcommand{\Fi}{\ensuremath{F_i}}                                        % test: \Fi  % F_i
+\newcommand{\FOne}{\ensuremath{F_1}}                                      % test: \FOne  % F_1
+\newcommand{\FTwo}{\ensuremath{F_2}}                                      % test: \FTwo  % F_2
+\newcommand{\FThree}{\ensuremath{F_3}}                                    % test: \FThree  % F_3
+\newcommand{\FOneTwoThree}{\FOne, \FTwo, \FThree}                         % test: \FOneTwoThree  % F_1, F_2, F_3
+\newcommand{\vi}{\ensuremath{v_i}}                                        % test: \vi  % v_i
+\newcommand{\vx}{\ensuremath{v_x}}                                        % test: \vx  % v_x
+\newcommand{\vy}{\ensuremath{v_y}}                                        % test: \vy  % v_y
+\newcommand{\vz}{\ensuremath{v_z}}                                        % test: \vz  % v_z
+\newcommand{\vxyz}{\vx, \vy, \vz}                                         % test: \vxyz  % vx, vy, vz
+\newcommand{\vxdot}{\ensuremath{\dot{v}_x}}                               % test: \vxdot  % \dot{v}_x
+\newcommand{\vydot}{\ensuremath{\dot{v}_y}}                               % test: \vydot  % \dot{v}_y
+\newcommand{\vzdot}{\ensuremath{\dot{v}_z}}                               % test: \vzdot  % \dot{v}_z
+\newcommand{\vxyzdot}{\vxdot, \vydot, \vzdot}                             % test: \vxyzdot  % \dot{v}_x, \dot{v}_y, \dot{v}_z
+\newcommand{\vA}{\ensuremath{v_{A}}}                                      % test: \vA  % v_A
+\newcommand{\vB}{\ensuremath{v_{B}}}                                      % test: \vB  % v_B
+\newcommand{\vC}{\ensuremath{v_{C}}}                                      % test: \vC  % v_C
+\newcommand{\vD}{\ensuremath{v_{D}}}                                      % test: \vD  % v_D
+\newcommand{\vE}{\ensuremath{v_{\!E}}}                                    % test: \vE  % v_E
+\newcommand{\vF}{\ensuremath{v_{\!F}}}                                    % test: \vF  % v_F
+\newcommand{\ai}{\ensuremath{a_i}}                                        % test: \ai  % a_i
+\newcommand{\ax}{\ensuremath{a_x}}                                        % test: \ax  % a_x
+\newcommand{\ay}{\ensuremath{a_y}}                                        % test: \ay  % a_y
+\newcommand{\az}{\ensuremath{a_z}}                                        % test: \az  % a_z
+
+\newcommand{\Tx}{\ensuremath{T_x}}                                        % test: \Tx  % T_x
+\newcommand{\Ty}{\ensuremath{T_y}}                                        % test: \Ty  % T_y
+\newcommand{\Tz}{\ensuremath{T_z}}                                        % test: \Tz  % T_z
+\newcommand{\Txyz}{\Tx, \Ty, \Tz}                                         % test: \Txyz  % T_x, T_y, T_z
+\newcommand{\Ti}{\ensuremath{T_i}}                                        % test: \Ti  % T_i
+\newcommand{\TOne}{\ensuremath{T_1}}                                      % test: \TOne  % T_1
+\newcommand{\TTwo}{\ensuremath{T_2}}                                      % test: \TTwo  % T_2
+\newcommand{\TThree}{\ensuremath{T_3}}                                    % test: \TThree  % T_3
+\newcommand{\TOneTwoThree}{\TOne, \TTwo, \TThree}                         % test: \TOneTwoThree  % T_1, T_2, T_3
+\newcommand{\Mx}{\ensuremath{M_x}}                                        % test: \Mx  % M_x
+\newcommand{\My}{\ensuremath{M_y}}                                        % test: \My  % M_y
+\newcommand{\Mz}{\ensuremath{M_z}}                                        % test: \Mz  % M_z
+\newcommand{\Mxyz}{\Mx, \My, \Mz}                                         % test: \Mxyz  % M_x, M_y, M_z
+\newcommand{\Mi}{\ensuremath{M_i}}                                        % test: \Mi  % M_i
+\newcommand{\MOne}{\ensuremath{M_1}}                                      % test: \MOne  % M_1
+\newcommand{\MTwo}{\ensuremath{M_2}}                                      % test: \MTwo  % M_2
+\newcommand{\MThree}{\ensuremath{M_3}}                                    % test: \MThree  % M_3
+\newcommand{\MOneTwoThree}{\MOne, \MTwo, \MThree}                         % test: \MOneTwoThree  % M_1, M_2, M_3
+\newcommand{\wi}{\ensuremath{\omega_{i}}}                                 % test: \wi  % omega_i
+\newcommand{\wj}{\ensuremath{\omega_{j}}}                                 % test: \wj  % omega_j
+\newcommand{\wk}{\ensuremath{\omega_{k}}}                                 % test: \wk  % omega_k
+\newcommand{\wiBar}{\ensuremath{\bar{\omega}_{i}}}                        % test: \wiBar  % \bar{omega}_i
+\newcommand{\wjBar}{\ensuremath{\bar{\omega}_{j}}}                        % test: \wjBar  % \bar{omega}_j
+\newcommand{\wkBar}{\ensuremath{\bar{\omega}_{k}}}                        % test: \wkBar  % \bar{omega}_k
+\newcommand{\wx}{\ensuremath{\omega_{x}}}                                 % test: \wx  % omega_x
+\newcommand{\wy}{\ensuremath{\omega_{y}}}                                 % test: \wy  % omega_y
+\newcommand{\wz}{\ensuremath{\omega_{z}}}                                 % test: \wz  % omega_z
+\newcommand{\wA}{\ensuremath{\omega_{A}}}                                 % test: \wA  % omega_A
+\newcommand{\wB}{\ensuremath{\omega_{B}}}                                 % test: \wB  % omega_B
+\newcommand{\wC}{\ensuremath{\omega_{C}}}                                 % test: \wC  % omega_C
+\newcommand{\wD}{\ensuremath{\omega_{D}}}                                 % test: \wD  % omega_D
+\newcommand{\wE}{\ensuremath{\omega_{\!E}}}                               % test: \wE  % omega_E
+\newcommand{\wF}{\ensuremath{\omega_{\!F}}}                               % test: \wF  % omega_F
+\newcommand{\wOne}{\ensuremath{\omega_1}}                                 % test: \wOne  % omega_1
+\newcommand{\wTwo}{\ensuremath{\omega_2}}                                 % test: \wTwo  % omega_2
+\newcommand{\wThree}{\ensuremath{\omega_3}}                               % test: \wThree  % omega_3
+\newcommand{\wxyz}{\mbox{\ensuremath{\wx,\;\wy,\;\wz}}}                   % test: \wxyz  % wx, wy, wz
+\newcommand{\wOneTwoThree}{\wOne, \wTwo, \wThree}                         % test: \wOneTwoThree  % w1, w2, w3
+\newcommand{\wdot}{\ensuremath{\dot{\omega}}}                             % test: \wdot  % \dot{omega}
+\newcommand{\wddot}{\ensuremath{\ddot{\omega}}}                           % test: \wddot  % \ddot{omega}
+\newcommand{\wss}{\steadystate{\omega}}                                   % test: \wss  % \omega_{ss}
+\newcommand{\wxdot}{\ensuremath{\dot{\omega}_x}}                          % test: \wxdot  % \dot{omega}_x
+\newcommand{\wydot}{\ensuremath{\dot{\omega}_y}}                          % test: \wydot  % \dot{omega}_y
+\newcommand{\wzdot}{\ensuremath{\dot{\omega}_z}}                          % test: \wzdot  % \dot{omega}_z
+\newcommand{\wAdot}{\ensuremath{\dot{\omega}_A}}                          % test: \wAdot  % \dot{omega}_A
+\newcommand{\wBdot}{\ensuremath{\dot{\omega}_B}}                          % test: \wBdot  % \dot{omega}_B
+\newcommand{\wCdot}{\ensuremath{\dot{\omega}_C}}                          % test: \wCdot  % \dot{omega}_C
+\newcommand{\wDdot}{\ensuremath{\dot{\omega}_D}}                          % test: \wDdot  % \dot{omega}_D
+\newcommand{\wEdot}{\ensuremath{\dot{\omega}_E}}                          % test: \wEdot  % \dot{omega}_E
+\newcommand{\wFdot}{\ensuremath{\dot{\omega}_F}}                          % test: \wFdot  % \dot{omega}_F
+\newcommand{\wOnedot}{\ensuremath{\dot{\omega}_1}}                        % test: \wOnedot  % \dot{omega}_1
+\newcommand{\wTwodot}{\ensuremath{\dot{\omega}_2}}                        % test: \wTwodot  % \dot{omega}_2
+\newcommand{\wThreedot}{\ensuremath{\dot{\omega}_3}}                      % test: \wThreedot  % \dot{omega}_3
+\newcommand{\wxyzdot}{\wxdot, \wydot, \wzdot}                             % test: \wxyzdot  % \dot{omega}_x, \dot{omega}_y, \dot{omega}_z
+\newcommand{\wOneTwoThreedot}{\wOnedot, \wTwodot, \wThreedot}             % test: \wOneTwoThreedot  % \dot{omega}_1, \dot{omega}_2, \dot{omega}_3
+\newcommand{\nOmegax}{\nominal{\omega_x}}                                 % test: \nOmegax  % Nominal value for omega_x
+\newcommand{\nOmegay}{\nominal{\omega_y}}                                 % test: \nOmegay  % Nominal value for omega_y
+\newcommand{\nOmegaz}{\nominal{\omega_z}}                                 % test: \nOmegaz  % Nominal value for omega_z
+\newcommand{\pOmegax}{\ensuremath{\perturb{\omega}_x}}                    % test: \pOmegax  % Perturbation of omega_x
+\newcommand{\pOmegay}{\ensuremath{\perturb{\omega}_y}}                    % test: \pOmegay  % Perturbation of omega_y
+\newcommand{\pOmegaz}{\ensuremath{\perturb{\omega}_z}}                    % test: \pOmegaz  % Perturbation of omega_z
+\newcommand{\pOmegaxdot}{\ensuremath{\perturbdot{\omega}_x}}              % test: \pOmegaxdot  % Perturbation of \dot{omega}_x
+\newcommand{\pOmegaydot}{\ensuremath{\perturbdot{\omega}_y}}              % test: \pOmegaydot  % Perturbation of \dot{omega}_y
+\newcommand{\pOmegazdot}{\ensuremath{\perturbdot{\omega}_z}}              % test: \pOmegazdot  % Perturbation of \dot{omega}_z
+\newcommand{\pOmegaxddot}{\ensuremath{\perturbddot{\omega}_x}}            % test: \pOmegaxddot  % Perturbation of \ddot{omega}_x
+\newcommand{\pOmegayddot}{\ensuremath{\perturbddot{\omega}_y}}            % test: \pOmegayddot  % Perturbation of \ddot{omega}_y
+\newcommand{\pOmegazddot}{\ensuremath{\perturbddot{\omega}_z}}            % test: \pOmegazddot  % Perturbation of \ddot{omega}_z
+\newcommand{\alphax}{\ensuremath{\alpha_x}}                               % test: \alphax  % alpha_x
+\newcommand{\alphay}{\ensuremath{\alpha_y}}                               % test: \alphay  % alpha_y
+\newcommand{\alphaz}{\ensuremath{\alpha_z}}                               % test: \alphaz  % alpha_z
+\newcommand{\betax}{\ensuremath{\beta_x}}                                 % test: \betax  % beta_x
+\newcommand{\betay}{\ensuremath{\beta_y}}                                 % test: \betay  % beta_y
+\newcommand{\betaz}{\ensuremath{\beta_z}}                                 % test: \betaz  % beta_z
+\newcommand{\rhodot}{\ensuremath{\dot{\rho}}}                             % test: \rhodot  % \dot{\rho}
+\newcommand{\phidot}{\ensuremath{\dot{\phi}}}                             % test: \phidot  % \dot{\phi}
+\newcommand{\psidot}{\ensuremath{\dot{\psi}}}                             % test: \psidot  % \dot{\psi}
+\newcommand{\gammadot}{\ensuremath{\dot{\gamma}}}                         % test: \gammadot  % \dot{\gamma}
+\newcommand{\lambdadot}{\ensuremath{\dot{\lambda}}}                       % test: \lambdadot  % \dot{\lambda}
+\newcommand{\thetadot}{\ensuremath{\dot{\theta}}}                         % test: \thetadot  % \dot{\theta}
+\newcommand{\rhoddot}{\ensuremath{\ddot{\rho}}}                           % test: \rhoddot  % \ddot{\rho}
+\newcommand{\phiddot}{\ensuremath{\ddot{\phi}}}                           % test: \phiddot  % \ddot{\phi}
+\newcommand{\psiddot}{\ensuremath{\ddot{\psi}}}                           % test: \psiddot  % \ddot{\psi}
+\newcommand{\gammaddot}{\ensuremath{\ddot{\gamma}}}                       % test: \gammaddot  % \ddot{\gamma}
+\newcommand{\lambdaddot}{\ensuremath{\ddot{\lambda}}}                     % test: \lambdaddot  % \ddot{\lambda}
+\newcommand{\thetaddot}{\ensuremath{\ddot{\theta}}}                       % test: \thetaddot  % \ddot{\theta}
+\newcommand{\thetaSubscriptTextrm}[1]{\ensuremath{\theta_\mathrm{#1}}}          % test: \thetaSubscriptTextrm{1}  % \thetaSubscriptTextrm{x}      produces \theta_x
+\newcommand{\thetaDotSubscriptTextrm}[1]{\ensuremath{\thetadot_\mathrm{#1}}}    % test: \thetaDotSubscriptTextrm{1}  % \thetaDotSubscriptTextrm{x}   produces \thetadot_x
+\newcommand{\thetaDDotSubscriptTextrm}[1]{\ensuremath{\thetaddot_\mathrm{#1}}}  % test: \thetaDDotSubscriptTextrm{1}  % \thetaDDotSubscriptTextrm{x}  produces \thetaddot_x
+\newcommand{\thetaA}{\thetaSubscriptTextrm{A}}                            % test: \thetaA  % \theta_A
+\newcommand{\thetaB}{\thetaSubscriptTextrm{B}}                            % test: \thetaB  % \theta_B
+\newcommand{\thetaC}{\thetaSubscriptTextrm{C}}                            % test: \thetaC  % \theta_C
+\newcommand{\thetaD}{\thetaSubscriptTextrm{D}}                            % test: \thetaD  % \theta_D
+\newcommand{\thetaE}{\thetaSubscriptTextrm{E}}                            % test: \thetaE  % \theta_E
+\newcommand{\thetaAdot}{\thetaDotSubscriptTextrm{A}}                      % test: \thetaAdot  % \thetadot_A
+\newcommand{\thetaBdot}{\thetaDotSubscriptTextrm{B}}                      % test: \thetaBdot  % \thetadot_B
+\newcommand{\thetaCdot}{\thetaDotSubscriptTextrm{C}}                      % test: \thetaCdot  % \thetadot_C
+\newcommand{\thetaDdot}{\thetaDotSubscriptTextrm{D}}                      % test: \thetaDdot  % \thetadot_D
+\newcommand{\thetaEdot}{\thetaDotSubscriptTextrm{E}}                      % test: \thetaEdot  % \thetadot_E
+\newcommand{\thetaAddot}{\thetaDDotSubscriptTextrm{A}}                    % test: \thetaAddot  % \thetaddot_A
+\newcommand{\thetaBddot}{\thetaDDotSubscriptTextrm{B}}                    % test: \thetaBddot  % \thetaddot_B
+\newcommand{\thetaCddot}{\thetaDDotSubscriptTextrm{C}}                    % test: \thetaCddot  % \thetaddot_C
+\newcommand{\thetaDddot}{\thetaDDotSubscriptTextrm{D}}                    % test: \thetaDddot  % \thetaddot_D
+\newcommand{\thetaEddot}{\thetaDDotSubscriptTextrm{E}}                    % test: \thetaEddot  % \thetaddot_E
+\newcommand{\thetaOne}{\ensuremath{\theta_1}}                             % test: \thetaOne  % \theta_1
+\newcommand{\thetaTwo}{\ensuremath{\theta_2}}                             % test: \thetaTwo  % \theta_2
+\newcommand{\thetaThree}{\ensuremath{\theta_3}}                           % test: \thetaThree  % \theta_3
+\newcommand{\thetaOneTwoThree}{\thetaOne, \thetaTwo, \thetaThree}
+\newcommand{\thetaOnedot}{\ensuremath{\thetadot_1}}                       % test: \thetaOnedot  % \thetadot_1
+\newcommand{\thetaTwodot}{\ensuremath{\thetadot_2}}                       % test: \thetaTwodot  % \thetadot_2
+\newcommand{\thetaThreedot}{\ensuremath{\thetadot_3}}                     % test: \thetaThreedot  % \thetadot_3
+\newcommand{\thetaOneddot}{\ensuremath{\thetaddot_1}}                     % test: \thetaOneddot  % \thetaddot_1
+\newcommand{\thetaTwoddot}{\ensuremath{\thetaddot_2}}                     % test: \thetaTwoddot  % \thetaddot_2
+\newcommand{\thetaThreeddot}{\ensuremath{\thetaddot_3}}                   % test: \thetaThreeddot  % \thetaddot_3
+\newcommand{\thetaOneTwoThreedot}{\thetaOnedot, \thetaTwodot, \thetaThreedot}
+\newcommand{\thetaOneTwoThreeddot}{\thetaOneddot, \thetaTwoddot, \thetaThreeddot}
+\newcommand{\thetaX}{\ensuremath{\theta_x}}                               % test: \thetaX  % \theta_x
+\newcommand{\thetaY}{\ensuremath{\theta_y}}                               % test: \thetaY  % \theta_2
+\newcommand{\thetaZ}{\ensuremath{\theta_z}}                               % test: \thetaZ  % \theta_3
+\newcommand{\thetaXYZ}{\thetaX, \thetaY, \thetaZ}
+\newcommand{\thetaXdot}{\ensuremath{\thetadot_x}}                         % test: \thetaXdot  % \thetadot_1
+\newcommand{\thetaYdot}{\ensuremath{\thetadot_y}}                         % test: \thetaYdot  % \thetadot_2
+\newcommand{\thetaZdot}{\ensuremath{\thetadot_z}}                         % test: \thetaZdot  % \thetadot_3
+\newcommand{\thetaXddot}{\ensuremath{\thetaddot_x}}                       % test: \thetaXddot  % \thetaddot_1
+\newcommand{\thetaYddot}{\ensuremath{\thetaddot_y}}                       % test: \thetaYddot  % \thetaddot_2
+\newcommand{\thetaZddot}{\ensuremath{\thetaddot_z}}                       % test: \thetaZddot  % \thetaddot_3
+\newcommand{\thetaXYZdot}{\thetaXdot, \thetaYdot, \thetaZdot}
+\newcommand{\thetaXYZddot}{\thetaXddot, \thetaYddot, \thetaZddot}
+\newcommand{\mTheta}{\ensuremath{\theta}}                                 % test: \mTheta  % Motor/pin theta
+\newcommand{\nTheta}{\nominal{\mTheta}}                                   % test: \nTheta  % Nominal value for theta
+\newcommand{\pTheta}{\perturb{\mTheta}}                                   % test: \pTheta  % Perturbation of theta (error in theta)
+\newcommand{\ptheta}{\perturb{\theta}}                                    % test: \ptheta  % \perturb{\theta}
+\newcommand{\pthetadot}{\perturbdot{\theta}}                              % test: \pthetadot  % \perturbdot{\theta}
+\newcommand{\pthetaddot}{\perturbddot{\theta}}                            % test: \pthetaddot  % \perturbddot{\theta}
+\newcommand{\pthetadddot}{\perturbdddot{\theta}}                          % test: \pthetadddot  % \perturbdddot{\theta}
+\newcommand{\backEMF}{back-EMF}                                           % test: \backEMF  % Motor back-emf
+\newcommand{\BackEMF}{Back-EMF}                                           % test: \BackEMF  % Motor Back-emf
+\newcommand{\equivalentMass}{\ensuremath{m_e}}                            % test: \equivalentMass  % Equivalent mass
+\newcommand{\equivalentDamping}{\ensuremath{b_e}}                         % test: \equivalentDamping  % Equivalent damping
+\newcommand{\equivalentSpring}{\ensuremath{k_e}}                          % test: \equivalentSpring  % Equivalent spring
+\newcommand{\forcingFunctionPhysics}{\ensuremath{\widehat{f}}}                                    % test: \forcingFunctionPhysics  % Forcing function physics \hat{f}
+\newcommand{\forcingFunctionPhysicsT}{\ensuremath{\forcingFunctionPhysics(t)}}                    % test: \forcingFunctionPhysicsT  % Forcing function physics \hat{f}(t)
+\newcommand{\forcingFunctionMath}{\ensuremath{f}}                                                 % test: \forcingFunctionMath  % Forcing function math f
+\newcommand{\forcingFunctionMathT}{\ensuremath{\forcingFunctionMath(t)}}                          % test: \forcingFunctionMathT  % Forcing function math f(t)
+\newcommand{\equivalentForcingPhysics}{\ensuremath{\forcingFunctionPhysics_e}}                    % test: \equivalentForcingPhysics  % Equivalent forcing function \hat{f}_e
+\newcommand{\equivalentForcingPhysicsT}{\ensuremath{\equivalentForcingPhysics(t)}}                % test: \equivalentForcingPhysicsT  % Equivalent forcing function of time
+%\newcommand{\equivalentForcingMath}{\ensuremath{\forcingFunctionMath_e}}                        % Equivalent forcing function \hat{f}_e
+%\newcommand{\equivalentForcingMathT}{\ensuremath{\equivalentForcingMath(t)}}                    % Equivalent forcing function of time
+\newcommand{\equilibrium}[1]{\ensuremath{{\/#1}_\mathrm{equilibrium}}}                   % test: \equilibrium{1}  % \equilibrium{x}  produces a subscript ``equilibrium'' to the lower right of x
+\newcommand{\transient}[1]{\ensuremath{{\/#1}_\mathrm{transient}}}                       % test: \transient{1}  % \transient{x}    produces a subscript ``transient''   to the lower right of x
+\newcommand{\steadystate}[1]{\ensuremath{{\/#1}_\mathrm{ss}}}                            % test: \steadystate{1}  % \steadystate{x}  produces a subscript ``ss''          to the lower right of x
+\newcommand{\homogeneous}[1]{\ensuremath{{\/#1}_\mathrm{homogeneous}}}                   % test: \homogeneous{1}  % \homogeneous{x}  produces a subscript ``homogeneous'' to the lower right of x
+\newcommand{\particular}[1]{\ensuremath{{\/#1}_\mathrm{particular}}}                     % test: \particular{1}  % \particular{x}   produces a subscript ``particular''  to the lower right of x
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

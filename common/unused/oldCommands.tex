@@ -1,0 +1,96 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OLD COMMANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dircosij}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{C}^{\scriptscriptstyle #1}_{#3}{}}}
+    % \dircos{B}{A}{ij}  direction cosine element {^A}{C}{^B}_{ij}
+%\newcommand{\velt}[2]{\ensuremath{{}^{#2}{\bf v}_{t}^{#1}{}}}
+%\newcommand{\velttilde}[2]{\ensuremath{{}^{#2}{\bf \widetilde v}_{t}^{#1}{}}}
+%    % \velt{P}{N} holonomic velocity remainder of P in N
+%    % \velttilde{P}{N} non-holonomic velocity remainder of P in N
+\newcommand{\pvel}[3]{\ensuremath{{}^{#2}{\bf v}_{#3}^{#1}{}}}
+\newcommand{\pvelr}[2]{\ensuremath{{}^{#2}{\bf v}_{r}^{#1}{}}}
+\newcommand{\pveltilde}[3]{\ensuremath{{}^{#2}{\bf \widetilde v}_{#3}^{#1}{}}}
+\newcommand{\pvelrtilde}[2]{\ensuremath{{}^{#2}{\bf \widetilde v}_{r}^{#1}{}}}
+    % \pvel{P}{N}{3}  3rd partial velocity of P in N
+    % \pvelr{P}{N}  rth partial velocity of P in N
+    % \pveltilde{P}{N}{3} 3rd non-holonomic partial velocity of P in N
+    % \pveltilde{P}{N} rth non-holonomic partial velocity of P in N
+
+\newcommand{\pangvel}[3]{\ensuremath{{}^{#2}{\boldOmegaVector}_{#3}^{#1}{}}}
+\newcommand{\pangvelr}[2]{\ensuremath{{}^{#2}{\boldOmegaVector}_{r}^{#1}{}}}
+\newcommand{\pangveltilde}[3]{\ensuremath{{}^{#2}{\widetilde{\boldOmegaVector}}_{#3}^{#1}{}}}
+\newcommand{\pangvelrtilde}[2]{\ensuremath{{}^{#2}{\widetilde{\boldOmegaVector}}_{r}^{#1}{}}}
+\newcommand{\angvelt}[2]{\ensuremath{{}^{#2}{\boldOmegaVector}_{t}^{#1}{}}}
+\newcommand{\angvelttilde}[2]{\ensuremath{{}^{#2}{\widetilde{\boldOmegaVector}}_{t}^{#1}{}}}
+    % \pangvel{B}{N}{3}  3rd partial angular velocity of B in N
+    % \pangvelr{B}{N}  rth partial angular velocity of B in N
+    % \pangveltilde{B}{N}{3} 3rd non-holonomic partial angular velocity of B in N
+    % \pangveltilde{B}{N} rth non-holonomic partial angular velocity of B in N
+    % \angvelt{B}{N} holonomic angular velocity remainder of B in N
+    % \angvelttilde{B}{N} non-holonomic angular velocity remainder of B in N
+
+\newcommand{\accelt}[2]{\ensuremath{{}^{#2} {\bf a}_{t}^{#1}{}}}
+\newcommand{\accelttilde}[2]{\ensuremath{{}^{#2}{\widetilde{\bf a}}_{t}^{#1}{}}}
+    % \accelt{P}{N} holonomic acceleration remainder of P in N
+    % \accelttilde{P}{N} non-holonomic acceleration remainder of P in N
+
+\newcommand{\alft}[2]{\ensuremath{{}^{#2}\!{\alfVectorSymbol}_{t}^{#1}{}}}
+\newcommand{\alfttilde}[2]{\ensuremath{{}^{#2}{\widetilde{\alfVectorSymbol}}_{t}^{#1}{}}}
+    % \alft{B}{N} holonomic angular acceleration remainder of B in N
+    % \alfttilde{B}{N} non-holonomic angular acceleration remainder of B in N
+
+\newcommand{\kev}[2]{\ensuremath{{}^{#2} \! \kineticEnergySymbol^{#1}_v}}
+\newcommand{\kew}[2]{\ensuremath{{}^{#2} \! \kineticEnergySymbol^{#1}_\omega}}
+\newcommand{\kezero}[2]{\ensuremath{{}^{#2} \! \kineticEnergySymbol^{#1}_0}}
+\newcommand{\keone}[2]{\ensuremath{{}^{#2} \! \kineticEnergySymbol^{#1}_1}}
+\newcommand{\ketwo}[2]{\ensuremath{{}^{#2} \! \kineticEnergySymbol^{#1}_2}}
+\newcommand{\kezerodot}[2]{\ensuremath{{}^{#2} \! \dot{\kineticEnergySymbol}^{#1}_0}}
+\newcommand{\keonedot}[2]{\ensuremath{{}^{#2} \! \dot{\kineticEnergySymbol}^{#1}_1}}
+\newcommand{\ketwodot}[2]{\ensuremath{{}^{#2} \! \dot{\kineticEnergySymbol}^{#1}_2}}
+\def\IPE{\smallerDescription[\small]{\ensuremath{\potentialEnergySymbol_\textrm{i}}}}
+\def\FPE{\smallerDescription[\small]{\ensuremath{\potentialEnergySymbol_\textrm{f}}}}
+\def\IKE{\smallerDescription[\small]{\ensuremath{\kineticEnergySymbol_\textrm{i}}}}
+\def\FKE{\smallerDescription[\small]{\ensuremath{\kineticEnergySymbol_\textrm{f}}}}
+\def\PEsmall{\smallerDescription[\small]{\textrm{PotentialEnergy}}}
+\def\KEsmall{\smallerDescription[\small]{\textrm{KineticEnergy}}}
+    % \kev{N}{B}                translational kinetic energy of B in N
+    % \kew{N}{B}                rotational kinetic energy of B in N
+    % \kezero{N}{B}             0th term of kinetic energy of B in N
+    % \keone{N}{B}              1st term of kinetic energy of B in N
+    % \ketwo{N}{B}              2nd term of kinetic energy of B in N
+    % \kezerodot{N}{B}          time derivative of 0th term of kinetic energy of B in N
+    % \keonedot{N}{B}           time derivative of 1st term of kinetic energy of B in N
+    % \ketwodot{N}{B}           time derivative of 2nd term of kinetic energy of B in N
+\newcommand{\genmom}[3][]{\linmomi[#1]{#2}{#3}}
+    % \genmom[\ur]{B/P}{N}   generalized momenta of B in N associated with $u_r$
+%\newcommand{\uvecs}[1]{\mbox{${\bf #1}_1,\ {\bf #1}_2,\  {\bf #1}_3$}}
+%\newcommand{\dt}[2]{\mbox{${}{\frac{{}^{{}^{\scriptstyle{#2}}}\!\!{\displaystyle d}{\/#1}} {\displaystyle{dt}}}{}$}}
+%\newcommand{\dydx}[3]{\mbox{${}{\frac{{}^{{}^{\scriptstyle{#3}}}\!\!{\displaystyle d}{\/#1}} {\displaystyle{#2}}}{}$}}
+%\newcommand{\pdydx}[3]{\mbox{${}{\frac{{}^{{}^{\scriptstyle{#3}}}\!\!{\displaystyle\partial}{\/#1}} {\displaystyle\partial{#2}}}{}$}}
+%\def\deff{\,\buildrel\Delta\over{=}\,}           % Written by Greg Woodward
+%\newcommand{\vonept}[4]{\vel{#4}{#2}}
+%\newcommand{\aonept}[4]{\accel{#4}{#2} \ + \ 2 \, \angvel{#2}{#1} \times \vel{#4}{#2}}
+%\newcommand{\addangvel}[3]{\angvel{#2}{#1} \ + \ \angvel{#3}{#2}}
+%\newcommand{\addangacc}[3]{\alf{#2}{#1} \ + \ \alf{#3}{#2} \ + \ \angvel{#2}{#1} \times \angvel{#3}{#2}}
+
+% old command      new command
+%------------------------------
+% \undereq     =  \underequal
+% \numeq       =  \underequals
+% \numeqn      =  \pref
+% \echoeqn     =  \eqn
+% \tlabel      =  \underterms
+% \dircos{B}{A} = \dircos{A}{B}
+% \pos{p}{q}    = \posvec{p}{q}
+% \fr           = \fr{}
+% \frp{B}       = \fr{B}
+% \genmom       = \linmomi
+% \cross        = \Cross
+% \dot          = \Dot
+
+% Note: \left[ stuff \right]  will put appropriately sized brackets around stuff
+%       similiary for {, (, <, and |.  If you want a left or a right bracket without
+%       its counterpart, the use \left. stuff \right]
+% Note: \rule{0.4pt}{18.0pt} will make box of width 0.4pt and thickness 18.0pt
+% Note: \rule{0.999\textwidth}{0.80pt} will make box of width textwidth and thickness 0.8pt
+% Note: \rule[-0.67pc]{0.99\textwidth}{0.80pt} will move blackened box down 0.67pc
+% Note: \boldDarkRed{\rule[0.17pc]{0.99\textwidth}{0.80pt}} will move red box up 0.17pc
+

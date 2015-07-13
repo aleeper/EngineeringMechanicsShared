@@ -1,0 +1,611 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  VECTORS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectorsCommon}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{amsmath}  % Needed for \overset
+\RequirePackage{amssymb}  % Needed for \rightrightarrows
+
+\RequirePackage{bigbold}
+\RequirePackage{commonFonts}
+\RequirePackage{customOperators}
+%\RequirePackage{textStyles}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+% No options...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%% EXPRESSING AND EVALUATING VECTORS %%%%%%%%%%%%%%%%%%
+% TODO(aleeper): Has matrix requirements. Move out of this package.
+\newcommand{\expressMatrixBasis}[2]{\ensuremath{{#1}_{#2}}}
+\newcommand{\expressAsMatrix}[2]{{\ensuremath{\expressMatrixBasis{\,\left[{#1}\right]}{#2}\,}}}   % Need extra {} in case this is inside \begin{array}
+\newcommand{\expressVectorAsMatrix}[2]{{\ensuremath{\expressMatrixBasis{\,\left[{#1}\right]}{#2}\,}}}   % Need extra {} in case this is inside \begin{array}
+\newcommand{\expressDyadicAsMatrix}[2]{{\ensuremath{\expressMatrixBasis{\,\left[{#1}\right]}{#2}\,}}}   % Need extra {} in case this is inside \begin{array}
+\newcommand{\expressThree}[5][c]{\ensuremath{\expressMatrixBasis{\,\left[\begin{array}{#1}{#2}\\[0.0pc]{#3}\\[0.0pc]{#4}\end{array}\right]}{#5}\,}}
+\newcommand{\expressThreeSpace}[6][c]{\ensuremath{\expressMatrixBasis{\,\left[\begin{array}{#1}{#2}\\[#6]{#3}\\[#6]{#4}\end{array}\right]}{#5}\,}}
+   % TODO test: \expressMatrixBasis{stuff}{B}                                        % produces stuff with a           B  subscript on lower-right
+   % TODO test: \expressAsMatrix{v}{\basis{B}}                                       % produces [v]   with a    \basis{B} subscript on lower-right
+   % TODO test: \expressMatrixBasis{\arrayThreeThree{1}{2}{3}{4}{5}{6}{7}{8}{9}}{B}  % produces 3x3 matrix with        B  subscript on lower-right
+   % TODO test: \expressVectorAsMatrix{ \bvec{v} }{ \basis{b} }                      % produces [\bvec{v]] with \basis{b} subscript on lower-right
+   % TODO test: \expressDyadicAsMatrix{ \dyad{D} }{ \basis{b} }                      % produces [\dyad{D}] with \basis{b} subscript on lower-right
+   % TODO test: \expressAsMatrix{\bvec{v}}{\basis{B}}                                % produces [\bvec{v}] with \basis{B} subscript on lower-right
+   % TODO test: \expressThree{1}{2}{3}{B}                                            % produces a column matrix [1;2;3] with a B subscript
+   % TODO test: \expressThree[r]{1}{2}{3}{\uvecxyz{b}}                               % produces a right -justified column matrix [1;2;3] with a \uvecxyz{b} subscript
+   % TODO test: \expressThreeSpace[c]{1}{2}{3}{\uvecxyz{b}}{-0.1pc}                  % produces a center-justified column matrix [1;2;3] with a \uvecxyz{b} subscript and smaller spacing between rows.
+
+% TODO(aleeper): This is just math. Move out of this package.
+\newcommand{\evaluate}[2]{\ensuremath{\left.{#1}\right|_{#2}}}
+\newcommand{\evaluateTwo}[3]{\evaluate{#1}{\scriptsize \stackrel{#2}{#3}}}
+\newcommand{\evaluateBottomTop}[3]{\ensuremath{{\left.{#1}\right|}_{#2}^{#3}}}
+   % test: \evaluate{\bvec{v}}{a}(t+h)         % evaluate the vector v in the a basis at t+h
+   % test: \evaluate{\bvec{v}}{a}              % evaluate the vector v in the a basis
+   % test: \evaluate{y}{t+h}                   % evaluate the scalar y at t+h
+   % test: \evaluateTwo{f}{x=1}{y=2}           % evaluate f at x=1 and y=2
+   % test: \evaluateBottomTop{f(x)}{x=0}{x=3}  % evaluate f(x) from x=0 to x=3
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\vectorSymbol}[1]{\ensuremath{\!\vec{\,#1}}}
+\newcommand{\vectorSymbolLong}[1]{\ensuremath{\overrightarrow{#1}}}
+\newcommand{\arrowVector}[1]{\ensuremath{\vectorSymbolLong{\bvec{#1}}}}
+\newcommand{\bvec}[1]{\ensuremath{\vectorSymbol{\mathbf{#1}}}}
+\newcommand{\bbvec}[1]{\ensuremath{\vectorSymbol{\bigbold{#1}}}}
+\newcommand{\svec}[2]{\,\ensuremath{\bvec{#1}_\mathrm{#2}{}}}
+\newcommand{\supervec}[2]{\ensuremath{\bvec{#1}^{#2}}}
+\newcommand{\ssvec}[3]{\ensuremath{\bvec{#1}_{#2}^{#3}{}}}
+\newcommand{\zerovec}{\bvec{0}}
+\newcommand{\tildeUnderSymbol}[1]{\ensuremath{\utilde{#1}}}
+\newcommand{\tildeUnderVector}[3]{\ensuremath{\tildeUnderSymbol{\bvec{#1}}_{#2}^{#3}}}
+\newcommand{\perpvec}[1]{\ensuremath{{#1}_\perp}}
+\newcommand{\perpbvec}[1]{\ensuremath{\bvec{#1}_\perp}}
+\newcommand{\perpbbvec}[1]{\ensuremath{\bbvec{#1}_\perp}}
+\newcommand{\parallelvec}[1]{\ensuremath{{#1}_{||}}}
+\newcommand{\parallelbvec}[1]{\ensuremath{\bvec{#1}_{||}}}
+\newcommand{\parallelbbvec}[1]{\ensuremath{\bbvec{#1}_{||}}}
+\newcommand{\anyVector}[1]{\textrm{#1\ensuremath{\mathbf{any}\hspace*{-0.09em}\bvec{V}\mathbf{ector}}}}
+\newcommand{\constantVectorInReferenceFrame}[2]{\ensuremath{\leftSuperscriptWithBase{#2}{\bvec{#1}}}}
+   % test: \vectorSymbol{v}                              % produces a short right arrow over the symbol v (may or may not be bold)
+   % test: \vectorSymbolLong{v}                          % produces a long  right arrow over the symbol v (may or may not be bold)
+   % test: \arrowVector{v}                               % produces a long  right arrow over the bold face vector v
+   % test: \bvec{v}                                      % produces a        bold-face vector  v with an arrow over it
+   % test: \bbvec{v}                                     % produces a darker bold-face vector  v with an arrow over it
+   % test: \svec{A}{i}                                   % produces a bold face vector  Ai
+   % test: \supervec{F}{Q}                               % produces a bold face vector  F^Q
+   % test: \ssvec{a}{b}{c}                               % produces a bold face vector a with a subscript b and superscript c
+   % test: \zerovec                                      % produces a 0 vector.  Note: \bbvec{0} seems too bold.
+   % TODO test: \tildeUnderVector{v}                          % produces \utilde{\bvec{v}}
+   % test: \perpvec{v}                                   % produces a                vector  v with an underscore \perp
+   % test: \perpbvec{v}                                  % produces a bold      face vector  v with an underscore \perp
+   % test: \perpbbvec{v}                                 % produces a dark bold face vector  v with an underscore \perp
+   % test: \parallelvec{v}                               % produces a                vector  v with an underscore ||
+   % test: \parallelbvec{v}                              % produces a bold      face vector  v with an underscore ||
+   % test: \parallelbbvec{v}                             % produces a dark bold face vector  v with an underscore ||
+   % test: \anyVector{\footnotesize}                     % produces anyVector in mathbf with vector over V
+   % test: \constantVectorInReferenceFrame{Constant}{N}
+
+\newcommand{\boldLambdaVector}{\ensuremath{\vectorSymbol{\boldlambda}}}
+\newcommand{\boldLambdaUnitVector}{\ensuremath{\uvecHat{\boldlambda}}}
+\newcommand{\boldEpsilonVector}{\ensuremath{\vectorSymbol{\boldepsilon}}}
+\newcommand{\boldDeltaVector}{\ensuremath{\vectorSymbol{\bolddelta}}}
+\newcommand{\boldThetaVector}{\ensuremath{\vectorSymbol{\boldtheta}}}
+\newcommand{\boldTauUnitVector}{\ensuremath{\uvecHat{\boldtau}}}
+\newcommand{\boldAlphaVector}{\ensuremath{\vectorSymbol{\boldalpha}}}
+\newcommand{\boldBetaVector}{\ensuremath{\vectorSymbol{\boldbeta}}}
+\newcommand{\boldGammaVector}{\ensuremath{\vectorSymbol{\boldgamma}}}
+\newcommand{\boldAngleVector}{\ensuremath{\vectorSymbol{\boldangle}}}
+\newcommand{\boldNablaVector}{\ensuremath{\vectorSymbol{\boldnabla}}}
+\newcommand{\boldRhoVector}{\ensuremath{\vectorSymbol{\boldrho}}}
+\newcommand{\boldOmegaVector}{\ensuremath{\vectorSymbol{\boldomega}}}
+\newcommand{\boldOmegaUnitVector}{\ensuremath{\uvecHat{\boldomega}}}
+  % test: \boldLambdaVector
+  % test: \boldLambdaUnitVector
+  % test: \boldEpsilonVector
+  % test: \boldDeltaVector
+  % test: \boldThetaVector
+  % test: \boldTauUnitVector
+  % test: \boldAlphaVector
+  % test: \boldBetaVector
+  % test: \boldGammaVector
+  % test: \boldAngleVector
+  % test: \boldNablaVector
+  % test: \boldRhoVector
+  % test: \boldOmegaVector
+  % test: \boldOmegaUnitVector
+
+%\newcommand{\xvec}[0]{\ensuremath{\mathrm{1}}}
+%\newcommand{\yvec}[0]{\ensuremath{\mathrm{2}}}
+%\newcommand{\zvec}[0]{\ensuremath{\mathrm{3}}}
+\def\xvec{\ensuremath{\mathrm{x}}}
+\def\yvec{\ensuremath{\mathrm{y}}}
+\def\zvec{\ensuremath{\mathrm{z}}}
+\def\ivec{\ensuremath{\mathrm{i}}}
+\def\jvec{\ensuremath{\mathrm{j}}}
+\def\kvec{\ensuremath{\mathrm{k}}}
+\def\xvecDarkRed{\ensuremath{\mathrm{\mathBoldDarkRed{x}}}}
+\def\yvecDarkRed{\ensuremath{\mathrm{\mathBoldDarkRed{y}}}}
+\def\zvecDarkRed{\ensuremath{\mathrm{\mathBoldDarkRed{z}}}}
+\def\xvecDarkGreen{\ensuremath{\mathrm{\mathBoldDarkGreen{x}}}}
+\def\yvecDarkGreen{\ensuremath{\mathrm{\mathBoldDarkGreen{y}}}}
+\def\zvecDarkGreen{\ensuremath{\mathrm{\mathBoldDarkGreen{z}}}}
+\def\xvecDarkBlue{\ensuremath{\mathrm{\mathBoldDarkBlue{x}}}}
+\def\yvecDarkBlue{\ensuremath{\mathrm{\mathBoldDarkBlue{y}}}}
+\def\zvecDarkBlue{\ensuremath{\mathrm{\mathBoldDarkBlue{z}}}}
+\def\ivecDarkRed{\ensuremath{\mathrm{\mathBoldDarkRed{i}}}}
+\def\jvecDarkRed{\ensuremath{\mathrm{\mathBoldDarkRed{j}}}}
+\def\kvecDarkRed{\ensuremath{\mathrm{\mathBoldDarkRed{k}}}}
+\def\ivecDarkGreen{\ensuremath{\mathrm{\mathBoldDarkGreen{i}}}}
+\def\jvecDarkGreen{\ensuremath{\mathrm{\mathBoldDarkGreen{j}}}}
+\def\kvecDarkGreen{\ensuremath{\mathrm{\mathBoldDarkGreen{k}}}}
+\def\ivecDarkBlue{\ensuremath{\mathrm{\mathBoldDarkBlue{i}}}}
+\def\jvecDarkBlue{\ensuremath{\mathrm{\mathBoldDarkBlue{j}}}}
+\def\kvecDarkBlue{\ensuremath{\mathrm{\mathBoldDarkBlue{k}}}}
+\newcommand{\uvecNoHat}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\uvecWithWideHat}[1]{\ensuremath{\mathbf{\widehat{#1}}}}
+\newcommand{\uvecWithNarrowHat}[1]{\ensuremath{\mathbf{\hat{#1}}}}
+\newcommand{\uvecWithHat}[1]{\ensuremath{\mathbf{\widehat{#1}}}}       % Use \hat or \widehat
+\newcommand{\uvecxWithHat}[1]{\ensuremath{\uvecWithHat{#1}_\xvec{}}}
+\newcommand{\uvecyWithHat}[1]{\ensuremath{\uvecWithHat{#1}_\yvec{}}}
+\newcommand{\uveczWithHat}[1]{\ensuremath{\uvecWithHat{#1}_\zvec{}}}
+\newcommand{\uvecuWithHat}[1][]{\ensuremath{\uvecWithHat{u}_{#1}}}
+\newcommand{\uvecxyzWithHat}[1]{\ensuremath{\uvecxWithHat{#1},\: \uvecyWithHat{#1},\: \uveczWithHat{#1}}}
+\newcommand{\uvecHat}[1]{\uvecWithHat{#1}}
+\newcommand{\uvecHatDarkRed}[1]{\ensuremath{\mathBoldDarkRed{#1}}}
+\newcommand{\uvecHatDarkGreen}[1]{\ensuremath{\mathBoldDarkGreen{#1}}}
+\newcommand{\uvecHatDarkBlue}[1]{\ensuremath{\mathBoldDarkBlue{#1}}}
+\newcommand{\uvecx}[1]{\ensuremath{\uvecHat{#1}_\xvec{}}}
+\newcommand{\uvecy}[1]{\ensuremath{\uvecHat{#1}_\yvec{}}}
+\newcommand{\uvecz}[1]{\ensuremath{\uvecHat{#1}_\zvec{}}}
+\def\uvecu{\ensuremath{\uvecWithHat{u}}}
+\def\uvecv{\ensuremath{\uvecWithHat{v}}}
+\def\uvecw{\ensuremath{\uvecWithHat{w}}}
+\def\uveciNoBasis{\ensuremath{\uvecHat{i}}}
+\def\uvecjNoBasis{\ensuremath{\uvecHat{j}}}
+\def\uveckNoBasis{\ensuremath{\uvecHat{k}}}
+\def\uvecijkNoBasis{\ensuremath{\uveciNoBasis{},\; \uvecjNoBasis{},\; \uveckNoBasis{}}}
+\def\uveceR{\ensuremath{\uvecHat{e}_r}}
+\def\uveceTheta{\ensuremath{\uvecHat{e}_\theta}}
+\newcommand{\uvecxyz}[1]{\ensuremath{\uvecx{#1},\: \uvecy{#1},\: \uvecz{#1}}}
+\newcommand{\uvecBasisxyz}[1]{\ensuremath{\uvecHat{#1}_{\xvec\yvec\zvec}}}
+\newcommand{\uvecxDarkRed}[1]{\ensuremath{\uvecHatDarkRed{#1}_\xvecDarkRed{}}}
+\newcommand{\uvecyDarkRed}[1]{\ensuremath{\uvecHatDarkRed{#1}_\yvecDarkRed{}}}
+\newcommand{\uveczDarkRed}[1]{\ensuremath{\uvecHatDarkRed{#1}_\zvecDarkRed{}}}
+\newcommand{\uvecxDarkGreen}[1]{\ensuremath{\uvecHatDarkGreen{#1}_\xvecDarkGreen{}}}
+\newcommand{\uvecyDarkGreen}[1]{\ensuremath{\uvecHatDarkGreen{#1}_\yvecDarkGreen{}}}
+\newcommand{\uveczDarkGreen}[1]{\ensuremath{\uvecHatDarkGreen{#1}_\zvecDarkGreen{}}}
+\newcommand{\uvecxDarkBlue}[1]{\ensuremath{\uvecHatDarkBlue{#1}_\xvecDarkBlue{}}}
+\newcommand{\uvecyDarkBlue}[1]{\ensuremath{\uvecHatDarkBlue{#1}_\yvecDarkBlue{}}}
+\newcommand{\uveczDarkBlue}[1]{\ensuremath{\uvecHatDarkBlue{#1}_\zvecDarkBlue{}}}
+\newcommand{\uvecxx}[1]{\ensuremath{\uvecx{#1},\,\uvecx{#1}}}
+\newcommand{\uvecxy}[1]{\ensuremath{\uvecx{#1},\,\uvecy{#1}}}
+\newcommand{\uvecxz}[1]{\ensuremath{\uvecx{#1},\,\uvecz{#1}}}
+\newcommand{\uvecyx}[1]{\ensuremath{\uvecy{#1},\,\uvecx{#1}}}
+\newcommand{\uvecyy}[1]{\ensuremath{\uvecy{#1},\,\uvecy{#1}}}
+\newcommand{\uvecyz}[1]{\ensuremath{\uvecy{#1},\,\uvecz{#1}}}
+\newcommand{\uveczx}[1]{\ensuremath{\uvecz{#1},\,\uvecx{#1}}}
+\newcommand{\uveczy}[1]{\ensuremath{\uvecz{#1},\,\uvecy{#1}}}
+\newcommand{\uveczz}[1]{\ensuremath{\uvecz{#1},\,\uvecz{#1}}}
+\newcommand{\uvecs}[1]{\ensuremath{\uvecx{#1},\: \uvecy{#1},\: \uvecz{#1}}}
+\newcommand{\vecxy}[4][\,]{\ensuremath{{#3}\,\uvecx{#2}\plus[#1]{#4}\,\uvecy{#2}}}
+\newcommand{\vecxyz}[5][\,]{\ensuremath{{#3}\,\uvecx{#2}\plus[#1]{#4}\,\uvecy{#2}\plus[#1]{#5}\,\uvecz{#2}}}
+\newcommand{\uvecOne}[1]{\ensuremath{\uvecHat{#1}_1}}
+\newcommand{\uvecTwo}[1]{\ensuremath{\uvecHat{#1}_2}}
+\newcommand{\uvecThree}[1]{\ensuremath{\uvecHat{#1}_3}}
+\newcommand{\uvecOneTwoThree}[1]{\ensuremath{\uvecOne{#1},\: \uvecTwo{#1},\: \uvecThree{#1}}}
+\newcommand{\vecOneTwoThree}[5][\,]{\ensuremath{{#3}\,\uvecOne{#2}\plus[#1]{#4}\,\uvecTwo{#2}\plus[#1]{#5}\,\uvecThree{#2}}}
+\newcommand{\unitVector}[2][\,]{\ensuremath{\textal{UnitVector}\left({#1}{#2}{#1}\right)}}
+\newcommand{\uvec}[2]{\ensuremath{\uvecHat{#1}_\mathrm{#2}{}}}
+\newcommand{\uveci}[1]{\ensuremath{\uvecHat{#1}_{\ivec}}}
+\newcommand{\uvecj}[1]{\ensuremath{\uvecHat{#1}_{\jvec}}}
+\newcommand{\uveck}[1]{\ensuremath{\uvecHat{#1}_{\kvec}}}
+\newcommand{\uvecijk}[1]{\ensuremath{\uveci{#1},\: \uvecj{#1},\: \uveck{#1}}}
+\newcommand{\uveciDarkRed}[1]{\ensuremath{\uvecHatDarkRed{#1}_\ivecDarkRed{}}}
+\newcommand{\uvecjDarkRed}[1]{\ensuremath{\uvecHatDarkRed{#1}_\jvecDarkRed{}}}
+\newcommand{\uveckDarkRed}[1]{\ensuremath{\uvecHatDarkRed{#1}_\kvecDarkRed{}}}
+\newcommand{\uveciDarkGreen}[1]{\ensuremath{\uvecHatDarkGreen{#1}_\ivecDarkGreen{}}}
+\newcommand{\uvecjDarkGreen}[1]{\ensuremath{\uvecHatDarkGreen{#1}_\jvecDarkGreen{}}}
+\newcommand{\uveckDarkGreen}[1]{\ensuremath{\uvecHatDarkGreen{#1}_\kvecDarkGreen{}}}
+\newcommand{\uveciDarkBlue}[1]{\ensuremath{\uvecHatDarkBlue{#1}_\ivecDarkBlue{}}}
+\newcommand{\uvecjDarkBlue}[1]{\ensuremath{\uvecHatDarkBlue{#1}_\jvecDarkBlue{}}}
+\newcommand{\uveckDarkBlue}[1]{\ensuremath{\uvecHatDarkBlue{#1}_\kvecDarkBlue{}}}
+\def\uvecalphaOne{\ensuremath{\uvecWithHat{\boldalpha}_{1}}}
+\def\uvecalphaTwo{\ensuremath{\uvecWithHat{\boldalpha}_{2}}}
+\def\uvecbetaOne{\ensuremath{\uvecWithHat{\boldbeta}_{1}}}
+\def\uvecbetaTwo{\ensuremath{\uvecWithHat{\boldbeta}_{2}}}
+\def\xHatUnitVector{\uvecWithHat{x}}
+\def\yHatUnitVector{\uvecWithHat{y}}
+\def\zHatUnitVector{\uvecWithHat{z}}
+\def\xyzHatUnitVectors{\xHatUnitVector, \yHatUnitVector, \zHatUnitVector}
+\newcommand{\uvecWithWideHatOnFirstLetterTextrm}[2]{\ensuremath{\mathbf{\widehat{\textrm{\textbf{#1}}}{\textrm{\textbf{#2}}}}}}
+\newcommand{\uvecxWithWideHatOnFirstLetterTextrm}[2]{\ensuremath{\mathbf{\widehat{\textrm{\textbf{#1}}} {\textrm{\textbf{#2}}}_{\xvec}}}}
+\newcommand{\uvecyWithWideHatOnFirstLetterTextrm}[2]{\ensuremath{\mathbf{\widehat{\textrm{\textbf{#1}}} {\textrm{\textbf{#2}}}_{\yvec}}}}
+\newcommand{\uveczWithWideHatOnFirstLetterTextrm}[2]{\ensuremath{\mathbf{\widehat{\textrm{\textbf{#1}}} {\textrm{\textbf{#2}}}_{\zvec}}}}
+   % %test: \uvecx{a}                                     % produces a_x>
+   % %test: \uvecy{a}                                     % produces a_y>
+   % %test: \uvecz{a}                                     % produces a_z>
+   % %test: \uvecs{a}                                     % produces a_x>, a_y>, a_z>
+   % %test: \vecxy{b}{x}{y}                               % produces xB_x> + yB_y>
+   % %test: \vecxyz{b}{x}{y}{z}                           % produces x B_x> + y B_y> + z B_z>
+   % %test: \vecxyz[]{b}{x}{y}{z}                         % produces x B_x>+y B_y>+z B_z>
+   % %test: \vecxyz[\;]{b}{x}{y}{z}                       % produces x B_x>  +  y B_y>  +  z B_z>
+   % %test: \uvecOne{a}                                   % produces a_1>
+   % %test: \uvecTwo{a}                                   % produces a_2>
+   % %test: \uvecThree{a}                                 % produces a_3>
+   % %test: \uvecOneTwoThree{a}                           % produces a_1>, a_2>, a_3>
+   % %test: \vecOneTwoThree{B}{x}{y}{z}                   % produces xB_1> + yB_2> + zB_3>
+   % %test: \vecOneTwoThree[]{B}{x}{y}{z}                 % produces xB_1>+yB_2>+zB_3>
+   % %test: \unitVector{ \uvecx{n} + \uvecy{n} }          % produces UnitVec( \uvecx{n} + \uvecy{n} )
+   % %test: \uvec{a}{i}                                   % produces a bold face vector  ai  (same as \svec)
+   % %test: \uveci{a}                                     % produces a_i>
+   % %test: \uvecj{b}                                     % produces b_j>
+   % %test: \uvecsi[j]{a}                                 % produces a_j> (j=1,2,3)
+   % %test: \uvecalphaOne                                 % produces \alpha_1
+   % %test: \uvecalphaTwo                                 % produces \alpha_2
+   % %test: \uvecbetaOne                                  % produces \beta_1
+   % %test: \uvecbetaTwo                                  % produces \beta_2
+   % %test: \xHatUnitVector                               % produces $x$ as a unit vector
+   % %test: \xyzHatUnitVectors                            % produces \xHatUnitVector, \yHatUnitVector, \zHatUnitVector
+   % %test: \uvecxWithHat{a}                              % produces \hat{a}_x
+   % %test: \uvecyWithHat{a}                              % produces \hat{a}_x
+   % %test: \uveczWithHat{a}                              % produces \hat{a}_x
+   % %test: \uvecuWithHat                                 % produces \hat{u}
+   % %test: \uvecuWithHat[1]                              % produces \hat{u}_1
+   % %test: \uvecxyzWithHat{a}                            % produces \hat{1}_x, \hat{a}_y, \hat{a}_z
+   % %test: \uvecBasisxyz{a}                              % produces \uvecHat{a}_{xyz}
+   % %test: \uvecWithWideHatOnFirstLetterTextrm{E}{ast}   % produces \uvecHat{E}ast
+   % %test: \uvecxWithWideHatOnFirstLetterTextrm{E}{ast}  % produces \uvecHat{E}ast_x
+
+
+%\newcommand{\vecmag}[1]{\ensuremath{\bigl|{#1}\bigr|}}   % This does not look good in smaller fonts.
+\newcommand{\vecmag}[1]{\ensuremath{\vert{#1}\vert}}
+%\newcommand{\vecmag}[1]{\ensuremath{\left|{#1}\right|}}
+   % test: \vecmag{A} % produces a bold face |A| old vecmag was ||A||
+
+\newcommand{\lineBetweenPoints}[3][\,]{\ensuremath{\overline{{#2}{#1}{#3}}}}
+   % test: \lineBetweenPoints{A}{B}          % produces line over AB
+   % test: \lineBetweenPoints[\:]{A}{B}      % produces line over A\;B
+
+%%%%%%%%%%%%%%%%%%%%%% DYADS AND DYADICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% TODO(aleeper): Move these to be with other generic text modifiers.
+\newcommand{\underlineUnderSymbol}[1]{\ensuremath{\underline{#1}}}
+\newcommand{\doubleArrowOverSymbol}[1]{\ensuremath{\overset{{}_{\rightrightarrows}}{#1}}}
+%\newcommand{\doubleArrowOverSymbol}[1]{\ensuremath{\overset{{}_{\Rightarrow}}{#1}}}
+%\newcommand{\doubleArrowOverSymbol}[1]{\ensuremath{\!\vec{\vec{\,#1}}}}
+%\newcommand{\doubleArrowOverSymbol}[1]{\ensuremath{\overset{\Rightarrow}{#1}}}
+%\newcommand{\doubleArrowOverSymbol}[1]{\ensuremath{\overset{\Longrightarrow}{#1}}}
+%\newcommand{\doubleArrowOverSymbol}[1]{\ensuremath{\overrightarrow{\overrightarrow{#1}}}}
+\newcommand{\underlineUnderMathbfSymbol}[1]{\ensuremath{\mathbf{\underlineUnderSymbol{#1}}}}
+\newcommand{\doubleArrowOverMathbfSymbol}[1]{\ensuremath{\mathbf{\doubleArrowOverSymbol{#1}}}}
+   % test: \underlineUnderSymbol{A}
+   % test: \doubleArrowOverSymbol{A}
+   % test: \underlineUnderMathbfSymbol{A}
+   % test: \doubleArrowOverMathbfSymbol{A}
+
+\newcommand{\dyad}[1]{\ensuremath{\doubleArrowOverSymbol{\mathbf{#1}}}}    % Old \underlineUnderMathbfSymbol{#1}
+\newcommand{\ddyad}[1]{\ensuremath{\doubleArrowOverSymbol{\bigbold{#1}}}}  % Old \underlineUnderSymbol{#1}
+\newcommand{\dyadic}[1]{\ensuremath{\doubleArrowOverSymbol{\mathbf{#1}}}}
+\newcommand{\triadic}[1]{\ensuremath{\overrightarrow{\doubleArrowOverSymbol{\mathbf{#1}}}}}
+   % test: \dyad{D}    % produces a bold,        D with doubleArrow over it
+   % test: \ddyad{D}   % produces a dark, bold,  D with doubleArrow over it
+   % test: \dyadic{D}  % produces a bold,        D with doubleArrow over it
+   % test: \triadic{t} % produces a bold, double t with doubleArrow over it
+
+\newcommand{\zerodyad}{\dyad{0}}
+\newcommand{\udyad}{\dyad{1}}
+   % test: \zerodyad   % produces a bold, dyadic 0
+   % test: \udyad      % produces a bold, dyadic U or 1 (1 may not look great)
+
+\newcommand{\dyadicScalarSymbol}[1]{\ensuremath{\textrm{#1}}}
+\newcommand{\dyadicMatrixSymbol}[1]{\ensuremath{\textrm{#1}}}
+\newcommand{\dyadicAsMatrix}[2]{\ensuremath{\dyadicMatrixSymbol{#1}_{#2}}}
+   % test: \dyadicScalarSymbol{A}
+   % test: \dyadicMatrixSymbol{A}
+   % test: \dyadicAsMatrix{A}{B}
+
+\newcommand{\dyadicScalarSubscript}[2]{\ensuremath{\dyadicScalarSymbol{#1}_{#2}}}
+\newcommand{\dyadicScalarSubscriptxx}[1]{\dyadicScalarSubscript{#1}{\textrm{xx}}}
+\newcommand{\dyadicScalarSubscriptxy}[1]{\dyadicScalarSubscript{#1}{\textrm{xy}}}
+\newcommand{\dyadicScalarSubscriptxz}[1]{\dyadicScalarSubscript{#1}{\textrm{xz}}}
+\newcommand{\dyadicScalarSubscriptyx}[1]{\dyadicScalarSubscript{#1}{\textrm{yx}}}
+\newcommand{\dyadicScalarSubscriptyy}[1]{\dyadicScalarSubscript{#1}{\textrm{yy}}}
+\newcommand{\dyadicScalarSubscriptyz}[1]{\dyadicScalarSubscript{#1}{\textrm{yz}}}
+\newcommand{\dyadicScalarSubscriptzx}[1]{\dyadicScalarSubscript{#1}{\textrm{zx}}}
+\newcommand{\dyadicScalarSubscriptzy}[1]{\dyadicScalarSubscript{#1}{\textrm{zy}}}
+\newcommand{\dyadicScalarSubscriptzz}[1]{\dyadicScalarSubscript{#1}{\textrm{zz}}}
+% test: \dyadicScalarSubscript{A}{B}
+% test: \dyadicScalarSubscriptxx{A}
+% test: \dyadicScalarSubscriptxy{A}
+% test: \dyadicScalarSubscriptxz{A}
+% test: \dyadicScalarSubscriptyx{A}
+% test: \dyadicScalarSubscriptyy{A}
+% test: \dyadicScalarSubscriptyz{A}
+% test: \dyadicScalarSubscriptzx{A}
+% test: \dyadicScalarSubscriptzy{A}
+% test: \dyadicScalarSubscriptzz{A}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BASIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\basis}[1]{\ensuremath{\mathit{#1}}}
+\newcommand{\basisNamexyz}[1]{\ensuremath{\mathrm{\mathbf{#1}}_{\xvec\yvec\zvec}}}
+\newcommand{\basisNameUnitaryxyz}[1]{\ensuremath{\uvecHat{\mathrm{#1}}_{\xvec\yvec\zvec}}}
+\newcommand{\Dextral}{Right-handed}    % OLD:  \def\Dextral{Dextral}
+\newcommand{\dextral}{right-handed}    % OLD:  \def\dextral{dextral}
+   % test: \basis{b}
+   % test: \basisNamexyz{b}          % produces b_{xyz}
+   % test: \basisNameUnitaryxyz{b}
+   % test: \Dextral
+   % test: \dextral
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% TODO(aleeper): The line between vectors, geometry, and kinematics is fuzzy.
+%%% So, I'm not sure where to put the stuff that follows.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANGLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\angleName}[1]{\ensuremath{\boldangle{\bigl({#1}\bigr)}}}
+\newcommand{\angleVector}[2]{\ensuremath{\boldangle{\bigl({#1},\hspace{0.05em}{#2}\bigr)}}}
+\newcommand{\angleVectorPositiveSense}[4][\:]{\ensuremath{\boldangle{\left({#2},{#3},{#1}\positive{#4}\right)}}}
+\newcommand{\angleVectorNegativeSense}[4][\:]{\ensuremath{\boldangle{\left({#2},{#3},{#1}\negative{#4}\right)}}}
+\newcommand{\angleNameVectorPositiveSenseDescription}[4]{angle \ensuremath{#1} from \hspace{0.18em}{#2}\hspace{0.18em} to \hspace{0.18em}{#3}\hspace{0.18em} with \hspace{0.18em}\mbox{\positive{#4}\hspace{0.18em} sense}}
+\newcommand{\angleBetweenVectorsDescription}[2]{angle between \hspace{0.18em}{#1}\hspace{0.18em} and \hspace{0.18em}{#2}\hspace{0.18em}}
+\newcommand{\angleVectorPositiveSenseDescription}[3]{angle from \hspace{0.18em}{#1}\hspace{0.18em} to \hspace{0.18em}{#2}\hspace{0.18em} with \hspace{0.18em}\positive{#3}\hspace{0.18em} sense}
+\newcommand{\AngleVectorPositiveSenseDescription}[3]{Angle from \hspace{0.18em}{#1}\hspace{0.18em} to \hspace{0.18em}{#2}\hspace{0.18em} with \hspace{0.18em}\positive{#3}\hspace{0.18em} sense}
+\newcommand{\angleVectorNegativeSenseDescription}[3]{angle from \hspace{0.18em}{#1}\hspace{0.18em} to \hspace{0.18em}{#2}\hspace{0.18em} with \hspace{0.18em}\negative{#3}\hspace{0.18em} sense}
+\newcommand{\AngleVectorNegativeSenseDescription}[3]{Angle from \hspace{0.18em}{#1}\hspace{0.18em} to \hspace{0.18em}{#2}\hspace{0.18em} with \hspace{0.18em}\negative{#3}\hspace{0.18em} sense}
+   % test: \angleName{ABC}                                                          % angle ABC
+   % test: \angleVector{\bvec{a}}{\bvec{b}}                                         % angle between \bvec{a} and \bvec{b}
+   % test: \angleBetweenVectorsDescription{\bvec{a}}{\bvec{b}}                      % angle between \bvec{a} and \bvec{b}
+   % test: \angleVectorPositiveSense[\:]{\bvec{a}}{\bvec{b}}{\uvecz{n}}             % angle from \bvec{a} to \bvec{b} with \positive{\uvecz{n}} sense
+                                                                                    %   (regarded as positive when right-hand rotation from \bvec{a} to \bvec{b} is in \positive{\uvecz{n}} direction}
+   % test: \angleVectorPositiveSenseDescription{\uvecx{a}}{\uvecx{b}}{\uvecz{n}}    % angle from \uvecx{a} to \uvecx{b} with \positive{\uvecz{a}} sense
+                                                                                    %   (regarded as positive when right-hand rotation from \uvecx{a} to \uvecx{b} is in \uvecz{a} direction}
+   % test: \angleNameVectorPositiveSenseDescription{\theta}{\uvecx{a}}{\uvecx{b}}{\uvecz{n}}  % angle $\theta$ from \uvecx{a} to \uvecx{b} with \positive{\uvecz{a}} sense
+                                                                                    %   (regarded as positive when right-hand rotation from \uvecx{a} to \uvecx{b} is in \uvecz{a} direction}
+   % test: \AngleVectorPositiveSenseDescription{\uvecx{a}}{\uvecx{b}}{\uvecz{n}}    % Angle from \uvecx{a} to \uvecx{b} with \positive{\uvecz{a}} sense
+                                                                                    %   (regarded as positive when right-hand rotation from \uvecx{a} to \uvecx{b} is in \uvecz{a} direction}
+   % test: \AngleVectorNegativeSenseDescription{\uvecx{a}}{\uvecx{b}}{\uvecz{n}}    % Angle from \uvecx{a} to \uvecx{b} with \negative{\uvecz{a}} sense
+                                                                                    %   (regarded as positive when right-hand rotation from \uvecx{a} to \uvecx{b} is in \uvecz{a} direction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TRIANGLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\triangleSymbol}{\ensuremath{\Delta}}
+\newcommand{\triangleVectorSymbol}{\ensuremath{\Delta}}
+\newcommand{\triangleNameSubscript}[4][\,]{\ensuremath{\triangleSymbol_{{#2}{#1}{#3}{#1}{#4}{#1}}}}
+\newcommand{\triangleNameRegular}[4][\,]{\ensuremath{\triangleSymbol{\mbox{{#1}{#2}{#1}{#3}{#1}{#4}{#1}}}}}
+\newcommand{\triangleVectorsInParens}[2]{\ensuremath{\triangleVectorSymbol(#1,\,#2)}}
+   % test: \triangleSymbol
+   % test: \triangleVectorSymbol
+   % test: \triangleNameSubscript[\,]{A}{B}{C}   % produces triangle with subscript {A}\,{B}\,{C}
+   % test: \triangleNameRegular[\,]{A}{B}{C}     % produces triangle with regular   {A}\,{B}\,{C}
+   % test: \triangleVectorsInParens{\bvec{a}}{\bvec{b}}             % produces triangle (\bvec{a},\,\bvec{b} )
+
+
+%%%%%%%%%%%%%%%%%%%% 1-ANGLE ROTATION SEQUENCES %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\BodyRotationName}{\textrm{Body}}                  % test: \BodyRotationName
+\newcommand{\SpaceRotationName}{\textrm{Space}}                % test: \SpaceRotationName
+\newcommand{\BodyAngleOne}[1]{\BodyRotationName~\textrm{#1}}   % test: \BodyAngleOne{A}
+\newcommand{\Bodyi}{\BodyAngleOne{i}}                          % test: \Bodyi
+\newcommand{\BodyX}{\BodyAngleOne{x}}                          % test: \BodyX            % TODO(aleeper): This had a typo, i instead of x
+\newcommand{\BodyY}{\BodyAngleOne{y}}                          % test: \BodyY
+\newcommand{\BodyZ}{\BodyAngleOne{z}}                          % test: \BodyZ
+\newcommand{\NegativeBodyX}{\negative{\BodyX}}                 % test: \NegativeBodyX
+\newcommand{\NegativeBodyY}{\negative{\BodyY}}                 % test: \NegativeBodyY
+\newcommand{\NegativeBodyZ}{\negative{\BodyZ}}                 % test: \NegativeBodyZ
+
+%%%%%%%%%%%%%%%%%%%% 2-ANGLE ROTATION SEQUENCES %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\BodyAngleTwo}[2]{\BodyRotationName~\textrm{{#1}{#2}}}
+\newcommand{\SpaceAngleTwo}[2]{\SpaceRotationName~\textrm{{#1}{#2}}}
+\newcommand{\Bodyij}{\BodyAngleTwo{i}{j}}
+\newcommand{\Bodyji}{\BodyAngleTwo{j}{i}}
+\newcommand{\Bodyjk}{\BodyAngleTwo{j}{k}}
+\newcommand{\BodyXY}{\BodyAngleTwo{x}{y}}
+\newcommand{\BodyYZ}{\BodyAngleTwo{y}{z}}
+\newcommand{\BodyZX}{\BodyAngleTwo{z}{x}}
+\newcommand{\BodyXZ}{\BodyAngleTwo{x}{z}}
+\newcommand{\BodyYX}{\BodyAngleTwo{y}{x}}
+\newcommand{\BodyZY}{\BodyAngleTwo{z}{y}}
+\newcommand{\Spaceij}{\SpaceAngleTwo{i}{j}}
+\newcommand{\SpaceXY}{\SpaceAngleTwo{x}{y}}
+\newcommand{\SpaceYZ}{\SpaceAngleTwo{y}{z}}
+\newcommand{\SpaceZX}{\SpaceAngleTwo{z}{x}}
+\newcommand{\SpaceXZ}{\SpaceAngleTwo{x}{z}}
+\newcommand{\SpaceYX}{\SpaceAngleTwo{y}{x}}
+\newcommand{\SpaceZY}{\SpaceAngleTwo{z}{y}}
+
+%%%%%%%%%%%%%%%%%%%% 3-ANGLE ROTATION SEQUENCES %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\BodyAngleThree}[3]{\BodyRotationName~\textrm{{#1}{#2}{#3}}}
+\newcommand{\SpaceAngleThree}[3]{\SpaceRotationName~\textrm{{#1}{#2}{#3}}}
+\newcommand{\Bodyijk}{\BodyAngleThree{i}{j}{k}}
+\newcommand{\Bodyiji}{\BodyAngleThree{i}{j}{i}}
+\newcommand{\Bodykji}{\BodyAngleThree{k}{j}{i}}
+\newcommand{\BodyXYZ}{\BodyAngleThree{x}{y}{z}}
+\newcommand{\BodyYZX}{\BodyAngleThree{y}{z}{x}}
+\newcommand{\BodyZXY}{\BodyAngleThree{z}{x}{y}}
+\newcommand{\BodyXZY}{\BodyAngleThree{x}{z}{y}}
+\newcommand{\BodyYXZ}{\BodyAngleThree{y}{x}{z}}
+\newcommand{\BodyZYX}{\BodyAngleThree{z}{y}{x}}
+\newcommand{\BodyXYX}{\BodyAngleThree{x}{y}{x}}
+\newcommand{\BodyXZX}{\BodyAngleThree{x}{z}{x}}
+\newcommand{\BodyYXY}{\BodyAngleThree{y}{x}{y}}
+\newcommand{\BodyYZY}{\BodyAngleThree{y}{z}{y}}
+\newcommand{\BodyZXZ}{\BodyAngleThree{z}{x}{z}}
+\newcommand{\BodyZYZ}{\BodyAngleThree{z}{y}{z}}
+\newcommand{\Spaceijk}{\SpaceAngleThree{i}{j}{k}}
+\newcommand{\Spaceiji}{\SpaceAngleThree{i}{j}{i}}
+\newcommand{\SpaceXYZ}{\SpaceAngleThree{x}{y}{z}}
+\newcommand{\SpaceYZX}{\SpaceAngleThree{y}{z}{x}}
+\newcommand{\SpaceZXY}{\SpaceAngleThree{z}{x}{y}}
+\newcommand{\SpaceXZY}{\SpaceAngleThree{x}{z}{y}}
+\newcommand{\SpaceYXZ}{\SpaceAngleThree{y}{x}{z}}
+\newcommand{\SpaceZYX}{\SpaceAngleThree{z}{y}{x}}
+\newcommand{\SpaceXYX}{\SpaceAngleThree{x}{y}{x}}
+\newcommand{\SpaceXZX}{\SpaceAngleThree{x}{z}{x}}
+\newcommand{\SpaceYXY}{\SpaceAngleThree{y}{x}{y}}
+\newcommand{\SpaceYZY}{\SpaceAngleThree{y}{z}{y}}
+\newcommand{\SpaceZXZ}{\SpaceAngleThree{z}{x}{z}}
+\newcommand{\SpaceZYZ}{\SpaceAngleThree{z}{y}{z}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% DIRECTION COSINES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\rotationMatrixSymbol}{\ensuremath{R}}
+\newcommand{\rotationMatrixSymbolDot}{\ensuremath{\dot{\rotationMatrixSymbol}}}
+\newcommand{\rotationMatrixSymbolDDot}{\ensuremath{\ddot{\rotationMatrixSymbol}}}
+\newcommand{\dircos}[3][]{\ensuremath{{}^{\mathrm{#2}\!}{\rotationMatrixSymbol}_\mathrm{#1}^{\mathrm{#3}}}{}}
+%\newcommand{\dircos}[3][]{\ensuremath{{}^\mathrm{#2}{C}_\mathrm{#1}^{\mathrm{#3}}}{}}
+\newcommand{\dircosNoBases}[1]{\ensuremath{{\rotationMatrixSymbol}_\mathrm{#1}}{}}
+\newcommand{\dircosSquaredNoBases}[1]{\ensuremath{{\rotationMatrixSymbol}^2_\mathrm{#1}}{}}
+\newcommand{\dircosNonOrthogonal}[3][]{\ensuremath{{}^{\mathrm{#2}}_{\notPerpendicular[]}{\!}{\rotationMatrixSymbol}_\mathrm{#1}^{\mathrm{#3}}}{}}
+\newcommand{\dircosDescription}[2]{rotation matrix relating \/ \uvecxyz{#1} \/ to \/ \uvecxyz{#2}}
+\newcommand{\DircosDescription}[2]{Rotation matrix relating \/ \uvecxyz{#1} \/ to \/ \uvecxyz{#2}}
+    % test: \rotationMatrixSymbol
+    % test: \rotationMatrixSymbolDot
+    % test: \rotationMatrixSymbolDDot
+    % test: \dircos{A}{B}              % direction cosine A_B
+    % test: \dircos[ij]{A}{B}          % direction cosine element A_B_{ij}
+    % test: \dircosNoBases{xx}         % R_xx
+    % test: \dircosSquaredNoBases{xx}  % R^2_xx
+    % test: \dircosNonOrthogonal{A}{B} %
+    % test: \dircosDescription{a}{b}
+    % test: \DircosDescription{a}{b}
+
+\newcommand{\dircosxxBare}{\ensuremath{{\rotationMatrixSymbol}_{\xvec\xvec}}}
+\newcommand{\dircosxyBare}{\ensuremath{{\rotationMatrixSymbol}_{\xvec\yvec}}}
+\newcommand{\dircosxzBare}{\ensuremath{{\rotationMatrixSymbol}_{\xvec\zvec}}}
+\newcommand{\dircosyxBare}{\ensuremath{{\rotationMatrixSymbol}_{\yvec\xvec}}}
+\newcommand{\dircosyyBare}{\ensuremath{{\rotationMatrixSymbol}_{\yvec\yvec}}}
+\newcommand{\dircosyzBare}{\ensuremath{{\rotationMatrixSymbol}_{\yvec\zvec}}}
+\newcommand{\dircoszxBare}{\ensuremath{{\rotationMatrixSymbol}_{\zvec\xvec}}}
+\newcommand{\dircoszyBare}{\ensuremath{{\rotationMatrixSymbol}_{\zvec\yvec}}}
+\newcommand{\dircoszzBare}{\ensuremath{{\rotationMatrixSymbol}_{\zvec\zvec}}}
+   % test: \dircosxxBare
+   % test: \dircosxyBare
+   % test: \dircosxzBare
+   % test: \dircosyxBare
+   % test: \dircosyyBare
+   % test: \dircosyzBare
+   % test: \dircoszxBare
+   % test: \dircoszyBare
+   % test: \dircoszzBare
+
+\newcommand{\dircosxx}[2][]{\ensuremath{{}^\mathrm{#1}{\dircosxxBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircosxy}[2][]{\ensuremath{{}^\mathrm{#1}{\dircosxyBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircosxz}[2][]{\ensuremath{{}^\mathrm{#1}{\dircosxzBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircosyx}[2][]{\ensuremath{{}^\mathrm{#1}{\dircosyxBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircosyy}[2][]{\ensuremath{{}^\mathrm{#1}{\dircosyyBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircosyz}[2][]{\ensuremath{{}^\mathrm{#1}{\dircosyzBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircoszx}[2][]{\ensuremath{{}^\mathrm{#1}{\dircoszxBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircoszy}[2][]{\ensuremath{{}^\mathrm{#1}{\dircoszyBare}^{\mathrm{#2}}}{}}
+\newcommand{\dircoszz}[2][]{\ensuremath{{}^\mathrm{#1}{\dircoszzBare}^{\mathrm{#2}}}{}}
+    % TODO(aleeper): These don't look right...
+    % notest: \dircosxx{A}{B}  % direction cosine element A_Bxx
+    % notest: \dircosxx{A}{B}
+    % notest: \dircosxx{A}{B}
+
+\newcommand{\dircosdot}[3][]{\ensuremath{{}^{\mathrm{#2}\!}{\rotationMatrixSymbolDot}_{#1}^{\mathrm{#3}}{}}}
+\newcommand{\dircosddot}[3][]{\ensuremath{{}^{\mathrm{#2}\!}{\rotationMatrixSymbolDDot}_{#1}^{\mathrm{#3}}{}}}
+    % test: \dircosdot{a}{b}      % time derivative of direction cosine A_B
+    % test: \dircosdot[ij]{a}{b}  % time derivative of direction cosine element A_B_{ij}
+
+\newcommand{\dircosxxdot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\xvec\xvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircosxydot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\xvec\yvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircosxzdot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\xvec\zvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircosyxdot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\yvec\xvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircosyydot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\yvec\yvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircosyzdot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\yvec\zvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircoszxdot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\zvec\xvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircoszydot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\zvec\yvec}^{\mathrm{#2}}}{}}
+\newcommand{\dircoszzdot}[2][]{\ensuremath{{}^\mathrm{#1}{\rotationMatrixSymbolDot}_{\zvec\zvec}^{\mathrm{#2}}}{}}
+    % TODO(aleeper): These don't look right...
+    % test: \dircosxxdot{A}{B}    % time derivative of direction cosine element A_Bxx
+
+\newcommand{\directionCosineTable}[3]{ \ensuremath{
+   \begin{array}{c|ccc}
+                      \dircos{#1}{#2}  &  \symmetricSpace{0.0cm}{\uvecx{#2}} &  \symmetricSpace{0.0cm}{\uvecy{#2}} & \symmetricSpace{0.0cm}{\uvecz{#2}}
+      \\[0.00pc]\hline&&&
+      \\[-0.85pc]     \uvecx{#1}       &  {#3}_{xx}                          &  {#3}_{xy}                          & {#3}_{xz}
+      \\[0.05pc]      \uvecy{#1}       &  {#3}_{yx}                          &  {#3}_{yy}                          & {#3}_{yz}
+      \\[0.05pc]      \uvecz{#1}       &  {#3}_{zx}                          &  {#3}_{zy}                          & {#3}_{zz}
+   \end{array} }}
+    % test: \directionCosineTable{b}{a}{c}
+    % produces 3x3 direction cosine table with bx>, by>, bz> along left side,
+    % ax>, ay>, az> along the top, and elements c_{11}, c_{12}, c_{13}, ...
+    % Note: can only have 9 arguments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% EULER VECTORS, PARAMETERS, ETC. %%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\eulervec}[3][]{\ensuremath{{}^{\scriptscriptstyle #3}{\boldEpsilonVector}_{#1}^{\scriptscriptstyle #2}{}}}
+    % test: \eulervec{b}{a}      % euler vector relating  bx>, by>, bz>  with  ax>, ay>, az>
+    % test: \eulervec[1]{b}{a}   % euler vector relating  bx>, by>, bz>  with  ax>, ay>, az> with a subscript
+
+\newcommand{\eulerParameterSymbol}{\ensuremath{\epsilon}}
+\newcommand{\eulerp}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{\eulerParameterSymbol}^{\scriptscriptstyle #1}_{#3}{}}}
+\newcommand{\eulerZero}[2]{\eulerp{#1}{#2}{0}}
+\newcommand{\eulerOne}[2]{\eulerp{#1}{#2}{1}}
+\newcommand{\eulerTwo}[2]{\eulerp{#1}{#2}{2}}
+\newcommand{\eulerThree}[2]{\eulerp{#1}{#2}{3}}
+\newcommand{\eulerps}[2]{\ensuremath{\eulerZero{#1}{#2},\: \eulerOne{#1}{#2},\: \eulerTwo{#1}{#2},\: \eulerThree{#1}{#2}}}
+\newcommand{\negativeEulerp}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{\negative[0.05em]{\eulerParameterSymbol}}^{\scriptscriptstyle #1}_{#3}{}}}
+\newcommand{\positiveEulerp}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{\positive[0.15em]{\eulerParameterSymbol}}^{\scriptscriptstyle #1}_{#3}{}}}
+    % test: \eulerParameterSymbol
+    % test: \eulerp{b}{a}{1}          %  Euler parameter 1 associated with \eulervec{b}{a}
+    % test: \eulerThree{b}{a}         %  Euler parameter 3 associated with \eulervec{b}{a}
+    % test: \eulerps{b}{a}            %  e0, e1, e2, e3
+% TODO(aleeper): These look wrong.
+    % test: \negativeEulerp{b}{a}{1}  %  -e1
+    % test: \positiveEulerp{b}{a}{1}  %  +e1
+
+\newcommand{\eulerpdot}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{\!\dot{\eulerParameterSymbol}}^{\scriptscriptstyle #1}_{#3}{}}}
+\newcommand{\eulerZeroDot}[2]{\eulerpdot{#1}{#2}{0}}
+\newcommand{\eulerOneDot}[2]{\eulerpdot{#1}{#2}{1}}
+\newcommand{\eulerTwoDot}[2]{\eulerpdot{#1}{#2}{2}}
+\newcommand{\eulerThreeDot}[2]{\eulerpdot{#1}{#2}{3}}
+    % test: \eulerpdot{b}{a}{1}  % time derivative of \eulerp{b}{a}{1}
+    % test: \eulerZeroDot{b}{a}  % time derivative of \eulerZero
+
+\newcommand{\eulerpddot}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{\!\ddot{\eulerParameterSymbol}}^{\scriptscriptstyle #1}_{#3}{}}}
+\newcommand{\eulerZeroDDot}[2]{\eulerpddot{#1}{#2}{0}}
+\newcommand{\eulerOneDDot}[2]{\eulerpddot{#1}{#2}{1}}
+\newcommand{\eulerTwoDDot}[2]{\eulerpddot{#1}{#2}{2}}
+\newcommand{\eulerThreeDDot}[2]{\eulerpddot{#1}{#2}{3}}
+    % test: \eulerpddot{b}{a}{1} % 2nd time derivative of \eulerp{b}{a}{1}
+    % test: \eulerOneDDot{b}{a}  % time derivative of \eulerZero
+
+\newcommand{\eulerpbar}[3]{\ensuremath{{}^{\scriptscriptstyle #1}{\!\overline{\eulerParameterSymbol}}^{\scriptscriptstyle #2}_{#3}{}}}
+    % test: \eulerpbar{b}{a}{1}  % a bar over \eulerp{b}{a}{1}
+
+\newcommand{\eulerpbardot}[3]{\ensuremath{{}^{\scriptscriptstyle #1}{\!\dot{\overline{\eulerParameterSymbol}}}^{\scriptscriptstyle #2}_{#3}{}}}
+    % test: \eulerpbardot{b}{a}{1} % a bar over \eulerpdot{b}{a}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% RODRIGUES PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\rodriguesvec}[3][]{\ensuremath{\leftSuperscriptWithBase{#3}{\boldRhoVector}_{#1}^{\scriptscriptstyle #2}{}}}
+    % test: \rodriguesvec{b}{a}    % rodrigues vector relating  bx>, by>, bz>  with  ax>, ay>, az>
+    % test: \rodriguesvec[1]{b}{a} % rodrigues vector relating  bx>, by>, bz>  with  ax>, ay>, az> with a subscript
+
+\newcommand{\rodriguesp}[3]{\ensuremath{\leftSuperscriptWithBase{#2}{\rho}^{\scriptscriptstyle #1}_{#3}{}}}
+\newcommand{\rodriguesOne}[2]{\rodriguesp{#1}{#2}{1}}
+\newcommand{\rodriguesTwo}[2]{\rodriguesp{#1}{#2}{2}}
+\newcommand{\rodriguesThree}[2]{\rodriguesp{#1}{#2}{3}}
+\newcommand{\rodriguesps}[2]{\ensuremath{\rodriguesOne{#1}{#2},\: \rodriguesTwo{#1}{#2},\: \rodriguesThree{#1}{#2}}}
+    % test: \rodriguesp{b}{a}{1}    % Rodrigues parameter 1 associated with \rodriguesvec{b}{a}
+    % test: \rodriguesThree{b}{a}   % Rodrigues parameter 3 associated with \rodriguesvec{b}{a}
+    % test: \rodriguesps{b}{a}      % rho1, rho2, rho3
+
+\newcommand{\rodriguespdot}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{\!\dot{\rho}}^{\scriptscriptstyle #1}_{#3}{}}}
+    % test: \rodriguespdot{b}{a}{1}   % time derivative of \rodriguesp{b}{a}{1}
+
+\newcommand{\rodriguespddot}[3]{\ensuremath{{}^{\scriptscriptstyle #2}{\!\ddot{\rho}}^{\scriptscriptstyle #1}_{#3}{}}}
+    % test: \rodriguespddot{b}{a}{1}  % 2nd time derivative of \rodriguesp{b}{a}{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% 4x4 TRANSFORMATION MATRICES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\transformationMatrixSymbol}{\ensuremath{T}}
+\newcommand{\transformationMatrix}[3][]{\ensuremath{{}^\mathrm{#2}{\transformationMatrixSymbol}_\mathrm{#1}^{\mathrm{#3}}}{}}
+    % test: \transformationMatrix{A}{B}      % transformation matrix A_B
+    % test: \transformationMatrix[ij]{A}{B}  % transformation matrix element A_B_{ij}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

@@ -1,0 +1,384 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CUSTOM FORMATTING %%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{customFormatting}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{amsmath}
+\RequirePackage{ifthenCustom}
+\RequirePackage{textStyles}
+\RequirePackage{customOperators}           % TODO(aleeper): maybe make the "under/over" stuff separate
+
+\RequirePackage[Smaller,makeroom]{cancel}  % TODO(aleeper): This makes options tricky... should maybe just remove the cancel bit.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+\newcommand{\customFormattingOptionIsSpecified}{0}
+
+\DeclareOption{student}{
+    \renewcommand{\customFormattingOptionIsSpecified}{1}
+    \newcommand{\teacherOnly}[1]{}                   % Do not show teaching tip
+    \newcommand{\studentOnly}[1]{#1}                 % Show student tip where teacher stuff is shown
+    \newcommand{\teacherStudentOnly}[2]{#2}          % Shows only student part
+    \newcommand{\studentOrTeacher}[2]{#1}
+    \newcommand{\workspaceStudent}[1]{\vspace*{#1}}  % Workspace for Students only
+    \newcommand{\teacherFrame}[1]{#1}                % Do not box answer
+    \newcommand{\teacherBox}[1]{#1}                  % Do not box math answer
+    \newcommand{\hide}[1]{\phantom{#1}}              % Do not show result
+    \newcommand{\includegraphicsAB}[3][]{\includegraphics[#1]{#3}}
+    \newcommand{\includegraphicsTeacher}[3][]{\vspace{#3}}
+    \newcommand{\hidemathYellowWhite}[2]{\hidemathwhite[#1]{#2}}
+    \newcommand{\teacherStudentEdition}{Student Edition} % Instructor/Student Edition
+    \typeout{customFormatting: Configured in student mode.}
+}
+
+\DeclareOption{instructor}{
+    \renewcommand{\customFormattingOptionIsSpecified}{1}
+    \newcommand{\teacherOnly}[1]{#1}                 % Show teaching tip
+    \newcommand{\studentOnly}[1]{}                   % Show student tip where teacher stuff is shown
+    \newcommand{\teacherStudentOnly}[2]{#1}          % Shows only teacher part
+    \newcommand{\studentOrTeacher}[2]{#2}
+    \newcommand{\workspaceStudent}[1]{}              % Workspace for Students only
+    \newcommand{\teacherFrame}[1]{\frameText{#1}}    % Box answer
+    \newcommand{\teacherBox}[1]{\boxmath{0.0cm}{#1}} % Box math answer
+    \newcommand{\hide}[1]{#1}                        % Show result
+    \newcommand{\includegraphicsAB}[3][]{\includegraphics[#1]{#2}}
+    \newcommand{\includegraphicsTeacher}[3][]{\includegraphics[#1]{#2}}
+    \newcommand{\hidemathYellowWhite}[2]{\hidemath[#1]{#2}}
+    \newcommand{\teacherStudentEdition}{Instructor Edition} % Instructor/Student Edition
+    \typeout{customFormatting: Configured in instructor mode.}
+}
+
+\DeclareOption*{\PackageError{customFormatting}{Unknown option: `\CurrentOption'}{}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% First let's check that package options were specified ok.
+%%% We bomb out if the user doesn't specify either "student" or "instructor" as an option.
+\ifthenelse{\customFormattingOptionIsSpecified=1}{}{\PackageError{customFormatting}{Must specify package option: `instructor' or `student'.}{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% TODO(aleeper): Not sure where to put this.
+\newcommand{\teacherNote}[1]{\teacherOnly{\footnote{\textbf{Instructor Note:} #1}}}
+   % test: \teacherNote{Put a footnote on instructor copy.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BOXES AND SPACING %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\workspace}[1]{\vspace*{#1}}
+%\newcommand{\workspace}[1]{}             % Alternate definition, does nothing
+   % test: \workspace{3.0pc}  % puts blank vertical white space for work space
+
+\newcommand{\answerBoxOutlineAndBackgroundColor}[4][0.0pc]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#1}\fcolorbox{#3}{#4}{#2}}}
+\newcommand{\answerBox}[2][0.0pc]{\answerBoxOutlineAndBackgroundColor[#1]{#2}{darkYellow}{lightYellow}}
+\newcommand{\answerBoxDarkestYellowBorder}[2][0.0pc]{\answerBoxOutlineAndBackgroundColor[#1]{#2}{darkestYellow}{lightYellow}}
+\newcommand{\answerBoxDarkerGreenBorder}[2][0.0pc]{\answerBoxOutlineAndBackgroundColor[#1]{#2}{darkerGreen}{lightYellow}}
+\newcommand{\answerBoxPureBlueBorder}[2][0.0pc]{\answerBoxOutlineAndBackgroundColor[#1]{#2}{pureBlue}{lightYellow}}
+\newcommand{\answerBoxWhite}[2][0.0pc]{\answerBoxOutlineAndBackgroundColor[#1]{#2}{white}{white}}
+\newcommand{\answerBoxGray}[2][0.0pc]{\answerBoxOutlineAndBackgroundColor[#1]{#2}{lightGray}{lightestGray}}
+\newcommand{\answerBoxOverride}[2][0.0pc]{\answerBoxOutlineAndBackgroundColor[#1]{#2}{darkYellowOverride}{lightYellowOverride}}
+% \newcommand{\answerBox}[2][0.0pc]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#1}\fcolorbox{darkYellow}{lightYellow}{#2}}}
+% \newcommand{\answerBoxDarkestYellowBorder}[2][0.0pc]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#1}\fcolorbox{darkestYellow}{lightYellow}{#2}}}
+% \newcommand{\answerBoxDarkerGreenBorder}[2][0.0pc]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#1}\fcolorbox{darkerGreen}{lightYellow}{#2}}}
+% \newcommand{\answerBoxPureBlueBorder}[2][0.0pc]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#1}\fcolorbox{pureBlue}{lightYellow}{#2}}}
+% \newcommand{\answerBoxWhite}[2][0.0pc]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#1}\fcolorbox{white}{white}{#2}}}
+% \newcommand{\answerBoxOverride}[2][0.0pc]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#1}\fcolorbox{darkYellowOverride}{lightYellowOverride}{#2}}}
+\newcommand{\answerBoxMath}[2][0.0cm]{\answerBox[#1]{\ensuremath{#2}}}
+\newcommand{\whitebox}[1]{\colorbox{white}{#1}}
+   % TODO test: \whiteBox{someAnswer}              % Produces someAnswer in a white box
+   % test: \answerBox{someAnswer}             % Produces someAnswer in a lightYellow box with a darkYellow border with 0.0pc between all sides of box.
+   % test: \answerBox[0.1pc]{someAnswer}      % Produces someAnswer in a lightyellow box with a darkYellow border with 0.1pc between all sides of box
+   % test: \answerBoxMath[0.1pc]{someAnswer}  % Produces someAnswer in a lightyellow box with a darkYellow border with 0.1pc between all sides of box IN MATH MODE
+   % test: \answerBoxWhite{someAnswer}        % Produces someAnswer in a white       box with a white      border
+
+\newcommand{\boxmath}[2]{\boxWithRedBorder{#1}{0.20pc}{\ensuremath{#2}}}
+\newcommand{\boxMathYellowBackground}[2]{\boxWithRedBorderYellowBackground{#1}{0.17pc}{\ensuremath{#2}}}
+\newcommand{\boxText}[2]{\boxWithRedBorder{#1}{0.20pc}{#2}}
+\newcommand{\boxTextYellowBackground}[2]{\boxWithRedBorderYellowBackground{#1}{0.23pc}{#2}}
+\newcommand{\boxDrawYellowBackground}[1]{\boxTextYellowBackground{#1}{\boldDarkRed{Draw}}}
+\newcommand{\boxWithRedBorder}[3]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#2}\fcolorbox{red}{white}{\symmetricSpace{#1}{#3}}}}
+\newcommand{\boxWithRedBorderYellowBackground}[3]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#2}\fcolorbox{red}{lightYellow}{\symmetricSpace{#1}{#3}}}}
+\newcommand{\boxWithBorder}[3]{\boxWithRedBorder{#1}{#2}{#3}}
+\newcommand{\boxMathWithThinBlackBorder}[2]{\boxWithBlackBorder{#1}{0.12pc}{\ensuremath{#2}}}
+\newcommand{\boxMathWithThickRedBorder}[2]{\boxWithThickRedBorder{#1}{0.25pc}{0.33pc}{\ensuremath{#2}}}
+\newcommand{\boxTextWithBlackBorder}[2]{\boxWithBlackBorder{#1}{0.10pc}{#2}}
+\newcommand{\boxWithBlackBorder}[3]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#2}\fcolorbox{black}{white}{\symmetricSpace{#1}{#3}}}}
+\newcommand{\boxWithThinBlackBorder}[2]{{\setlength{\fboxrule}{0.07em}\setlength{\fboxsep}{0.12pc}\fcolorbox{black}{white}{\symmetricSpace{#1}{#2}}}}
+\newcommand{\boxWithThickBlackBorder}[3]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#2}\fcolorbox{black}{white}{\symmetricSpace{#1}{#3}}}}
+\newcommand{\boxWithThickGreenBorder}[3]{{\setlength{\fboxrule}{0.15pc}\setlength{\fboxsep}{#2}\fcolorbox{darkerGreen}{white}{\symmetricSpace{#1}{#3}}}}
+\newcommand{\boxWithThickRedBorder}[4]{{\setlength{\fboxrule}{#3}\setlength{\fboxsep}{#2}\fcolorbox{red}{white}{\symmetricSpace{#1}{#4}}}}
+   % test: \boxmath{0.2em}{ e^{ix} = \cos{x} + i\sin(x) }               % Produces a nice red-boxed equation
+   % test: \boxMathYellowBackground{0.01cm}{someStuff}                    % Produces a nice red-boxed equation with a yellow background.
+   % test: \boxText{0.05cm}{SomeText}                                     % Produces red-boxed text.
+   % test: \boxWithRedBorder{0.01cm}{0.09pc}{someStuff}                   % Produces a white         box with a red border   0.15pc wide,  0.01cm separation from left/right sides and 0.09pc separation from left/right/top/bottom sides
+   % test: \boxWithRedBorderYellowBackground{0.01cm}{0.23pc}{someStuff}   % Produces a light-yellow  box with a red border   0.15pc wide,  0.09cm separation from left/right/top/bottom sides.
+   % TODO test: \boxDrawYellowBackground[0.01cm]                               % Produces the word ``Draw'' inside a red box with a yellow background.
+   % test: \boxMathWithThinBlackBorder{0.01cm}{someEqn}                   % Produces a nice thin black-boxed equation.
+   % %test: \boxMathWithThinRedBorder{0.01cm}{someEqn}                     % Produces a nice thin   red-boxed equation.
+   % test: \boxTextWithBlackBorder{0.01cm}{ Some text here }              % Produces a nice thin  black-box around text.
+   % test: \boxWithBlackBorder{0.01cm}{0.23pc}{someStuff}                 % Produces a white box with a black border 0.15pc wide,  0.01cm separation from left/right sides and 0.23pc separation from left/right/top/bottom sides
+   % test: \boxWithThinBlackBorder{0.02em}{someStuff}                     % Produces a nice thin black-boxed text-box.
+   % test: \boxWithThickBlackBorder{-0.11cm}{0.23pc}{someStuff}           % Produces a white box with a black border 0.27pc wide, -0.11cm separation from left/right sides and 0.15pc separation from left/right/top/bottom sides
+   % test: \boxWithThickGreenBorder{-0.11cm}{0.23pc}{someStuff}           % Produces a white box with a black border 0.27pc wide, -0.11cm separation from left/right sides and 0.15pc separation from left/right/top/bottom sides
+   % test: \boxWithThickRedBorder{-0.11cm}{0.09pc}{0.27pc}{someStuff}     % Produces a white box with a red border   0.27pc wide, -0.11cm separation from left/right sides and 0.09pc separation from left/right/top/bottom sides
+                                                                          %   (HAD TROUBLE IF 0.15pc was not used for previous 3rd argument)
+                                                                          %   1st argument is separation from left and right sides of the box
+                                                                          %   2nd argument is separation from left/right/top/bottom sides of the box
+                                                                          %   3rd argument is stuff to be inside the box (except for \boxWithThickBorder which is how thick the line should be)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HIDING AND BOXING STUFF %%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Displaymath}[1]{\begin{displaymath}{#1}\end{displaymath}}
+\newcommand{\boxDisplaymath}[2]{\Displaymath{\boxmath{#1}{#2}}}
+\newcommand{\textInYellowAnswerBox}[2][0.0cm]{\answerBox[0.1pc]{\hspace{#1}{#2}\hspace{#1}}}
+\newcommand{\mathInYellowAnswerBox}[2][0.0cm]{\answerBoxDarkestYellowBorder[0.1pc]{\hspace{#1}\ensuremath{#2}\hspace{#1}}}
+\newcommand{\mathInWhiteAnswerBox}[2][0.0cm]{\answerBoxWhite[0.1pc]{\hspace{#1}\ensuremath{#2}\hspace{#1}}}
+\newcommand{\mathInGreenAnswerBox}[2][0.0cm]{\answerBoxDarkerGreenBorder[0.1pc]{\hspace{#1}\ensuremath{#2}\hspace{#1}}}
+\newcommand{\mathInBlueHideAnswerBox}[2][0.0cm]{\answerBoxPureBlueBorder[0.1pc]{\hspace{#1}\ensuremath{\hidemath[0.0cm]{#2}}\hspace{#1}}}
+\newcommand{\textInGreenAnswerBox}[2][0.0cm]{\answerBoxDarkerGreenBorder[0.1pc]{\hspace{#1}{#2}\hspace{#1}}}
+   % TODO test: \Displaymath{someEqn}                    % Produces someEqn inside a displaymath environment
+   % TODO test: \boxDisplaymath{1.2em}{someEqn}          % Produces someEqn inside a displaymath environment
+   % test: \mathInYellowAnswerBox[0.05cm]{a=2}      % Produces a=2 inside yellow answer box.
+   % test: \mathInWhiteAnswerBox[0.05cm]{a=2}       % Produces a=2 inside white  answer box
+   % test: \mathInGreenAnswerBox[0.05cm]{a=2}       % Produces a=2 inside green  answer box.  Use in solutions to help instructors see where solution is already SHOWN for students.
+   % test: \textInGreenAnswerBox[0.05cm]{Sam}       % Produces Sam inside green  answer box.  Use in solutions to help instructors see where solution is already SHOWN for students.
+   % test: \mathInBlueHideAnswerBox[0.05cm]{a=2}    % Produces a=2 inside blue   answer box.  Use in solutions to help instructors and students see where solution is needed (but HIDDEN for student).
+
+\newcommand{\hidetext}[2][0.0cm]{\hidebox{\hspace{#1}{#2}\hspace{#1}}}               % Grays/yellow out text with extra room for students
+\newcommand{\hidetextwhite}[2][0.0cm]{\whitebox{\hide{\hspace{#1}{#2}\hspace{#1}}}}
+\newcommand{\hidemath}[2][0.0cm]{\hidebox{\hspace{#1}\ensuremath{#2}\hspace{#1}}}    % Hides math stuff in yellow box for students
+\newcommand{\hidemathwhite}[2][0.0cm]{\whitebox{\hide{\hspace{#1}\ensuremath{#2}\hspace{#1}}}}
+\newcommand{\hidemathScript}[2][0.0cm]{\hidebox[0.0pc]{\hspace{#1}\ensuremath{\scriptstyle #2}\hspace{#1}}} % Hides math stuff in yellow box with scriptstyle for students
+
+% TODO
+\newcommand{\hidemathDynamicSystems}[2][0.0cm]{\ifthenelse{\ForDynamicSystems=1}{\hidemath[#1]{#2}}{\ensuremath{#2}}}
+
+\newcommand{\hidebox}[2][0.1pc]{\answerBox[#1]{\hide{#2}}}                           % Grays/yellows stuff out for students
+\newcommand{\boxhide}[2]{\boxWithRedBorder{0.0cm}{0.0pc}{\hidebox[0.25pc]{\symmetricSpace{#1}{#2}}}}
+\newcommand{\boxhidemath}[2]{\boxhide{#1}{\ensuremath{#2}}}
+\newcommand{\boxhidemathDynamicSystems}[2]{\ifthenelse{\ForDynamicSystems=1}{\boxhidemath{#1}{#2}}{\ensuremath{#2}}}
+   % test: \hidetext{ Put some text in here }                        % Produces hidden text for students
+   % test: \hidetextwhite{Some text}                                 % Produces blank white space as wide as text for students
+   % test: \hidemath[0.2cm]{      e^{ix} = \cos{x} + i\sin(x) }    % Produces blank yellow space as wide as this equation for students
+   % test: \hidemathwhite[0.2cm]{ e^{ix} = \cos{x} + i\sin(x) }    % Produces blank white space as wide as this equation for students
+   % test: e^{ \hidemathScript{ix}} }                              % Produces blank yellow space in scriptstyle for students
+   % TODO test: \hidemathDynamicSystems[0.02cm]{x}                        % Produces blank yellow space for dynamic systems and shows it in regular math if not dynamic systems.
+   % test: \hidebox[0.2pc]{textHere}                                 % Produces textHere in a gray/yellow box with/without phantom with 0.2pc between _all_ sides of box for students
+   % test: \boxhide{0.1cm}{ Put some text in here }                  % Produces a nice box about hidden text for students
+   % test: \boxhidemath{0.1cm}{ e^{ix} = \cos{x} + i\sin(x) }      % Produces a nice boxed equation for students
+
+\newcommand{\hideShowTextYellow}[2][0.0cm]{\ifthenelse{\ShowWork=0}{\hidetext[#1]{#2}}{\answerBox[0.1pc]{\hspace{#1}{#2}\hspace{#1}}}}
+\newcommand{\hideShowMathYellow}[2][0.0cm]{\ifthenelse{\ShowWork=0}{\hidemath[#1]{#2}}{\mathInYellowAnswerBox[#1]{#2}}}
+\newcommand{\hideShowMathWhite}[2][0.0cm]{\ifthenelse{\ShowWork=0}{\hidemath[#1]{#2}}{\mathInYellowAnswerBox[#1]{#2}}}
+\newcommand{\hideShowMathYellowUndergrad}[2][0.0cm]{\ifthenelse{\ForGraduate=0\and\ShowWork=0}{\hidemath[#1]{#2}}{\answerBox[0.1pc]{\hspace{#1}\ensuremath{#2}\hspace{#1}}}}
+\newcommand{\hideShowMathWhiteUndergrad}[2][0.0cm]{\ifthenelse{\ForGraduate=0\and\ShowWork=0}{\hidemath[#1]{#2}}{\answerBoxWhite[0.1pc]{\hspace{#1}\ensuremath{#2}\hspace{#1}}}}
+\newcommand{\hideShowMathYellowDynamicSystems}[2][0.0cm]{\ifthenelse{\ForDynamicSystems=1\and\ShowWork=0}{\hidemath[#1]{#2}}{\answerBox[0.1pc]{\hspace{#1}\ensuremath{#2}\hspace{#1}}}}
+\newcommand{\boxHideShowMathYellowDynamicSystems}[2]{\ifthenelse{\ForDynamicSystems=1\and\ShowWork=0}{\boxhidemath{#1}{#2}}{\ensuremath{#2}}}
+\newcommand{\boxHideShowMathYellow}[2]{\ifthenelse{\ShowWork=0}{\boxhidemath{#1}{#2}}{\boxWithRedBorder{0.0cm}{0.0pc}{\answerBox[0.1pc]{\hspace{#1}\ensuremath{#2}\hspace{#1}}}}}
+   % \hideShowTextYellow[0.1cm]{Some text}                    produces hidden text for students if \ShowWork=0, otherwise shows text with yellow background
+   % \hideShowMathYellowDynamicSystems[0.02cm]{x}             produces blank yellow space for dynamic systems and shows it with yellow box if not dynamic systems.
+   % \hideShowMathYellow[0.05cm]{x}                           produces hidden text for students if \ShowWork=0, otherwise shows math with yellow background.
+   % \boxHideShowMathYellowDynamicSystems{0.1cm}{ someMath }  produces a nice boxed equation that shows except if dynamic systems and ShowWork==0
+   % \boxHideShowMathYellow{0.1cm}{ someMath }                produces a nice boxed equation that may be shown or hidden
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MULTIPLE CHOICE %%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\solutionDisplaymath}[2]{\\[0.1pc]\vbox{\textbf{Result:}\\[-1.18pc]\workspace{#1}\begin{displaymath}{#2}\end{displaymath}}}
+   % TODO test: \solutionDisplaymath{3.0pc}{x^2 + y^2 = r^2}
+
+\newcommand{\teacherFrameBooll}[2]{\ifthenelse{#2}{\teacherFrame{#1}}{#1}}
+\newcommand{\teacherFrameBool}[2]{\teacherFrameBooll{#2=1}{#1}}
+\newcommand{\frameBooll}[2]{\ifthenelse{#2}{\frameText{#1}}{#1}}
+   % test: \teacherFrameBooll{someThingToFrame}{1=1}
+   % test: \teacherFrameBooll{someThingToFrame}{0=1}
+   % TODO test: \teacherFrameBool{someThingToFrame}{1}
+   % test: \frameBooll{someThingToFrame}{1=1}
+   % test: \frameBooll{someThingToFrame}{0=1}
+
+\newcommand{\choicea}[1]{\hspace{3.0pt}\textbf{#1}\hspace{1.2pt}}
+% test: \choicea{yes} or \choicea{no}   % Useful when asking student to circle \choicea{answerA} or \choicea{answerB}.
+
+\newcommand{\choiceab}[2]{\hspace{3.0pt}\textbf{{#1}/{#2}}\hspace{1.2pt}}
+\newcommand{\choiceAB}[3]{\choiceab{\teacherFrameBooll{#1}{#3=0}}{\teacherFrameBooll{#2}{#3=1}}}
+\newcommand{\choiceABStudentToo}[3]{\choiceab{\frameBooll{#1}{#3=0}}{\frameBooll{#2}{#3=1}}}
+% TODO ShowWork is a problem
+\newcommand{\choiceABShow}[3]{\ifthenelse{\ShowWork=0}{\choiceAB{#1}{#2}{#3}}{\ifthenelse{#3=0}{\textbf{#1}}{\textbf{#2}}}}
+\newcommand{\trueFalse}[1]{\choiceAB{\textbf{true}}{\textbf{false}}{#1}}
+\newcommand{\TrueFalse}[1]{\choiceAB{\textbf{True}}{\textbf{False}}{#1}}
+   % test: \choiceab{yes}{no}
+   % test: \choiceAB{yes}{no}{0} or \choiceAB{yes}{no}{1}
+   % test: \choiceABStudentToo{yes}{no}{0}
+   % TODO test: \choiceABShow{yes}{no}{0}          % Shows just the selected item if \ShowWork=1
+   % test: \trueFalse{0} or \trueFalse{1}
+   % test: \TrueFalse{0} or \TrueFalse{1}
+
+\newcommand{\choiceabc}[3]{\hspace{3.0pt}\textbf{{#1}/{#2}/{#3}}\hspace{1.2pt}}
+\newcommand{\choiceabcVertical}[4][c]{\colThreeNoBracket[#1]{\textrm{#2}}{\textrm{#3}}{\textrm{#4}}}
+\newcommand{\choiceABC}[4]{\choiceabc{\teacherFrameBooll{#1}{#4=0}}{\teacherFrameBooll{#2}{#4=1}}{\teacherFrameBooll{#3}{#4=2}}}
+\newcommand{\choiceABCVertical}[4]{\choiceabcVertical[c]{\teacherFrameBooll{#1}{#4=0}}{\teacherFrameBooll{#2}{#4=1}}{\teacherFrameBooll{#3}{#4=2}}}
+\newcommand{\choiceABCStudentToo}[4]{\choiceabc{\frameBooll{#1}{#4=0}}{\frameBooll{#2}{#4=1}}{\frameBooll{#3}{#4=2}}}
+   % test: \choiceabc{less than}{equal}{greater than}
+   % test: \choiceABC{less than}{equal}{greater than}{2}
+   % TODO test: \choiceABCVertical{  less than}{equal}{greater than}{2}
+   % test: \choiceABCStudentToo{less than}{equal}{greater than}{2}
+
+\newcommand{\choiceabcd}[4]{\hspace{3.0pt}\textbf{{#1}/{#2}/{#3}/{#4}}\hspace{1.2pt}}
+\newcommand{\choiceABCD}[5]{\choiceabcd{\teacherFrameBooll{#1}{#5=0}}{\teacherFrameBooll{#2}{#5=1}}{\teacherFrameBooll{#3}{#5=2}}{\teacherFrameBooll{#4}{#5=3}}}
+   % test: \choiceabcd{small}{medium}{large}{huge}
+   % test: \choiceABCD{small}{medium}{large}{huge}{3}
+
+\newcommand{\choiceabcde}[5]{\hspace{3.0pt}\textbf{{#1}/{#2}/{#3}/{#4}/{#5}}\hspace{1.2pt}}
+\newcommand{\choiceABCDE}[6]{\choiceabcde{\teacherFrameBooll{#1}{#6=0}}{\teacherFrameBooll{#2}{#6=1}}{\teacherFrameBooll{#3}{#6=2}}{\teacherFrameBooll{#4}{#6=3}}{\teacherFrameBooll{#5}{#6=4}}}
+   % test: \choiceabcde{a}{b}{c}{d}{e}
+   % test: \choiceABCDE{a}{b}{c}{d}{e}{3}
+
+\newcommand{\choiceabcdef}[6]{\hspace{3.0pt}\textbf{{#1}/{#2}/{#3}/{#4}/{#5}/{#6}}\hspace{1.2pt}}
+\newcommand{\choiceABCDEF}[7]{\choiceabcdef{\teacherFrameBooll{#1}{#7=0}}{\teacherFrameBooll{#2}{#7=1}}{\teacherFrameBooll{#3}{#7=2}}{\teacherFrameBooll{#4}{#7=3}}{\teacherFrameBooll{#5}{#7=4}}{\teacherFrameBooll{#6}{#7=5}}}
+   % test: \choiceabcdef{a}{b}{c}{d}{e}{f}
+   % test: \choiceABCDEF{a}{b}{c}{d}{e}{f}{3}
+
+\newcommand{\choiceabcdefg}[7]{\hspace{3.0pt}\textbf{{#1}/{#2}/{#3}/{#4}/{#5}/{#6}/{#7}}\hspace{1.2pt}}
+\newcommand{\choiceABCDEFG}[8]{\choiceabcdefg{\teacherFrameBooll{#1}{#8=0}}{\teacherFrameBooll{#2}{#8=1}}{\teacherFrameBooll{#3}{#8=2}}{\teacherFrameBooll{#4}{#8=3}}{\teacherFrameBooll{#5}{#8=4}}{\teacherFrameBooll{#6}{#8=5}}{\teacherFrameBooll{#7}{#8=6}}}
+   % test: \choiceabcdefg{a}{b}{c}{d}{e}{f}{g}
+   % test: \choiceABCDEFG{a}{b}{c}{d}{e}{f}{g}{3}
+
+\newcommand{\lessMore}[1]{\choiceAB{\textbf{less}}{\textbf{more}}{#1}}
+\newcommand{\LessMore}[1]{\choiceAB{\textbf{Less}}{\textbf{More}}{#1}}
+   % test: \lessMore{0}
+   % test: \LessMore{1}
+
+\newcommand{\yesNo}[1]{\choiceAB{yes}{no}{#1}}
+\newcommand{\YesNo}[1]{\choiceAB{Yes}{No}{#1}}
+% TODO this depends on ShowWork
+\newcommand{\YesNoShow}[1]{\choiceABShow{Yes}{No}{#1}}
+\newcommand{\YesNoStudentToo}[1]{\choiceABStudentToo{Yes}{No}{#1}}
+   % test: \yesNo{1}
+   % test: \YesNo{0}
+   % TODO test: \YesNoShow{0}
+   % test: \YesNoStudentToo{0}
+
+\newcommand{\underequals}[2][]{\ensuremath{{#1}\underMath{\equals[]}{(#2)}{#1}}}   % Old \def\underequals#1{\underMath{=}{(#1)}}
+\newcommand{\underequal}[2][]{\underequals[#1]{\ref{#2}}}             % Old \def\underequal#1{\underequals{\ref{#1}}}
+% TODO \reff isn't in this package...
+\newcommand{\underequall}[3][]{\underequals[#1]{\reff{#2}{#3}}}
+\newcommand{\underequalSection}[2][]{\underequals[#1]{\textrm{\boldDarkBlue{s}}\ref{#2}}}
+\newcommand{\underNotEquals}[2][]{{#1}\underMath{\notEquals[]}{(#2)}{#1}}
+\newcommand{\underNotEqual}[2][]{\underNotEquals[#1]{\ref{#2}}}
+\newcommand{\underNotEquall}[3][]{\underNotEquals[#1]{\reff{#2}{#3}}}
+\newcommand{\underequalParensTextrmSize}[3][]{\underMathTextrmSizeParens[#1]{=}{#2}{#3}}
+\newcommand{\underequalNoParensTextrmSize}[3][]{\underMathTextrmSizeNoParens[#1]{=}{#2}{#3}}
+\newcommand{\underequalNoParensTextrmSizeBoldDarkRed}[3][]{\underMathTextrmSizeNoParens[#1]{=}{#2}{\boldDarkRed{#3}}}
+   % test: \underequals{7, 9}                                          % produces (7,9) under equals sign
+   % test: \underequals[\:]{7, 9}                                      % produces (7,9) under equals sign with extra space around the equals sign
+   % test: \underequal{EqnFred}                                        % produces (7) under equals sign
+   % test: \underequal[\;]{EqnFred}                                    % produces (7) under equals sign with extra space around the equals sign
+   % TODO test: \underequall{ChapJoe}{EqnFred}                              % produces (2.7) under equals sign
+   % TODO test: \underequall[\;]{ChapJoe}{EqnFred}                          % produces (2.7) under equals sign with extra space around the equals sign
+   % test: \underNotEquals{\ref{EqnFred},\ref{EqnJoe}}                 % produces (7,9) under not equals sign
+   % test: \underNotEquals[\:]{\ref{EqnFred},\ref{EqnJoe}}             % produces (7,9) under not equals sign with extra space around the equals sign
+   % test: \underNotEqual{EqnFred}                                     % produces (7) under not equals sign
+   % test: \underNotEqual[\;]{EqnFred}                                 % produces (7) under not equals sign with extra space around the equals sign
+   % TODO test: \underNotEquall{ChapJoe}{EqnFred}                           % produces (2.7) under not equals sign
+   % TODO test: \underNotEquall[\;]{ChapJoe}{EqnFred}                       % produces (2.7) under not equals sign with extra space around the equals sign
+   % test: \underequalParensTextrmSize[\:]{\tiny}{Hello}               % produces \:{\textrm\smallerDescriptionParens[\tiny]{Hello}\:
+   % test: \underequalNoParensTextrmSize[\:]{\tiny}{Hello}             % produces \:{\textrm\smallerDescription[\tiny]{Hello}\:
+   % test: \underequalNoParensTextrmSizeBoldDarkRed[\:]{\tiny}{Hello}  % produces \:{\textrm\smallerDescription[\tiny]{\boldDarkRed{Hello}}\:
+
+\newcommand{\underapproxs}[2][]{\ensuremath{{#1}\underMath{\Approx[]}{(#2)}{#1}}}  % Old: \def\underapproxs#1{\underMath{\approx}{(#1)}}
+\newcommand{\underapprox}[2][]{\underapproxs[#1]{\ref{#2}}}     % Old: \def\underapprox#1{\underapproxs{\ref{#1}}}
+% TODO \reff isn't in this package
+\newcommand{\underapproxx}[3][]{\underapproxs[#1]{\reff{#2}{#3}}}
+   % test: \underapproxs{\ref{EqnFred},\ref{EqnJoe}}      % produces (7,9) under \Approx     sign
+   % test: \underapproxs[\,]{\ref{EqnFred},\ref{EqnJoe}}  % produces (7,9) under \Approx[\,] sign
+   % test: \underapprox{EqnFred}                          % produces (7) under \Approx     sign
+   % test: \underapprox[\;]{EqnFred}                      % produces (7) under \Approx[\;] sign
+   % TODO test: \underapproxx{ChapJoe}{EqnFred}                % produces (2.7) under approx sign
+   % TODO test: \underapproxx[\;]{ChapJoe}{EqnFred}            % produces (2.7) under approx sign with extra space around the equals sign
+
+\newcommand{\underRRightarrows}[2]{\underMath{\RRightarrow{#1}}{#2}}
+   % test: \underRRightarrows{\hspace{1.5cm}}{stuff}  % produces stuff under RRightarrow => sign
+%\newcommand{\underRRightarrow}[2][]{\underMath{\RRightarrow{#1}}{\ref{#2}}}
+
+\def\underleqs#1{\underMath{\lessThanEquals[]}{(#1)}}
+\def\undergeqs#1{\underMath{\greaterThanEquals[]}{(#1)}}
+\def\underleq#1{\underleqs{\ref{#1}}}
+\def\undergeq#1{\undergeqs{\ref{#1}}}
+   % test: \underleqs{\ref{EqnFred},\ref{EqnJoe}}     % Produces (7,9) under <=
+   % test: \undergeqs{\ref{EqnFred},\ref{EqnJoe}}     % Produces (7,9) under >=
+   % test: \underleq{EqnFred}                         % Produces (7) under <= sign
+   % test: \undergeq{EqnFred}                         % Produces (7) under >= sign
+
+\newcommand{\underdeffsNoParens}[2][]{{#1}\underMath{\deff[]}{#2}{#1}}
+\newcommand{\underdeffs}[2][]{\underdeffsNoParens[#1]{(#2)}}
+\newcommand{\underdeff}[2][]{\underdeffs[#1]{\ref{#2}}}
+% TODO \reff is not in this package...
+\newcommand{\underdefff}[3][]{\underdeffs[#1]{\reff{#2}{#3}}}
+\newcommand{\underdeffTextNoParens}[2][]{\underdeffsNoParens[#1]{\textrm{#2}}}
+\newcommand{\underdeffTextParens}[2][]{\underdeffsNoParens[#1]{\textrm{(#2)}}}
+\newcommand{\underdeffTextNoParensSize}[3][]{\underdeffTextNoParens[#1]{\smallerDescription[#2]{#3}}}
+\newcommand{\underdeffTextParensSize}[3][]{\underdeffTextNoParens[#1]{\smallerDescription[#2]{(#3)}}}
+   % Old \def\underdeffs#1{\underMath{\,\buildrel\Delta\over{=}\,}{(#1)}}
+   % \newcommand{\underdeffs}[2][]{\underMath{\deff[#1]}{(#2)}}
+   % test: \underdeffs{\ref{EqnFred},\ref{EqnJoe}}        % Produces (7,9)         under definition sign
+   % test: \underdeffs[\;]{\ref{EqnFred},\ref{EqnJoe}}    % Produces (7,9)         under definition sign with extra space around definition sign
+   % test: \underdeff{EqnFred}                            % Produces (7)           under definition sign
+   % test: \underdeff[\;]{EqnFred}                        % Produces (7)           under definition sign with extra space around definition sign
+   % TODO test: \underdefff{ChapJoe}{EqnFred}                  % Produces (2.7)         under definition sign
+   % TODO test: \underdefff[\;]{ChapJoe}{EqnFred}              % Produces (2.7)         under definition sign with extra space around definition sign
+   % test: \underdeffTextNoParens[\;]{Some text}          % Produces Some text     under definition sign with extra space around definition sign
+   % test: \underdeffTextNoParensSize[\;]{\tiny}{Hello}   % Produces {\tiny Hello} under definition sign with extra space around definition sign
+
+% TODO replace this with the \newcommand version, but the argument syntax changes so all usages need to be updated.
+\def\underterms#1_#2{\ensuremath{\mathop{\hbox{$\displaystyle{#1}$}}\limits_{(#2)} }}
+%\newcommand{\underterms}[2]{\ensuremath{\mathop{\hbox{$\displaystyle{#1}$}}\limits_{(#2)} }}
+   % Designed by Greg Woodward using \underbrace (p. 359) as a basis.
+   % The \hbox, etc., usually unnecessary - \mathop{#1} normally suffices.
+   % However, \hbox insures that the math operator is in displaystyle, so the
+   % limits will be positioned under it, rather than out to the side.
+   % test: \underterms{stuff}_{\ref{EqnFred},\ref{EqnJoe}} % produces (7,9) under stuff
+
+% TODO replace these with \newcommand, but need to update all usages.
+\def\undertermNoParens#1_#2{\mathop{\hbox{$\displaystyle{#1}$}}\limits_{#2} }
+\def\underterm#1_#2{\underterms{#1}_{\ref{#2}}}
+\def\undertermm#1_#2#3{\underterms{#1}_{\reff{#2}{#3}}}
+   % \undertermNoParens{stuff}_{underText}      produces underText under stuff
+   % \underterm{stuff}_{EqnFred}                produces (7) under stuff
+   % \undertermm{stuff}_{chapter:Joe}{EqnFred}  produces (3.7) under stuff
+
+\newcommand{\stackTextrm}[2]{\ensuremath{\stackrel{\textrm{#1}}{\textrm{#2}}}}
+\newcommand{\stackTextrmSize}[3]{\stackTextrm{\smallerDescription[#1]{#2}}{\smallerDescription[#1]{#3}}}
+    % test: \stackTextrm{a}{b}
+    % test: \stackTextrmSize{\small}{a}{b}
+
+%%%%%%%%%%%%%%%%%%%%%%% Setting a term or factor to ZERO %%%%%%%%%%%%%%%%
+\renewcommand{\CancelColor}{\color{lightGray}}    % darkGray lightGray
+% TODO This doesn't look right.
+\newcommand{\SetToZeroUnderbrace}[2]{\ensuremath{\underbrace{#1}_{#2}}}
+\newcommand{\SetToValueArrow}[2]{\ensuremath{\cancelto{#1}{#2}}}                       % \usepackage{cancel}
+%%%% TODO \zerovec isn't in this package.
+\newcommand{\SetToZeroVector}[1]{\SetToValueArrow{\zerovec}{#1}}
+   % test: \SetToZeroUnderbrace{6}{12-3*2}             % Old was \zeroIt{something} implemented with \newcommand{\zeroIt}[1]{\ensuremath{\underbrace{#1}_{0}}}
+   % test: \SetToValueArrow{6}{12-3*2}
+   % TODO test: \SetToValueArrowScriptsize{6}{12-3*2}
+   % TODO test: \SetToZeroVectorScriptsize{someVector}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  SPECIAL 1D, 2D, 3D LABELS %%%%%%%%%%%%%%%%%%%
+\newcommand{\oneD}{{\textrm{1D}}}                                                                         % test: \oneD{}                                  % creates 1D
+\newcommand{\twoD}{{\textrm{2D}}}                                                                         % test: \twoD{}                                  % creates 2D
+\newcommand{\threeD}{{\textrm{3D}}}                                                                       % test: \threeD{}                                % creates 3D
+\newcommand{\twoDOnly}{{\stackTextrm{\boldDarkRed{\twoD}}{\boldDarkRed{only}}}}                           % test: \twoDOnly{}                              % creates 2D stacked on only
+\newcommand{\underequalTwoD}[1][]{\underequals[#1]{\boldDarkRed{\twoD}}}                                  % test: \underequalTwoD[\;]                      % creates \twoD{}      beneath equals sign
+\newcommand{\underequalTwoDSize}[2][]{\underequalNoParensTextrmSize[#1]{#2}{\twoD}}                       % test: \underequalTwoDSize[\;]{\tiny}           % creates {\tiny\twoD} beneath equals sign NO parens
+\newcommand{\underequalParensTwoDSize}[2][]{\underequalParensTextrmSize[#1]{#2}{\twoD}}                   % test: \underequalParensTwoDSize[\;]{\tiny}     % creates {\tiny\twoD} beneath equals sign in parens
+\newcommand{\underequalBoldTwoDSize}[2][]{\underequalNoParensTextrmSize[#1]{#2}{\boldDarkRed{\twoD}}}     % test: \underequalBoldTwoDSize[\;]{\tiny}       % creates {\tiny\boldDarkRed{\twoD}} beneath equals sign NO parens
+\newcommand{\underequalParensBoldTwoDSize}[2][]{\underequalParensTextrmSize[#1]{#2}{\boldDarkRed{\twoD}}} % test: \underequalParensBoldTwoDSize[\;]{\tiny} % creates {\tiny\boldDarkRed{\twoD}} beneath equals sign in parens
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput

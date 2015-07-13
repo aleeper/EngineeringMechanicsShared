@@ -1,0 +1,447 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+%\usepackage[makeroom]{cancel}     % Used for striking out text/math.
+\usepackage{colonequals}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage{enumitem}
+\usepackage{epsfig}
+\usepackage{fancyhdr}             % Headers and footers on page
+\usepackage{graphicx}
+\usepackage{ifthen}               % Allows for conditional texing
+\usepackage{mcode}                % Used for importing matlab code.
+\usepackage{multirow}
+\usepackage{schemabloc}           % Needed for some tikz stuff
+\usepackage{siunitx}
+\usepackage{tikz}                 % sudo apt-get install pgf
+\usepackage{url}
+\usepackage{wrapfig}
+\usepackage{xcolor}               % \colorlet
+\usepackage{xfrac}                % Allows use of sfrac for a/b style.
+\usepackage{xparse}               % Used for NewDocumentCommand
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Simple macros for easy formatting.
+
+%%% Makes text red. Convenient macro for tracking things that need doing.
+\newcommand{\todo}[1]{{\color{red}#1}}
+
+%%% Simple wrapper on \ifthenelse that takes only 2 arguments.
+\providecommand{\ifthen}[2]{\ifthenelse{#1}{#2}{}}
+
+%%% For top-alignment in a minipage, put at the top of a block to force alignment.
+%%% Example:
+%%%   \being{minipage}[t]{1.0\linewidth}
+%%%     \minipageTopAnchor
+%%%     Your content.
+%%%   \end{minipage}
+\newcommand{\minipageTopAnchor}{\vspace*{0pt}}
+
+%%% Pre-defined newline spacings.
+%%% Note that \newline = \\[0.0pc]
+\newcommand{\newlineSmall}{\\[0.2pc]}
+\newcommand{\newlineHalf}{\\[0.45pc]}
+\newcommand{\newlineFull}{\\[1.0pc]}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% List environments (enumerate and itemize) that are more compact than normal.
+\newenvironment{enumerateDense}{
+  \begin{enumerate}[itemsep=-1ex,leftmargin=1cm]
+}{
+  \end{enumerate}
+}
+\newenvironment{itemizeDense}{
+  \begin{itemize}[itemsep=-1ex,leftmargin=1cm]
+}{
+  \end{itemize}
+}
+
+%%% List environments that are more spaced out than normal.
+%%% Used for lists where students may need to write in each item.
+\newenvironment{enumerateSparse}{
+  \begin{enumerate}[itemsep=4ex,leftmargin=1cm]
+}{
+  \end{enumerate}
+}
+\newenvironment{itemizeSparse}{
+  \begin{enumerate}[itemsep=4ex,leftmargin=1cm]
+}{
+  \end{enumerate}
+}
+
+% TODO: convert this to an environment
+\newcommand{\mylist}{\begin{list}{$\bullet$}{\leftmargin5mm \itemsep-0.25pc \topsep0.25pc}}
+\newcommand{\mylistend}{\end{list}\vspace{0.0pc}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Math macros.
+
+\newcommand{\parens}[1]{\left( #1 \right)}
+\newcommand{\brackets}[1]{\left[ #1 \right]}
+\newcommand{\braces}[1]{\left\{ #1 \right\}}
+
+\providecommand{\magnitude}[1]{\left| #1 \right|}
+\newcommand{\phase}[1]{\angle \left( #1 \right)}
+
+\providecommand{\degrees}[1]{\ensuremath{{#1}^\circ}}
+
+\providecommand{\abs}{\ensuremath{\mathop{\mathrm{abs}}}}
+\providecommand{\cotan}{\ensuremath{\mathop{\mathrm{cotan}}}}
+\providecommand{\asin}{\ensuremath{\mathop{\mathrm{asin}}}}
+\providecommand{\asinh}{\ensuremath{\mathop{\mathrm{asinh}}}}
+\providecommand{\acos}{\ensuremath{\mathop{\mathrm{acos}}}}
+\providecommand{\acosh}{\ensuremath{\mathop{\mathrm{acosh}}}}
+\providecommand{\atan}{\ensuremath{\mathop{\mathrm{atan}}}}
+\providecommand{\atanh}{\ensuremath{\mathop{\mathrm{atanh}}}}
+\providecommand{\atantwo}{\ensuremath{\mathop{\mathtt{atan2}}}}
+\providecommand{\sinc}{\ensuremath{\mathop{\mathrm{sinc}}}}
+\providecommand{\sgn}{\ensuremath{\mathop{\mathrm{sign}}}}
+\providecommand{\sign}{\ensuremath{\mathop{\mathrm{sign}}}}
+\providecommand{\trace}{\ensuremath{\mathop{\mathrm{trace}}}}
+%\newcommand{\Cosh}{\ensuremath{\mathop{\mathrm{cosh}}}}                 % \cosh is already defined in Latex
+%\newcommand{\Sinh}{\ensuremath{\mathop{\mathrm{sinh}}}}                 % \sinh is already defined in Latex
+\providecommand{\cosSquared}[1]{\ensuremath{\mathop{\mathrm{cos}^2(#1)}}}
+\providecommand{\sinSquared}[1]{\ensuremath{\mathop{\mathrm{sin}^2(#1)}}}
+\providecommand{\tanSquared}[1]{\ensuremath{\mathop{\mathrm{tan}^2(#1)}}}
+\providecommand{\coshSquared}[1]{\ensuremath{\mathop{\mathrm{cosh}^2(#1)}}}
+\providecommand{\sinhSquared}[1]{\ensuremath{\mathop{\mathrm{sinh}^2(#1)}}}
+\providecommand{\LogTen}{\ensuremath{\mathop{\mathrm{log}_{10}}}}
+\providecommand{\Ln}{\ensuremath{\mathop{\mathrm{ln}}}}
+
+\newcommand{\asinFunc}[1]{\ensuremath{\sin^{-1}{\left(#1\right)}}}
+\newcommand{\acosFunc}[1]{\ensuremath{\cos^{-1}{\left(#1\right)}}}
+\newcommand{\atanFunc}[1]{\ensuremath{\tan^{-1}{\left(#1\right)}}}
+\newcommand{\atantwoFunc}[2]{\ensuremath{\text{atan2}\left( #1, ~#2 \right)}}
+
+\DeclareMathOperator{\Lagr}{\mathcal{L}}
+\newcommand{\Laplace}[1]{\Lagr \left[ #1 \right]}
+\newcommand{\LaplaceInverse}[1]{\Lagr^{-1} \left[ #1 \right]}
+
+\providecommand{\imagi}{\ensuremath{i}}
+\providecommand{\imagj}{\ensuremath{j}}
+\providecommand{\imaginary}{\imagj}
+    % \imagi produces an i.
+    % \imagj produces an j
+    % \imaginary produces an i or j (currently it produces j)
+
+\newcommand{\Real}{\mathrm{Re}}
+\newcommand{\Imag}{\mathrm{Im}}
+
+\providecommand{\complex}[2]{\ensuremath{#1 + \imaginary #2}}
+\newcommand{\complexRect}[2]{\ensuremath{#1 + \imaginary #2}}
+\newcommand{\complexPolar}[2]{\ensuremath{{#1}e^{\imaginary {#2}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Force and Tension
+\newcommand{\tension}[1]{\ensuremath{T_{#1}}}
+\newcommand{\segment}[1]{\ensuremath{\overline{\text{#1}}}}
+
+%%% Unit vector between points.
+\newcommand{\uvecFromTo}[2]{\ensuremath{\uvecHat{u}^{\,{#2}/{#1}}}}
+
+\newcommand{\vectorMagnitudeExpression}[1]{\sqrt{{#1} \DotProduct[\;] {#1}}}
+\newcommand{\vectorMagnitudeDefinition}[1]{
+  \magnitude{#1} \deff[\;] \sqrt{{#1} \DotProduct[\;] {#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Used for putting little arrows under specific blocks of text.
+%%% Usage: \underarrow[above][\uparrow]{below}
+\NewDocumentCommand{\underarrow}{O{=} O{\downarrow} m}{%
+  \underset{
+    \makebox[0pt]{
+      \begin{tabular}{@{}c@{}}
+        \ensuremath{#2}\\[0pt]#3
+      \end{tabular}
+    }
+  }{#1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{SolutionGreen}{rgb}{0.2,0.5,0.2}
+\definecolor{SolutionGray}{gray}{0.91}
+\definecolor{HiddenBorderGray}{gray}{0.85}
+
+\colorlet{SolutionText}{black}
+\colorlet{SolutionBackground}{SolutionGray}
+
+\providecommand\ShowSolution{0} % Default is no solution
+
+%%% Solution macro that creates blank space when the solution is hidden.
+\ifthen { \ShowSolution = 0 }
+        { \newcommand{\Solution}[3]{
+            \begin{minipage}{#2}
+              %\parbox{1.0\linewidth}{
+                \phantom{\parbox{\linewidth}{#3}}
+              %}
+            \end{minipage}
+          }
+        }
+\ifthen { \ShowSolution = 1 }
+        { \newcommand{\Solution}[3] {
+            #1
+            \fcolorbox{SolutionGreen}{SolutionBackground}{
+              \begin{minipage}{#2}
+                \parbox{1.0\linewidth}{
+                  \color{SolutionText}#3
+                }
+              \end{minipage}
+            }
+          }
+        }
+
+%%% Solution macro that leaves no trace when the solution is hidden.
+%%%  arg1: Goes before the bounding box; intended to be used to specify
+%%%        a newline, if desired.
+%%%  arg2: Width argument to the enclosing minipage.
+%%%  arg3: The actual contents of the solution box.
+%%%
+%%% Usage: \SolutionNoSpace{\\[0.0pc]}{10cm}{Solution contents here.}
+%%%        \SolutionNoSpace{}{1.0\linewidth}{Solution contents here.}
+%%%
+\ifthen { \ShowSolution = 0 }{ \newcommand{\SolutionNoSpace}[3]{} }
+\ifthen { \ShowSolution = 1 }
+        { \newcommand{\SolutionNoSpace}[3] {
+            #1
+            \fcolorbox{SolutionGreen}{SolutionBackground}{
+              \begin{minipage}{#2}
+                \parbox{1.0\linewidth}{
+                  \color{SolutionText}#3
+                }
+              \end{minipage}
+            }
+          }
+        }
+
+\newcommand{\Example}[1] {
+            \fcolorbox{SolutionGreen}{SolutionBackground}{
+              \begin{minipage}{0.98\linewidth}
+                \parbox{1.0\linewidth}{
+                  #1
+                }
+              \end{minipage}
+            }
+          }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\uvecuN}{\ensuremath{\uvecHat{u}_n}}
+\newcommand{\uvecuT}{\ensuremath{\uvecHat{u}_t}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\colMatThree}[4]
+{
+  \ensuremath{
+  \left[
+  \begin{array}{r}
+  #1 \\[0.0pc]
+  #2 \\[0.0pc]
+  #3
+  \end{array} \right]_{\uvecBasisxyz{#4}}
+  }
+}
+%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+% Internal stuff for rotation tables
+\def\dirCosTableA{A}
+\def\dirCosTableB{B}
+\newcommand{\rotationTableInternal}[9]
+{
+  \ensuremath{
+  \begin{array}{c|ccc}
+    \dircos{\dirCosTableA}{\dirCosTableB}  &  \uvec{\dirCosTableB}{x}  &  \uvec{\dirCosTableB}{y}  & \uvec{\dirCosTableB}{z}
+    \\[0.0pc]\hline \\[-0.5pc]
+       \uvec{\dirCosTableA}{x}  &  #1     &  #2     & #3    \\[0.5pc]
+       \uvec{\dirCosTableA}{y}  &  #4     &  #5     & #6    \\[0.5pc]
+       \uvec{\dirCosTableA}{z}  &  #7     &  #8     & #9    \\[-0.75pc] & & &
+  \end{array}
+  }
+}
+
+%%% Public rotation table commands
+%%% Call this with 11 arguments:
+%%%   e.g. \rotationTable{B}{C}{1}{0}{0}{0}{1}{0}{0}{0}{1}
+%%%
+\newcommand{\rotationTable}[2]
+{
+  \def\dirCosTableA{#1}
+  \def\dirCosTableB{#2}
+  \rotationTableInternal
+}
+\newcommand{\rotationTableIdentity}[2]
+{
+  \rotationTable{#1}{#2}
+  {1}{0}{0}
+  {0}{1}{0}
+  {0}{0}{1}
+}
+\newcommand{\rotationTableEmpty}[3]
+{
+  \rotationTable{#1}{#2}
+  {#3}{#3}{#3}
+  {#3}{#3}{#3}
+  {#3}{#3}{#3}
+}
+
+\newcommand{\simpleRotationX}[3]{
+\rotationTable{#1}{#2}{1}{0}{0}
+                      {0}{\cos(#3)}{-\sin(#3)}
+                      {0}{\sin(#3)}{~\cos(#3)}}
+
+\newcommand{\simpleRotationNegativeX}[3]{
+\rotationTable{#1}{#2}{1}{0}{0}
+                      {0}{~\cos(#3)}{\sin(#3)}
+                      {0}{-\sin(#3)}{\cos(#3)}}
+
+\newcommand{\simpleRotationY}[3]{
+\rotationTable{#1}{#2}{~\cos(#3)}{0}{\sin(#3)}
+                      {0}{1}{0}
+                      {-\sin(#3)}{0}{\cos(#3)}}
+
+\newcommand{\simpleRotationNegativeY}[3]{
+\rotationTable{#1}{#2}{\cos(#3)}{0}{-\sin(#3)}
+                      {0}{1}{0}
+                      {\sin(#3)}{0}{~\cos(#3)}}
+
+\newcommand{\simpleRotationZ}[3]{
+\rotationTable{#1}{#2}{\cos(#3)}{-\sin(#3)}{0}
+                      {\sin(#3)}{~\cos(#3)}{0}
+                      {0}{0}{1}}
+
+\newcommand{\simpleRotationNegativeZ}[3]{
+\rotationTable{#1}{#2}{~\cos(#3)}{\sin(#3)}{0}
+                      {-\sin(#3)}{\cos(#3)}{0}
+                      {0}{0}{1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\matrixThreeByThree}[9]{\ensuremath{
+    \left[ \begin{array}{ccc}
+    #1 & #2 & #3 \\ #4 & #5 & #6 \\ #7 & #8 & #9 \end{array}
+    \right] }}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{myenum}
+\newenvironment{flushenumerate}{%
+  \begin{list}{\arabic{myenum}.}%
+    {\setlength{\leftmargin}{1.25em}}%
+%     \setlength{\labelwidth}{0pt}
+%     \setlength{\itemindent}{0.5em}
+%     \setlength{\labelsep}{0.5em}
+     \usecounter{myenum}
+     }%
+  {\end{list}}
+
+% Preamble (style parameters, etc)
+%\pagestyle{empty}
+
+\setlength{\paperwidth}{8.5in}
+\setlength{\paperheight}{11in}
+\setlength{\textwidth}{7.5in}
+\setlength{\textheight}{9.75in}
+\setlength{\hoffset}{-0.5in}
+\setlength{\voffset}{-0.5in}
+\setlength{\topmargin}{0in}
+\setlength{\headsep}{0in}
+\setlength{\headheight}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\parindent}{0.0in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\CurrentUniversity{{\textbf{\color{darkRed}Stanford University}}}
+\def\CurrentUniversityShort{{\textbf{\color{darkRed}Stanford}}}
+\def\CurrentDepartment{\textbf{Mechanical Engineering}}
+
+%%% arg1: graphic
+%%% arg2: top-left
+%%% arg3: bottom-left
+%%% arg4: top-right
+%%% arg5: bottom-right
+\newcommand{\BaseHeader}[5]{
+  \begin{minipage}{0.15\linewidth}
+    \includegraphics[width=1.0\linewidth]{#1}
+  \end{minipage}
+  \hspace{2mm}
+  \begin{minipage}{0.35\linewidth}
+    {\normalsize{#2}}
+    \\[0.0pc]{\normalsize{#3}}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.45\linewidth}
+    {\hspace*{0pt} \hfill \normalsize{#4}}
+    \\[0.0pc]{\hspace*{0pt} \hfill \normalsize{#5}}
+  \end{minipage}
+  \\[0.0pc]\rule[2.0mm]{\linewidth}{0.5mm}
+}
+
+\newcommand{\MechanicsHeader}[4]{
+\BaseHeader{images/dynamics_teaser2.png}{#1}{#2}{#3}{#4}}
+
+\newcommand{\ExamplesHeader}[1]{
+\MechanicsHeader{\CurrentUniversity}{\CurrentDepartment}
+                {#1}{Dr. Adam Leeper}}
+
+\newcommand{\HandoutHeader}[1]{
+\MechanicsHeader{\CurrentUniversityShort ~$\mid$ \CurrentDepartment}{Dr. Adam Leeper}
+                {#1}{}}
+
+\newcommand{\StanfordHeader}[2]{
+\MechanicsHeader{\CurrentUniversity}{Engr 14 - Statics - Spring 2014}
+                {#1}{#2}}
+
+\newcommand{\ExamHeader}[1]{
+\MechanicsHeader{\CurrentUniversity}{\CurrentDepartment}
+                {DO NOT WRITE YOUR NAME}{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\isolatedBuildHeader}[2]{
+  \pagestyle{AdamLeeperTest}
+  \pagenumbering{arabic}
+  \begin{document}
+    \HandoutHeader{#1}
+    %
+    \vspace{-0.5pc}
+    \small
+    %
+    \textColorBold{darkerBlue}{#2}
+    \\[1.0pc]
+}
+
+\newcommand{\isolatedBuildFooter} {
+  \isolatedBuild {
+      \vfill
+    \end{document}
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\fancypagestyle{AdamLeeperTest}{
+  \renewcommand{\headrulewidth}{0.0pt}
+  \renewcommand{\footrulewidth}{0.3pt}
+  \fancyhead{}
+  \fancyhead[C]{}
+  \fancyhead[L]{}
+  \fancyhead[R]{}
+  \fancyfoot{}
+  \fancyfoot[L]{
+    {\scriptsize\textit{Copyright \copyright{} 2011-2015 by Adam Leeper.}\ }
+    %{\scriptsize\textit{\copyrightText}\ }
+    %\raisebox{-0.23em}{\includegraphics[totalheight=0.85pc]{/Mitiguy/MotionGenesis/MGBusiness/MGBusinessCardsAndLogos/MGBusinessLogoNoWWWMotionGenesisCom.eps}}
+  }
+  %  \fancyfoot[L]{{\scriptsize \textit{\copyrightText}\ }}
+  \fancyfoot[C]{\thepage}
+  \fancyfoot[R]{\markFancyFootRight}
+}

@@ -1,0 +1,1391 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MECHANICS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mechanics}[2015/07/02]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Required packages go here.
+\RequirePackage{bigbold}
+\RequirePackage{vectorsCommon}
+
+% TODO Decide if we need this package dependency. For now, just duplicate the commands.
+%\RequirePackage{customMathScalars}
+\providecommand{\ur}[1][r]{\ensuremath{u_{#1}}}
+\providecommand{\qrdot}[1][r]{\ensuremath{\dot{q}_{#1}}}
+\providecommand{\qr}[1][r]{\ensuremath{q_{#1}}}
+
+% TODO Decide if we need this package dependency. For now, just duplicate the commands.
+%\RequirePackage{customMath}
+\providecommand{\pdydx}[3][]{\ensuremath{\frac{{}^{{}^{\scriptstyle{#1}}}\!\!{\displaystyle\partial{#2}}} {\displaystyle\partial{#3}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Add any option parsing here.
+
+% No options...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The next line finishes option processing and begins the actual macro definitions.
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Contents of this file, in order:
+%%%
+%%%   NAMES FOR VARIABLES AND CONSTANTS  (TODO: possibly pull out scalar/variable/constant/specified.)
+%%%   POSITION VECTOR and MOMENT ARM
+%%%   POSITION VECTOR DESCRIPTION
+%%%   ANGULAR VELOCITY
+%%%   VELOCITY
+%%%   ANGULAR ACCELERATION
+%%%   ACCELERATION
+%%%   JERK and ANGULAR JERK
+%%%
+%%%   CENTROID, CENTER OF MASS, BODY/COORD ORIGIN
+%%%   AREA, AREA MOMENT OF INERTIA, POLAR MOMENT OF INERTIA
+%%%   MASS
+%%%   INERTIA
+%%%
+%%%   MOMENT
+%%%   MOMENT OF EFFECTIVE FORCE
+%%%   MOMENT OF IMPULSE FORCE
+%%%   FORCE
+%%%   FRICTION
+%%%   AERODYNAMICS
+%%%   STRESS AND STRAIN
+%%%
+%%%   F=MA
+%%%   F=MA MATRICES
+%%%   GENERALIZED ACTIVE FORCES Fr
+%%%   IMPULSE (GENERALIZED)
+%%%   INERTIA & EFFECTIVE FORCE (GENERALIZED)
+%%%   TORQUE (GENERALIZED)
+%%%   IMPULSE TORQUE (GENERALIZED)
+%%%   INERTIA & EFFECTIVE TORQUE (GENERALIZED)
+%%%   GENERALIZED INERTIA FORCES Fr*
+%%%   INERTIA COEFFICIENTS
+%%%   LINEAR MOMENTUM (GENERALIZED)
+%%%   ANGULAR MOMENTUM (GENERALIZED)
+%%%
+%%%   KINETIC ENERGY
+%%%   LAGRANGIAN
+%%%   HAMILTONIAN
+%%%   ROUTHIAN
+%%%   GIBBS FUNCTION
+%%%   NISIGMA
+%%%   GENERALIZED ENERGY
+%%%   POWER
+%%%   GENERALIZED POWER
+%%%   WORK
+%%%   VIRTUAL WORK
+%%%   WORK FUNCTION
+%%%   DISSIPATION
+%%%   POTENTIAL ENERGY
+%%%   GENERALIZED POTENTIAL ENERGY
+%%%   POTENTIAL FUNCTION
+%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%% NAMES FOR POINT, PARTICLE, REFERENCE FRAME, etc %%%%%%%%%%%%%%%%
+
+%%% Generic name.
+\newcommand{\name}[1]{\ensuremath{#1}}
+   % test: \name{Q} % use this whenever you refer to a point, particle, reference frame, rigid body, system, ...
+
+%%% Specific names of dynamics objects.
+\newcommand{\point}[1]{\ensuremath{#1}}
+\newcommand{\particle}[1]{\ensuremath{#1}}
+% TODO(aleeper): Decide if we I like this level of granularity.
+   % test: \point{Q}
+   % test: \particle{Q}
+
+%%%%%%%%%%%%%%%%%%%%%% NAMES FOR VARIABLES AND CONSTANTS %%%%%%%%%%%%%%%%
+% TODO(aleeper): Maybe move this to a "math" file.
+\newcommand{\scalarName}{\textrm{scalar}}   % test: \scalarName
+\newcommand{\variableName}{\textrm{variable}}   % test: \variableName
+\newcommand{\constantName}{\textrm{constant}}   % test: \constantName
+\newcommand{\specifiedName}{\textrm{specified}}   % test: \specifiedName
+
+% Configuration names.  Keep this comment.  It is one of the last remnant of the word "configuration".
+\newcommand{\PositionName}{\textrm{Position}}   % test: \PositionName
+\newcommand{\positionName}{\textrm{position}}   % test: \positionName
+\newcommand{\PositionScalar}{\textrm{\PositionName{} \scalarName}}   % test: \PositionScalar
+\newcommand{\positionScalar}{\textrm{\positionName{} \scalarName}}   % test: \positionScalar
+\newcommand{\PositionVariable}{\textrm{\PositionName{} \variableName}}   % test: \PositionVariable
+\newcommand{\positionVariable}{\textrm{\positionName{} \variableName}}   % test: \positionVariable
+\newcommand{\PositionConstant}{\textrm{\PositionName{} \constantName}}   % test: \PositionConstant
+\newcommand{\positionConstant}{\textrm{\positionName{} \constantName}}   % test: \positionConstant
+\newcommand{\PositionSpecified}{\textrm{\PositionName{} \specifiedName}}   % test: \PositionSpecified
+\newcommand{\positionSpecified}{\textrm{\positionName{} \specifiedName}}   % test: \positionSpecified
+\newcommand{\PositionConstraint}{Configuration constraint}      % test: \PositionConstraint  % Formerly "Configuration constraint" or "\PositionName{} constraint"
+\newcommand{\positionConstraint}{configuration constraint}      % test: \positionConstraint  % Formerly "configuration constraint" or "\positionName{} constraint}"
+\newcommand{\positionAndVelocityScalar}{\textrm{\positionName{} and \velocityName{} \scalarName}}   % test: \positionAndVelocityScalar
+\newcommand{\positionSlashVelocityScalar}{\textrm{\positionName/\velocityName{} \scalarName}}   % test: \positionSlashVelocityScalar
+\newcommand{\positionOrVelocityConstraint}{\textrm{\positionName{} or \velocityName{} constraint}}   % test: \positionOrVelocityConstraint
+
+% Motion names.  Keep this comment.  It is one of the last remnant of the word "motion".
+\newcommand{\VelocityName}{\textrm{Velocity}}   % test: \VelocityName
+\newcommand{\velocityName}{\textrm{velocity}}   % test: \velocityName
+\newcommand{\VelocityScalar}{\textrm{\VelocityName{} \scalarName}}   % test: \VelocityScalar
+\newcommand{\velocityScalar}{\textrm{\velocityName{} \scalarName}}   % test: \velocityScalar
+\newcommand{\VelocityVariable}{\textrm{\VelocityName{} \variableName}}   % test: \VelocityVariable
+\newcommand{\velocityVariable}{\textrm{\velocityName{} \variableName}}   % test: \velocityVariable
+\newcommand{\VelocityConstant}{\textrm{\VelocityName{} \constantName}}   % test: \VelocityConstant
+\newcommand{\velocityConstant}{\textrm{\velocityName{} \constantName}}   % test: \velocityConstant
+\newcommand{\VelocitySpecified}{\textrm{\VelocityName{} \specifiedName}}   % test: \VelocitySpecified
+\newcommand{\velocitySpecified}{\textrm{\velocityName{} \specifiedName}}   % test: \velocitySpecified
+\newcommand{\VelocityConstraint}{Motion constraint}     % test: \VelocityConstraint  % Formerly "Motion constraint" or "\VelocityName{} constraint"
+\newcommand{\velocityConstraint}{motion constraint}     % test: \velocityConstraint  % Formerly "motion constraint" or "\velocityName{} constraint}"
+
+% Agitation names.  Keep this comment.  It is one of the last remnant of the word "agitation".
+% Note: "Generalized agitations" are great complement to generalized coordinates and generalized speeds.
+\newcommand{\AccelerationName}{\textrm{Acceleration}}   % test: \AccelerationName
+\newcommand{\accelerationName}{\textrm{acceleration}}   % test: \accelerationName
+\newcommand{\AccelerationScalar}{\textrm{\AccelerationName{} \scalarName}}   % test: \AccelerationScalar
+\newcommand{\accelerationScalar}{\textrm{\accelerationName{} \scalarName}}   % test: \accelerationScalar
+\newcommand{\AccelerationVariable}{\textrm{\AccelerationName{} \variableName}}   % test: \AccelerationVariable
+\newcommand{\accelerationVariable}{\textrm{\accelerationName{} \variableName}}   % test: \accelerationVariable
+\newcommand{\AccelerationConstant}{\textrm{\AccelerationName{} \constantName}}   % test: \AccelerationConstant
+\newcommand{\accelerationConstant}{\textrm{\accelerationName{} \constantName}}   % test: \accelerationConstant
+\newcommand{\AccelerationSpecified}{\textrm{\AccelerationName{} \specifiedName}}   % test: \AccelerationSpecified
+\newcommand{\accelerationSpecified}{\textrm{\accelerationName{} \specifiedName}}   % test: \accelerationSpecified
+\newcommand{\AccelerationConstraint}{\textrm{Agitation constraint}}   % test: \AccelerationConstraint  % Formerly "Agitation constraint" or "\AccelerationName{} constraint}"
+\newcommand{\accelerationConstraint}{\textrm{agitation constraint}}   % test: \accelerationConstraint  % Formerly "agitation constraint" or "\accelerationName{} constraint}"
+
+% Actuation names.  Keep this comment.  It is one of the last remnant of the word "actuation".
+\newcommand{\ForceName}{\textrm{Force}}   % test: \ForceName
+\newcommand{\forceName}{\textrm{force}}   % test: \forceName
+\newcommand{\ForceScalar}{\textrm{\ForceName{} \scalarName}}   % test: \ForceScalar
+\newcommand{\forceScalar}{\textrm{\forceName{} \scalarName}}   % test: \forceScalar
+\newcommand{\ForceVariable}{\textrm{\ForceName{} \variableName}}   % test: \ForceVariable
+\newcommand{\forceVariable}{\textrm{\forceName{} \variableName}}   % test: \forceVariable
+\newcommand{\ForceConstant}{\textrm{\ForceName{} \constantName}}   % test: \ForceConstant
+\newcommand{\forceConstant}{\textrm{\forceName{} \constantName}}   % test: \forceConstant
+\newcommand{\ForceSpecified}{\textrm{\ForceName{} \specifiedName}}   % test: \ForceSpecified
+\newcommand{\forceSpecified}{\textrm{\forceName{} \specifiedName}}   % test: \forceSpecified
+
+% Impulse names.
+\newcommand{\ImpulseName}{\textrm{Impulse}}   % test: \ImpulseName
+\newcommand{\impulseName}{\textrm{impulse}}   % test: \impulseName
+\newcommand{\ImpulseScalar}{\textrm{\ImpulseName{} \scalarName}}   % test: \ImpulseScalar
+\newcommand{\impulseScalar}{\textrm{\impulseName{} \scalarName}}   % test: \impulseScalar
+\newcommand{\ImpulseVariable}{\textrm{\ImpulseName{} \variableName}}   % test: \ImpulseVariable
+\newcommand{\impulseVariable}{\textrm{\impulseName{} \variableName}}   % test: \impulseVariable
+\newcommand{\ImpulseConstant}{\textrm{\ImpulseName{} \constantName}}   % test: \ImpulseConstant
+\newcommand{\impulseConstant}{\textrm{\impulseName{} \constantName}}   % test: \impulseConstant
+\newcommand{\ImpulseSpecified}{\textrm{\ImpulseName{} \specifiedName}}   % test: \ImpulseSpecified
+\newcommand{\impulseSpecified}{\textrm{\impulseName{} \specifiedName}}   % test: \impulseSpecified
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% VIRTUAL DISPLACEMENT and VIRTUAL ROTATION %%%%%%%%%%%%%%%
+
+%%%%%%%%% Operator used for virtual work and virtual displacements %%%%%%%%
+\newcommand{\virtuald}{\ensuremath{{\mathcal{\delta}}}}    % test: \virtuald     % \virtuald
+\newcommand{\virtualx}[1]{\ensuremath{\virtuald{#1}}}      % test: \virtualx{A}  % \virtualx{x}  produces delta x
+\newcommand{\virtualq}[1]{\ensuremath{\virtuald{q_{#1}}}}  % test: \virtualq{A}  % \virtualq{1}  produces delta q_1
+\newcommand{\virtualqr}{\ensuremath{\virtualq{r}}}         % test: \virtualqr    % \virtualqr    produces delta q_r
+
+%%% Virtual displacement.
+\newcommand{\virtualDisplacement}[2]{\ensuremath{\leftSuperscriptWithBase{#2}{\!\virtuald\positionVectorSymbol}^{#1}}}
+    % test: \virtualDisplacement{Q}{}   % virtual displacement of Q (reference frame implied)
+    % test: \virtualDisplacement{Q}{N}  % virtual displacement of Q in reference frame N
+
+\newcommand{\theVirtualDisplacementOfDescription}[2]{the virtual displacement of \name{#1} in \name{#2}}
+\newcommand{\TheVirtualDisplacementOfDescription}[2]{The virtual displacement of \name{#1} in \name{#2}}
+\newcommand{\virtualDisplacementsDescription}[2]{\name{#1}'s virtual displacement in \name{#2}}
+    % test: \theVirtualDisplacementOfDescription{Q}{N}  % the virtual displacement of Q in N
+    % test: \TheVirtualDisplacementOfDescription{Q}{N}  % The virtual displacement of Q in N
+    % test: \virtualDisplacementsDescription{Q}{N}      % Q's virtual displacement in N
+
+%%% Virtual rotation.
+\newcommand{\virtualRotation}[2]{\ensuremath{\leftSuperscriptWithBase{#2}{\!\virtuald\boldThetaVector}^{#1}}}
+    % test: \virtualRotation{B}{}   % virtual rotation of B  (reference frame implied)
+    % test: \virtualRotation{B}{N}  % virtual rotation of B in N
+
+\newcommand{\theVirtualRotationOfDescription}[2]{the virtual rotation of \name{#1} in \name{#2}}
+\newcommand{\TheVirtualRotationOfDescription}[2]{The virtual rotation of \name{#1} in \name{#2}}
+\newcommand{\virtualRotationsDescription}[2]{\name{#1}'s virtual rotation in \name{#2}}
+    % test: \theVirtualRotationOfDescription{N}{Q}  % the virtual rotation of Q in N
+    % test: \TheVirtualRotationOfDescription{N}{Q}  % The virtual rotation of Q in N
+    % test: \virtualRotationsDescription{Q}{N}      % Q's virtual rotation in N
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DISPLACEMENT  %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\displacementScalarSymbol}{\ensuremath{\delta}}   % test: \displacementScalarSymbol
+\newcommand{\displacementVectorSymbol}{\ensuremath{\bvec{\displacementScalarSymbol}}}   % test: \displacementVectorSymbol
+\newcommand{\displacement}[2][]{\ensuremath{\displacementVectorSymbol_{#1}^{#2}}}
+\newcommand{\displacementi}[2][]{\ensuremath{\displacementScalarSymbol_{#1}^{#2}}}
+\newcommand{\displacementx}[1]{\displacementi[\textrm{x}]{#1}}
+\newcommand{\displacementy}[1]{\displacementi[\textrm{y}]{#1}}
+\newcommand{\displacementz}[1]{\displacementi[\textrm{z}]{#1}}
+    % test: \displacement{Q}                   % vector displacement of point Q.
+    % test: \displacement[2]{Q}                % vector displacement of point Q with subscript 2.
+    % test: \displacementi[\uvecu]{Q}          % scalar displacement of point Q with subscript \uvecu.
+    % test: \displacementx{Q}                  % scalar displacement of point Q with subscript x.
+    % test: \displacementy{Q}                  % scalar displacement of point Q with subscript y.
+    % test: \displacementz{Q}                  % scalar displacement of point Q with subscript z.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DISTANCE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\distance}{\ensuremath{\textrm{d}}}                       % test: \distance
+\newcommand{\elongation}{\ensuremath{\dot{\distance}}}                % test: \elongation
+\newcommand{\elongationRate}{\ensuremath{\ddot{\distance}}}           % test: \elongationRate
+\newcommand{\distanceAlongCurveName}{\textrm{distance-along-curve}}   % test: \distanceAlongCurveName
+\newcommand{\distanceAlongCurveSymbol}{\ensuremath{\textrm{s}_c}}     % test: \distanceAlongCurveSymbol
+\newcommand{\distanceTraveledName}{\textrm{distance-traveled}}        % test: \distanceTraveledName
+\newcommand{\distanceTraveledSymbol}{\ensuremath{\textrm{s}_t}}       % test: \distanceTraveledSymbol
+\newcommand{\distanceTraveled}[3][\,]{\ensuremath{{}^{#3}\!\distanceTraveledSymbol{#1}^{#2}{}}}
+    % test: \distanceTraveled[t_1]{Q}{N}                      % distance \name{Q} travels on \name{N} until time $t_1$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% SPATIAL POSITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\spatialPositionName}{spatial position}   % test: \spatialPositionName
+\newcommand{\SpatialPositionName}{Spatial position}   % test: \SpatialPositionName
+\newcommand{\spatialX}{\ensuremath{\textrm{X}}}       % test: \spatialX
+\newcommand{\spatialPosition}[4][]{\ensuremath{{}^{#2}_{#4}\!\spatialX^{#3}_{#1}}}
+    % test: \spatialPosition{A}{B}{}      % Spatial position from frame A to frame B
+    % test: \spatialPosition{A}{B}{E}     % Spatial position from frame A to frame B expressed in frame E
+    % test: \spatialPosition[i]{A}{B}{E}  % Spatial position from frame A to frame B expressed in frame E with subscript i
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% SPATIAL VELOCITY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\spatialVelocityName}{spatial velocity}   % test: \spatialVelocityName
+\newcommand{\SpatialVelocityName}{Spatial velocity}   % test: \SpatialVelocityName
+\newcommand{\spatialV}{\ensuremath{\textrm{V}}}       % test: \spatialV
+\newcommand{\spatialVelocity}[4][]{\ensuremath{{}^{#2}_{#4}\!\spatialV^{#3}_{#1}}}
+\newcommand{\spatialVelocityDescription}[3]{\name{#2}'s \spatialVelocityName{} in \name{#1}, expressed in \name{#3}}
+    % test: \spatialVelocity{A}{B}{}      % Frame \name{B}'s spatial velocity in frame A
+    % test: \spatialVelocity{A}{B}{E}     % Frame \name{B}'s spatial velocity in frame A, expressed in frame E
+    % test: \spatialVelocity[i]{A}{B}{E}  % Frame \name{B}'s spatial velocity in frame A, expressed in frame E with subscript i
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% SPATIAL ACCELERATION %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\spatialAccelerationName}{spatial acceleration}   % test: \spatialAccelerationName
+\newcommand{\SpatialAccelerationName}{Spatial acceleration}   % test: \SpatialAccelerationName
+\newcommand{\spatialA}{\ensuremath{\textrm{A}}}               % test: \spatialA
+\newcommand{\spatialAcceleration}[4][]{\ensuremath{{}^{#2}_{#4}\!\spatialA^{#3}_{#1}}}
+\newcommand{\spatialAccelerationDescription}[3]{\name{#2}'s \spatialAccelerationName{} in \name{#1}, expressed in \name{#3}}
+    % test: \spatialAcceleration{A}{B}{}      % Frame \name{B}'s spatial Acceleration in frame A
+    % test: \spatialAcceleration{A}{B}{E}     % Frame \name{B}'s spatial Acceleration in frame A, expressed in frame E
+    % test: \spatialAcceleration[i]{A}{B}{E}  % Frame \name{B}'s spatial Acceleration in frame A, expressed in frame E with subscript i
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% ROTATIONAL DESCRIPTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\OrientationsDescription}[2]{\name{#1}'s orientation in \name{#2}}  % Old: The orientation of \name{B} in \name{N}
+\newcommand{\orientationsDescription}[2]{\name{#1}'s orientation in \name{#2}}  % Old: the orientation of \name{B} in \name{N}
+    % test: \OrientationsDescription{B}{N}
+    % test: \orientationsDescription{B}{N}
+
+%%%%%%%%%%%%%%%%%% POSITION VECTOR and MOMENT ARM %%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\positionScalarSymbol}{\ensuremath{\textrm{r}}}   % test: \positionScalarSymbol
+\newcommand{\positionVectorSymbol}{\bvec{r}}                  % test: \positionVectorSymbol
+\newcommand{\positionVectorWithSubscriptOnly}[1]{\ensuremath{\positionVectorSymbol_{#1}}}  % test: \positionVectorWithSubscriptOnly{1}
+
+\newcommand{\posvec}[2]{\ensuremath{\positionVectorSymbol^{\,{#2}/{#1}}{}}}
+\newcommand{\posvecWithExtraSubscript}[3][]{\ensuremath{\positionVectorWithSubscriptOnly{#1}^{{#3}/{#2}}{}}}
+\newcommand{\unitPositionVector}[2]{\ensuremath{\uvecu^{{#2}/{#1}}{}}}
+\newcommand{\posvecIgnoreSuperscripts}[2]{\ensuremath{\positionVectorSymbol{}}}
+%\newcommand{\posvec}[3][]{\ensuremath{\positionVectorSymbol_{#1}^{{#3}/{#2}}{}}}              % OBSOLETE - use posvecWithExtraSubscript
+%\newcommand{\posvec}[3][]{\ensuremath{{}^{\mathrm{#2}\!}{\positionVectorWithSubscriptOnly{#1}}^{\mathrm{#3}}}{}}
+%\newcommand{\posvec}[3][]{\ensuremath{\,{}^{#2}\hspace{-0.3pt}\positionVectorWithSubscriptOnly{#1}^{#3}{}}}
+%\newcommand{\pos}[2][]{\ensuremath{\positionVectorWithSubscriptOnly{#1}^{#2}{}}}              % OBSOLETE: \pos{Q/P} position vector of Q from P  \pos[i]{Q/P} position vector of Q from P with subscript i OBSOLETE
+%\newcommand{\pvec}[1][]{{\ensuremath{\positionVectorSymbol_{#1}}}}                            % OBSOLETE - use \positionVectorSymbol or \positionVectorWithSubscriptOnly{i}
+%\newcommand{\pvecP}[1][]{{\ensuremath{\bvec{p}_{#1}}}}                                        % OBSOLETE - use \positionVectorSymbol or \positionVectorWithSubscriptOnly{i}
+    % test: \posvec{P}{Q}                            % position vector from P to Q (or position vector of Q from P)
+    % test: \posvecWithExtraSubscript[i]{P}{Q}       % position vector from P to Q with subscript i (or position vector of Q from P with subscript i)
+    % test: \unitPositionVector{P}{Q}                % unit position vector from P to Q
+    % test: \posvecIgnoreSuperscripts{P}{Q}          % position vector of Q from P but without showing superscripts (for K-12)
+
+\newcommand{\momentArm}[2]{\ensuremath{\positionScalarSymbol^{{#1}}_{#2}}}
+\newcommand{\momentArmAbout}[3]{\ensuremath{\positionScalarSymbol^{{#1}/{#2}}_{#3}}}
+    % test: \momentArm{A}{\uvecz{b}}                 % A's moment arm         for \uvecz{b}
+    % test: \momentArmAbout{A}{P}{\uvecz{b}}         % A's moment arm about P for \uvecz{b}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% POSITION VECTOR DESCRIPTION %%%%%%%%%%%%%%%%%%%
+\newcommand{\PosvecsDescription}[2]{\name{#2}'s position vector from \name{#1}}   % test: \PosvecsDescription{A}{B}  % Use this at start of sentence (in case I change my mind)
+\newcommand{\posvecsDescription}[2]{\name{#2}'s position vector from \name{#1}}
+\newcommand{\posvecsDescriptionNewname}[2]{\name{#2}'s \newname{position vector} \/ from \name{#1}}
+\newcommand{\positionsDescription}[2]{\name{#2}'s position from \name{#1}}
+\newcommand{\posvecDescription}[2]{position vector of \name{#2} from \name{#1}}
+\newcommand{\PosvecDescription}[2]{Position vector of \name{#2} from \name{#1}}
+\newcommand{\posvecDescriptionFromTo}[2]{position vector from \name{#1} to \name{#2}}
+\newcommand{\thePosvecDescriptionFromTo}[2]{the \posvecDescriptionFromTo{#1}{#2}}
+\newcommand{\theposvecDescription}[2]{the \posvecDescription{#1}{#2}}
+\newcommand{\TheposvecDescription}[2]{The \posvecDescription{#1}{#2}}
+\newcommand{\posvecWithDescription}[2]{\posvec{#1}{#2}, \theposvecDescription{#1}{#2}}
+\newcommand{\measureOfTheposvecDescription}[3]{{#1} measure of \theposvecDescription{#2}{#3}}
+\newcommand{\unitPositionVectorsDescription}[2]{\name{#2}'s unit position vector from \name{#1}}
+\newcommand{\unitVectorsDescription}[2]{\name{#2}'s unit vector from \name{#1}}
+\newcommand{\unitVectorFromToDescription}[2]{unit vector from \name{#1} to \name{#2}}
+%\newcommand{\theUnitPositionVectorsDescription}[2]{the \unitPositionVectorsDescription{#1}{#2}}
+\newcommand{\distancesDescription}[2]{\name{#2}'s distance from \name{#1}}
+\newcommand{\elongationsDescription}[2]{\name{#2}'s elongation from \name{#1}}
+    % test: \posvecsDescription{P}{Q}                      % Q's position vector  from P
+    % test: \posvecDescription{P}{Q}                       % position vector of Q from P  % Old: \newcommand{\posvecDescription}[2]{position vector from \name{#1} to \name{#2}}
+    % test: \PosvecDescription{P}{Q}                       % Position vector of Q from P  % Old: \newcommand{\PosvecDescription}[2]{Position vector from \name{#1} to \name{#2}}
+    % test: \theposvecDescription{P}{Q}                    % the position vector of Q from P
+    % test: \TheposvecDescription{P}{Q}                    % The position vector of Q from P
+    % test: \posvecWithDescription{P}{Q}                   % \posvec{P}{Q}, the position vector from P to Q
+    % test: \measureOfTheposvecDescription{\uvecx{a}}{P}{Q}  % \uvecx{a} measure of the position vector from Q's position from P  (leave out the word "vector" since it is implied by the direction)
+    % test: \unitPositionVectorsDescription{P}{Q}          % Q's unit position vector from P
+    % test: \unitVectorFromToDescription{P}{Q}             % unit vector from P to Q
+    % test: \distancesDescription{P}{Q}                    % Q's distance from P
+    % test: \elongationsDescription{P}{Q}                  % Q's elongation from P
+    % TODO test: \muscleMomentArmDescription{A}{P}{\uvecz{b}}   % A's moment arm about P for \uvecz{b}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% ANGULAR VELOCITY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\angularVelocityVectorSymbol}{\boldOmegaVector}   % test: \angularVelocityVectorSymbol
+\newcommand{\angularVelocityScalarSymbol}{\ensuremath{\omega}}   % test: \angularVelocityScalarSymbol
+\newcommand{\angvel}[3][\,]{\ensuremath{{}\leftSuperscriptWithBase{#3}{\!\angularVelocityVectorSymbol}_{#1}^{#2}{}}}
+\newcommand{\partialAngularVelocity}[3]{\ensuremath{\pdydx{\,\angvel{#1}{#2}}{\,#3}}}
+\newcommand{\partialAngularVelocityOld}[3]{\angvel[#3]{#1}{#2}}
+\newcommand{\angvelTransport}[2]{\angvel[\textrm{t}]{#1}{#2}}
+\newcommand{\angvelFree}[2]{\angvel[\textrm{R}]{#1}{#2}}
+\newcommand{\angvelSubscriptPerp}[2]{\angvel[\mathbf{\perp}]{#1}{#2}}
+\newcommand{\angvelScalar}[3][\,]{\ensuremath{{}^{#3}\!{\angularVelocityScalarSymbol}_{#1}^{#2}{}}}
+\newcommand{\angveli}[3][\,]{\ensuremath{{}^{#3}\!{\angularVelocityScalarSymbol}_{#1}^{#2}{}}}
+\newcommand{\angveliDot}[3][\,]{\ensuremath{{}^{#3}\!{\dot\angularVelocityScalarSymbol}_{#1}^{#2}{}}}
+    % test: \angvel{B}{N}                       % angular velocity of B in N
+    % test: \angvel[t]{B}{N}                    % angular velocity of B in N with subscript t
+    % test: \partialAngularVelocity{B}{N}{\ur}  % partial velocity of B in N with respect to \ur
+    % test: \angvelTransport{B}{N}              % angular velocity of B in N with subscript t
+    % test: \angvelFree{B}{N}                   % angular velocity of B in N with subscript R (free velocity)
+    % test: \angveli{B}{N}                      % scalar angular velocity of B in N
+    % test: \angveli[x]{B}{N}                   % angular velocity of B in N with subscript x
+    % test: \angveliDot{B}{N}                   % scalar time-derivative of angular velocity of B in N
+    % test: \angveliDot[1]{B}{N}                % scalar time-derivative of angular velocity of B in N with subscript 1
+
+\newcommand{\TheAngvelOfDescription}[2]{The angular velocity of \name{#1} in \name{#2}}
+\newcommand{\theAngvelOfDescription}[2]{the angular velocity of \name{#1} in \name{#2}}
+\newcommand{\angvelsDescription}[2]{\name{#1}'s angular velocity in \name{#2}}
+\newcommand{\AngvelsDescription}[2]{\name{#1}'s angular velocity in \name{#2}}
+\newcommand{\pangvelsDescription}[3]{\name{#1}'s partial angular velocity in \name{#2} for \name{#3}}
+\newcommand{\PangvelsDescription}[3]{\name{#1}'s partial angular velocity in \name{#2} for \name{#3}}
+    % test: \TheAngvelOfDescription{B}{N}    % The angular velocity of \name{B} in \name{N}
+    % test: \theAngvelOfDescription{B}{N}    % the angular velocity of \name{B} in \name{N}
+    % test: \angvelsDescription{B}{N}        % B's angular velocity in N   % Old: the angular velocity     of \name{B} in \name{N}
+    % test: \AngvelsDescription{B}{N}        % Same as \angvelDescription except used at start of sentence!
+    % test: \pangvelsDescription{B}{N}{\ur}  % B's partial angular velocity in N for \ur
+    % test: \PangvelsDescription{B}{N}{\ur}  % Same as \pangvelDescription except used at start of sentence!
+
+\newcommand{\TheSimpleAngvelOfDescription}[2]{The simple angular velocity of \name{#1} in \name{#2}}
+\newcommand{\theSimpleAngvelOfDescription}[2]{the simple angular velocity of \name{#1} in \name{#2}}
+\newcommand{\simpleAngvelsDescription}[2]{\name{#1}'s simple angular velocity in \name{#2}}
+    % test: \TheSimpleAngvelOfDescription{B}{N}  % The simple angular velocity of \name{B} in \name{N}
+    % test: \theSimpleAngvelOfDescription{B}{N}  % the simple angular velocity of \name{B} in \name{N}
+    % test: \simpleAngvelsDescription{B}{N}      % B's simple angular velocity in N
+
+\newcommand{\angveltilde}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\widetilde{\angularVelocityVectorSymbol}}_{#1}^{#2}{}}}
+    % test: \angveltilde{B}{N}  % nonholonomic angular velocity of B in N
+    % test: \angvel[r]{B}{N}    % nonholonomic angular velocity of B in N with subscript r
+    % test: \angvel[t]{B}{N}    % nonholonomic angular velocity of B in N with subscript t
+
+\newcommand{\angvelMatrix}[3][\,]{\ensuremath{\left[{}^{#3\!}{\boldomega}_{#1}^{#2}\right]{}}}
+    % test: \angvelMatrix{B}{N}     % angular velocity matrix of B in N
+    % test: \angvelMatrix[r]{B}{N}  % angular velocity matrix of B in N with subscript r
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% VELOCITY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\velocityScalarSymbol}{\ensuremath{\textrm{v}}}   % test: \velocityScalarSymbol
+\newcommand{\velocityVectorSymbol}{\ensuremath{\bvec{v}}}   % test: \velocityVectorSymbol
+\newcommand{\velocityRelativeVectorSymbol}{\ensuremath{\velocityVectorSymbol_{\textrm{rel}}}}   % test: \velocityRelativeVectorSymbol
+\newcommand{\velocityVectorTildeSymbol}{\ensuremath{\widetilde{\velocityVectorSymbol}}}   % test: \velocityVectorTildeSymbol
+\newcommand{\speedSymbol}{\ensuremath{\textrm{speed}}}   % test: \speedSymbol
+\newcommand{\speed}[3][\,]{\ensuremath{{}^{#3}\!\speedSymbol_{#1}^{#2}{}}}
+\newcommand{\vel}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\velocityVectorSymbol}_{#1}^{#2}{}}}
+\newcommand{\velScalarSymbol}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\velocityScalarSymbol}_{#1}^{#2}{}}}
+\newcommand{\velRelative}[3]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\velocityVectorSymbol}^{#1/#2}{}}}
+\newcommand{\velRelativeCoincidentPoints}[3][]{\ensuremath{{\velocityVectorSymbol}_{#1}^{#2/#3}{}}}
+\newcommand{\veltilde}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\velocityVectorTildeSymbol}_{#1}^{#2}{}}}
+\newcommand{\partialVelocity}[3]{\ensuremath{\pdydx{\,\vel{#1}{#2}}{\,#3}}}
+\newcommand{\partialVelocityNonholonomic}[3]{\ensuremath{\pdydx{\,\veltilde{#1}{#2}}{\,#3}}}
+\newcommand{\partialVelocityOld}[3]{\vel[#3]{#1}{#2}}
+\newcommand{\partialVelocityOldNonholonomic}[3]{\veltilde[#3]{#1}{#2}}
+\newcommand{\velTransport}[2]{\vel[\textrm{t}]{#1}{#2}}
+\newcommand{\velTransportTilde}[2]{\veltilde[\textrm{t}]{#1}{#2}}
+\newcommand{\velFree}[2]{\vel[\textrm{R}]{#1}{#2}}
+\newcommand{\velSubscriptRel}[2]{\vel[\textrm{rel}]{#1}{#2}}
+    % test: \vel{P}{N}                                      % velocity of P in N (v as vector).
+    % test: \velScalarSymbol{P}{N}                          % velocity of P in N (v as scalar).
+    % test: \speed{P}{N}                                    % speed    of P in N
+    % test: \velRelative{P}{Q}{N}                           % velocity of P relative to Q in N
+    % test: \velRelativeCoincidentPoints{P}{Q}              % velocity of P relative to Q (no reference frame needed)
+    % test: \velRelativeCoincidentPoints[\textrm{t}]{P}{Q}  % velocity of P relative to Q with subscript t (no reference frame needed)
+    % test: \velRelative[\ur]{P}{Q}{N}                      % velocity of P relative to Q in N with subscript \ur
+    % test: \partialVelocity{P}{N}{\ur}                     % partial velocity of P in N with respect to \ur
+    % test: \partialVelocityNonholonomic{P}{N}{\ur}         % partial velocity of P in N with respect to \ur
+    % test: \partialVelocityOld{P}{N}{\ur}                  % partial velocity of P in N with respect to \ur
+    % test: \partialVelocityOldNonholonomic{P}{N}{\ur}      % partial velocity of P in N with respect to \ur
+    % test: \velTransport{P}{N}                             % velocity of P in N with subscript t
+    % test: \velFree{P}{N}                                  % velocity of P in N with subscript R (free velocity)
+    % TODO doesn't seem to be defined. test: \velRel{P}{N}                                   % velocity of P in N with subscript rel (relative velocity)
+    % test: \veltilde{P}{N}                                 % nonholonomic velocity of P in N
+    % test: \velocityRelativeVectorSymbol                   % v_{rel}
+
+\newcommand{\TheVelOfDescription}[2]{The velocity of \name{#1} in \name{#2}}
+\newcommand{\theVelOfDescription}[2]{the velocity of \name{#1} in \name{#2}}
+\newcommand{\velsDescription}[2]{\name{#1}'s velocity in \name{#2}}
+\newcommand{\VelsDescription}[2]{\name{#1}'s velocity in \name{#2}}
+\newcommand{\pvelsDescription}[3]{\name{#1}'s partial velocity in \name{#2} for \ensuremath{#3}}
+% TODO \newname isn't in this package
+\newcommand{\pvelsDescriptionNewName}[3]{\name{#1}'s \newname{partial velocity} \/ in \name{#2} for \ensuremath{#3}}
+\newcommand{\PvelsDescription}[3]{\name{#1}'s partial velocity in \name{#2} for \name{#3}}
+\newcommand{\velsRelativeDescription}[3]{\name{#1}'s velocity relative to \name{#2} in \name{#3}}
+\newcommand{\velsRelativeDescriptionCoincidentPoints}[2]{\name{#1}'s velocity relative to \name{#2}}
+\newcommand{\velAccelsDescription}[2]{\name{#1}'s velocity and acceleration in \name{#2}}
+\newcommand{\speedsDescription}[2]{\name{#1}'s speed in \name{#2}}
+    % test: \TheVelOfDescription{Q}{N}                      % The velocity of Q in N
+    % test: \theVelOfDescription{Q}{N}                      % the velocity of Q in N
+    % test: \velsDescription{Q}{N}                          % Q's velocity in N
+    % test: \VelsDescription{Q}{N}                          % Q's velocity in N
+    % test: \pvelsDescription{Q}{N}{\ur}                    % Q's \newname{partial velocity} in N for \ur
+    % TODO see above. test: \pvelsDescriptionNewName{Q}{N}{\ur}             % Q's partial velocity in N for \ur
+    % test: \PvelsDescription{Q}{N}{\ur}                    % Same as \pvelsDescription except used at start of sentence!
+    % test: \velsRelativeDescription{Q}{P}{N}               % Q's velocity relative to P in N
+    % test: \velsRelativeDescriptionCoincidentPoints{Q}{P}  % Q's velocity relative to P (no reference frame needed)
+    % test: \velAccelsDescription{Q}{N}                     % Q's velocity and acceleration in N
+
+\newcommand{\vtwopts}[4]{\vel{#3}{#1} \plus[] \angvel{#2}{#1} \Cross \posvec{#3}{#4}}
+\newcommand{\vtwoptsEqn}[4]{\vel{#4}{#1} \equals[\;] \vtwopts{#1}{#2}{#3}{#4}}
+    % test: \vtwopts{A}{B}{P}{Q}     % produces \vel{P}{A} + \angvel{B}{A} \times \posvec{P}{Q}
+    % test: \vtwoptsEqn{A}{B}{P}{Q}  % produces \vel{Q}{Q} \equals \vtwopts{A}{B}{P}{Q}
+
+\newcommand{\vonept}[3]{\vel{#2_{#3}}{#1} \plus[] \vel{#3}{#2}}
+\newcommand{\voneptEqn}[3]{\vel{#3}{#1} \equals \vonept{#1}{#2}{#3}}
+    % test: \vonept{A}{B}{Q}     % produces \vel{B_Q}{A} + \vel{Q}{B}
+    % test: \voneptEqn{A}{B}{Q}  % produces \vel{Q}{A} \equals \vonept{A}{B}{Q}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANGULAR ACCELERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\alfVectorSymbol}{\boldAlphaVector}   % test: \alfVectorSymbol
+\newcommand{\alfScalarSymbol}{\ensuremath{\alpha}}   % test: \alfScalarSymbol
+\newcommand{\alf}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!{\alfVectorSymbol}}_{#1}^{#2}{}}}
+\newcommand{\alfScalar}[3][\,]{\ensuremath{{}^{#3}\!{\alfScalarSymbol}_{#1}^{#2}{}}}
+    % test: \alf{B}{N}        % angular acceleration of B in N
+    % test: \alf[t]{B}{N}     % angular acceleration of B in N with subscript t
+    % test: \alfScalar{B}{N}  % angular acceleration of B in N (scalar)
+
+\newcommand{\TheAlfOfDescription}[2]{The angular acceleration of \name{#1} in \name{#2}}
+\newcommand{\theAlfOfDescription}[2]{the angular acceleration of \name{#1} in \name{#2}}
+\newcommand{\alfsDescription}[2]{\name{#1}'s angular acceleration in \name{#2}}
+\newcommand{\AlfsDescription}[2]{\name{#1}'s angular acceleration in \name{#2}}
+    % test: \TheAlfOfDescription{B}{N}    % The angular acceleration of \name{B} in \name{N}
+    % test: \theAlfOfDescription{B}{N}    % the angular acceleration of \name{B} in \name{N}
+    % test: \alfsDescription{B}{N}        % B's angular acceleration in N
+    % test: \AlfsDescription{B}{N}        % Same as \alfsDescription except use at start of sentence!
+
+\newcommand{\alftilde}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\widetilde{\alfVectorSymbol}}_{#1}^{#2}{}}}
+    % test: \alftilde{B}{N}     % non-holonomic angular acceleration of B in N
+    % test: \alftilde[t]{B}{N}  % non-holonomic angular acceleration of B in N with subscript t
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ACCELERATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\accelVectorSymbol}{\ensuremath{\bvec{a}}}   % test: \accelVectorSymbol
+\newcommand{\accelScalarSymbol}{\ensuremath{\textrm{a}}}   % test: \accelScalarSymbol
+\newcommand{\accelerationVectorSymbol}{\accelVectorSymbol}   % test: \accelerationVectorSymbol
+\newcommand{\accelerationScalarSymbol}{\accelScalarSymbol}   % test: \accelerationScalarSymbol
+\newcommand{\accel}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\accelerationVectorSymbol}_{#1}^{#2}{}}}
+\newcommand{\accelRelative}[4][\,]{\ensuremath{\leftSuperscriptWithBase{#4}{\!\accelerationVectorSymbol}_{#1}^{#2/#3}{}}}
+    % test: \accel{P}{N}                % acceleration of P in N
+    % test: \accel[t]{P}{N}             % acceleration of P in N with subscript t
+    % test: \accelRelative{P}{Q}{N}     % acceleration of P relative to Q in N
+    % test: \accelRelative[t]{P}{Q}{N}  % acceleration of P relative to Q in N with subscript t
+
+\newcommand{\TheAccelOfDescription}[2]{The acceleration of \name{#1} in \name{#2}}
+\newcommand{\theAccelOfDescription}[2]{the acceleration of \name{#1} in \name{#2}}
+\newcommand{\accelsDescription}[2]{\name{#1}'s acceleration in \name{#2}}
+\newcommand{\AccelsDescription}[2]{\name{#1}'s acceleration in \name{#2}}
+\newcommand{\accelsRelativeDescription}[3]{\name{#1}'s acceleration relative to \name{#2} in \name{#3}}
+    % test: \TheAccelOfDescription{Q}{N}         % The acceleration of Q in N
+    % test: \theAccelOfDescription{Q}{N}         % the acceleration of Q in N
+    % test: \accelsDescription{Q}{N}             % Q's acceleration in N
+    % test: \AccelsDescription{Q}{N}             % Q's acceleration in N
+    % test: \accelsRelativeDescription{Q}{P}{N}  % Q's acceleration relative to P in N
+
+\newcommand{\acceltilde}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\widetilde{\accelerationVectorSymbol}}_{#1}^{#2}{}}}
+    % test: \acceltilde{P}{N}     % non-holonomic acceleration of P in N
+    % test: \acceltilde[t]{P}{N}  % non-holonomic acceleration of P in N with subscript t
+
+\newcommand{\atwopts}[4]{\ensuremath{\accel{#3}{#1} \plus[\ ] \alf{#2}{#1} \times \posvec{#3}{#4} \plus[\ ] \angvel{#2}{#1} \times \left( \angvel{#2}{#1} \times \posvec{#3}{#4} \right)}}
+    % test: \atwopts{a}{b}{p}{q}  % produces familiar autolev equation
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% JERK and ANGULAR JERK %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\jerkVector}{\mbox{\ensuremath{\bvec{j}\mathbf{erk}}}}
+\newcommand{\jerk}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\jerkVector}_{#1}^{#2}{}}}
+    % test: \jerkVector
+    % test: \jerk{P}{N}     % jerk of P in N
+    % test: \jerk[t]{P}{N}  % jerk of P in N with subscript t
+
+\newcommand{\TheJerkOfDescription}[2]{The jerk of \name{#1} in \name{#2}}
+\newcommand{\theJerkOfDescription}[2]{the jerk of \name{#1} in \name{#2}}
+\newcommand{\jerksDescription}[2]{\name{#1}'s jerk in \name{#2}}
+\newcommand{\JerksDescription}[2]{\name{#1}'s jerk in \name{#2}}
+\newcommand{\jerksRelativeDescription}[3]{\name{#1}'s jerk relative to \name{#2} in \name{#3}}
+    % test: \TheJerkOfDescription{Q}{N}          % The jerk of Q in N
+    % test: \theJerkOfDescription{Q}{N}          % the jerk of Q in N
+    % test: \jerksDescription{Q}{N}              % Q's jerk in N
+    % test: \JerksDescription{Q}{N}              % Q's jerk in N
+    % test: \jerksRelativeDescription{Q}{P}{N}   % Q's jerk relative to P in N
+
+\newcommand{\angularJerk}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\boldGammaVector}_{#1}^{#2}{}}}
+    % test: \angularJerk{B}{N}     % angular jerk of B in N
+    % test: \angularJerk[t]{B}{N}  % angular jerk of B in N with subscript t
+
+
+%%%%%%%%%%%%%%%%% CENTROID, CENTER OF MASS, BODY/COORD ORIGIN %%%%%%%%%%%%%
+\newcommand{\cmSymbol}{\ensuremath{\textrm{cm}}}                   % test: \cmSymbol  % Center of mass symbol.  Change from o to c on 10/12/2001
+\newcommand{\cgSymbol}{\ensuremath{\textrm{cg}}}                   % test: \cgSymbol  % Center of gravity symbol.  Only use when I mean GRAVITY not \cm
+\newcommand{\originSymbol}{\ensuremath{\textrm{o}}}                % test: \originSymbol
+\newcommand{\centroidSymbol}{\ensuremath{\textrm{centroid}}}       % test: \centroidSymbol
+\newcommand{\cmsDescription}[1]{\name{#1}'s center of mass}        % test: \cmsDescription{A}
+\newcommand{\massCenterDescription}[1]{\name{#1}'s mass center}    % test: \massCenterDescription{A}
+
+\newcommand{\cm}[1]{{\ensuremath{{#1}_{\cmSymbol}}}}               % Mass center of body or system
+\newcommand{\cg}[1]{{\ensuremath{{#1}_{\cgSymbol}}}}               % Center of gravity between two objects
+\newcommand{\origin}[1]{{\ensuremath{{#1}_\originSymbol}}}         % Need to put extra {} in case there is a double subscript
+\newcommand{\centroid}[1]{\ensuremath{{#1}_{\centroidSymbol}}}     % Centroid of body or system
+\newcommand{\genericb}[1]{\ensuremath{{#1}_{p}}}                   % Generic point fixed on a body
+\newcommand{\contactPoint}[2]{\ensuremath{{#1}_{\!#2}}}            % Point of A in contact with B
+\newcommand{\pathPoint}[2]{\ensuremath{P}}                         % Path traced out on body A from contact with body B
+%\newcommand{\pathPoint}[2]{\ensuremath{P_{#1}}}                    % Path traced out on body A from contact with body B
+%\newcommand{\pathPoint}[2]{\ensuremath{P_{{#1}\:{#2}}}}            % Path traced out on body A from contact with body B
+\newcommand{\coincidentPoint}[2]{\ensuremath{{#1}_{#2}}}           % Point of body A that is coincident with point P
+% TODO which one of these are we going to use?
+%\newcommand{\continuouslyRenamedSymbol}{\ensuremath{*}}            % Used for points that are continuously renamed.
+%\newcommand{\coincidentPointContinuous}[2]{\ensuremath{{#1}_{#2}^{\continuouslyRenamedSymbol}}}  % Point of body A that is coincident with point P (with * was old).
+\newcommand{\connectedObjects}[2]{\ensuremath{{#1}_{\!#2}}}        % Notation for object A is connected to object B
+\newcommand{\undeformedPoint}[3]{\ensuremath{{#1}_{{#2}_{#3}}}}    % Point of body B that is coincident with point P when F is undeformed.
+    % test: \cm{B}                            % produces B_c
+    % test: \origin{B}                        % produces B_o
+    % test: \centroid{B}                      % produces B_{centroid}
+    % test: \genericb{B}                      % produces B_p
+    % test: \contactPoint{B}{D}               % produces B_D   % Note: This is the point on B in contact with D
+    % test: \pathPoint{B}{D}                  % produces P_BD  % Note: This is the path traced out on B from contact with D - but one or both of arguments may be ignored
+    % test: \coincidentPoint{B}{P}            % produces B_P   % Note: This is the point of B that is coincident with P
+    % test: \undeformedPoint{B}{P}{F}         % produces B_P   % Note: This is the point of B that is coincident with P when F is undeformed.
+    % TODO test: \coincidentPointContinuous{B}{P}  % produces B_N^* % Note: This is the point of B that is coincident with P at each instant (continuously)
+    % test: \connectedObjects{A}{B}           % produces A_B
+
+%%%%%%%%%%% AREA, AREA MOMENT OF INERTIA, POLAR MOMENT OF INERTIA %%%%%%%%%%%%%%%%%%
+\newcommand{\AreaScalarSymbol}{\ensuremath{\textrm{A}}}                 % test: \AreaScalarSymbol
+\newcommand{\AreaVectorSymbol}{\ensuremath{\bvec{\AreaScalarSymbol}}}   % test: \AreaVectorSymbol
+
+\newcommand{\neutralAxisPointOnBeam}[1]{\ensuremath{{#1}_{n}}}
+\newcommand{\AreaVectorAboutPointInDirection}[2]{\ensuremath{\AreaVectorSymbol^{#1}_{#2}}}
+\newcommand{\AreaScalarAboutPointInDirection}[2]{\ensuremath{\AreaScalarSymbol^{#1}_{#2}}}
+% TODO(mitiguy): enable these?
+%\newcommand{\AreaScalarAboutPointInDirectionDescription}[2]{Area about point \name{#1} perpendicular to {#2}}
+%\newcommand{\areaScalarAboutPointInDirectionDescription}[2]{area about point \name{#1} perpendicular to {#2}}
+    % test: \neutralAxisPointOnBeam{B}                                 % Neutral axis point on beam B
+    % test: \AreaVectorAboutPointInDirection{Q}{x}                     % Vector area about point Q perpendicular to \uvecx{b}
+    % test: \AreaScalarAboutPointInDirection{Q}{x}                     % Area about point Q perpendicular to x (basis implied)
+    % test: \AreaScalarAboutPointInDirection{Q}{\uvecx{b}}             % Area about point Q perpendicular to \uvecx{b}
+    % TODO test: \areaScalarAboutPointInDirectionDescription{Q}{\uvecx{b}}  % area about point Q perpendicular to \uvecx{b}
+
+\newcommand{\AreaMomentOfInertiaScalarSymbol}{\ensuremath{\textrm{I}}}   % test: \AreaMomentOfInertiaScalarSymbol
+\newcommand{\QGeometryForAreaScalarSymbol}{\ensuremath{\textrm{Q}}}      % test: \QGeometryForAreaScalarSymbol
+
+\newcommand{\AreaMomentOfInertiaScalarAboutPointInDirections}[2]{\ensuremath{\AreaMomentOfInertiaScalarSymbol^{#1}_{#2}}}
+\newcommand{\AreaMomentOfInertiaInDirections}[3][]{\ensuremath{\AreaMomentOfInertiaScalarSymbol^{\AreaScalarAboutPointInDirection{#1}{#2}}_{#3}}}
+\newcommand{\QGeometryForAreaScalarAboutPointInDirections}[3]{\ensuremath{\QGeometryForAreaScalarSymbol^{#1}_{#2 #3}}}
+    % test: \AreaMomentOfInertiaScalarAboutPointInDirections{Q}{zz}                    % Area moment of inertia for plane passing through point Q and perpendicular to \uvecx{b} for \uvecz{b} direction
+    % test: \AreaMomentOfInertiaScalarAboutPointInDirections{Q}{\uvecx{b}\,\uvecx{b}}  % Area moment of inertia for plane passing through point Q and perpendicular to x (basis implied) for \uvecy{b} dimension
+    % test: \AreaMomentOfInertiaInDirections{x}{zz}                                    % Area moment of inertia for area associated with x direction about an implied point for zz directions
+    % test: \AreaMomentOfInertiaInDirections[Q]{x}{zz}                                 % Area moment of inertia for area associated with x direction and point Q about an implied point for zz directions
+    % test: \QGeometryForAreaScalarAboutPointInDirections{P}{x}{y}                     % Q-area geometry for the face passing through point P and perpendicular to \uvecx{b} for \uvecy{b} dimension
+
+\newcommand{\PolarMomentOfInertiaScalarSymbol}{\ensuremath{\textrm{J}}}
+\newcommand{\PolarMomentOfInertia}[2][]{\ensuremath{\PolarMomentOfInertiaScalarSymbol_{#1}^{#2}}}
+    % test: \PolarMomentOfInertiaScalarSymbol
+    % test: \PolarMomentOfInertiaScalarSymbol     % just the scalar symbol (no subscripts/superscripts)
+    % test: \PolarMomentOfInertia[x]{Q}           % Polar moment of inertia about Q for x direction
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MASS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\massSymbol}{\ensuremath{m}}
+\newcommand{\massSubscript}[1]{\ensuremath{\massSymbol_{#1}}}
+\newcommand{\massSuperscript}[1]{\ensuremath{\massSymbol^{\!#1}}}
+%\newcommand{\mass}[1]{\massSubscript{#1}}   % New is subscript - but not sure if I like it.
+\newcommand{\mass}[1]{\massSuperscript{#1}}  % Original was superscript.
+    % test: \massSymbol
+    % test: \mass{B}             % mass of B m^B
+    % test: \massSubscript{B}    % mass of B m_B
+    % test: \massSuperscript{B}  % mass of B m^B
+
+\newcommand{\TheMassOfDescription}[1]{The mass of \name{#1}}
+\newcommand{\theMassOfDescription}[1]{the mass of \name{#1}}
+% TODO(mitiguy): Can we get rid of one of these?
+\newcommand{\masssDescription}[1]{\name{#1}'s mass}
+\newcommand{\massesDescription}[1]{\name{#1}'s mass}
+    % test: \TheMassOfDescription{B}  % The mass of B
+    % test: \theMassOfDescription{B}  % the mass of B
+    % test: \masssDescription{B}      % B's mass
+    % test: \massesDescription{B}     % B's mass
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INERTIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\inertiaScalarSymbol}{\ensuremath{\textrm{I}}}            % test: \inertiaScalarSymbol
+\newcommand{\inertiaVectorSymbol}{\ensuremath{\bvec{I}}}              % test: \inertiaVectorSymbol
+\newcommand{\inertiaDyadicSymbol}{\ensuremath{\dyad{I}}}              % test: \inertiaDyadicSymbol
+\newcommand{\inertiaMatrixSymbol}{\ensuremath{\textrm{I}}}            % test: \inertiaMatrixSymbol
+\newcommand{\radiusOfGyrationScalarSymbol}{\ensuremath{\textrm{k}}}   % test: \radiusOfGyrationScalarSymbol
+
+\newcommand{\idyad}[1]{\ensuremath{\inertiaDyadicSymbol^{#1}}}
+\newcommand{\idyadCentral}[1]{\ensuremath{\inertiaDyadicSymbol^{#1/\cm{#1}}}}
+\newcommand{\imatrix}[2][]{\ensuremath{\inertiaMatrixSymbol_{#1}^{#2}}}
+\newcommand{\inertiaVector}[2]{\ensuremath{\inertiaVectorSymbol^{#1}_{#2}}}
+\newcommand{\radiusOfGyration}[2]{\ensuremath{\radiusOfGyrationScalarSymbol^{#1}_{#2}}}
+\newcommand{\iscalar}[2]{\ensuremath{\inertiaScalarSymbol^{#1}_{#2}}}
+\newcommand{\iscalarij}[1]{\iscalar{#1}{\textrm{ij}}}
+\newcommand{\iscalarxx}[1]{\iscalar{#1}{\textrm{xx}}}
+\newcommand{\iscalarxy}[1]{\iscalar{#1}{\textrm{xy}}}
+\newcommand{\iscalarxz}[1]{\iscalar{#1}{\textrm{xz}}}
+\newcommand{\iscalaryx}[1]{\iscalar{#1}{\textrm{yx}}}
+\newcommand{\iscalaryy}[1]{\iscalar{#1}{\textrm{yy}}}
+\newcommand{\iscalaryz}[1]{\iscalar{#1}{\textrm{yz}}}
+\newcommand{\iscalarzx}[1]{\iscalar{#1}{\textrm{zx}}}
+\newcommand{\iscalarzy}[1]{\iscalar{#1}{\textrm{zy}}}
+\newcommand{\iscalarzz}[1]{\iscalar{#1}{\textrm{zz}}}
+\newcommand{\jscalar}[2]{\ensuremath{J^{#1}_{#2}}}
+    % test: \idyad{B}                          % inertia dyadic of B (implied relative to Bcm).
+    % test: \idyad{B/Bcm}                      % inertia dyadic of B/Bc
+    % test: \idyadCentral{B}                   % inertia dyadic of B about Bc
+    % test: \imatrix{B}                        % inertia matrix of B (implied relative to \cm{B}).
+    % test: \imatrix{B/O}                      % inertia matrix of B/O
+    % test: \imatrix[\uvecBasisxyz{b}]{B/O}    % inertia matrix of S/O with subscript bxyz
+    % test: \inertiaVector{B/O}{\uvecx{b}}     % inertia vector of B/O for bx>
+    % test: \radiusOfGyration{B/O}{\uvecx{b}}  % radius of gyration of B/O  for \uvecx{b}
+    % test: \radiusOfGyration{}{}              % radius of gyration with implied objects
+    % test: \iscalar{B/O}{12}                  % inertia scalar of B/O  for 1,2 (i.e. b1>,b2>)
+    % test: \iscalar{B/O}{ij}                  % \ijxyzParensFontSize[]{\scriptsize}
+    % test: \iscalarij{B/O}                    % inertia scalar of B/O for ij (implied basis)   \iscalarij{} \ijxyzParensFontSize[]{\scriptsize}
+    % test: \iscalarxx{B/O}                    % inertia scalar of B/O for xx (implied basis)
+
+\newcommand{\TheIdyadOfDescription}[2]{The inertia dyadic of \name{#1} about \name{#2}}
+\newcommand{\theIdyadOfDescription}[2]{the inertia dyadic of \name{#1} about \name{#2}}
+\newcommand{\idyadsDescription}[2]{\name{#1}'s inertia dyadic about \name{#2}}
+    % test: \TheIdyadOfDescription{B}{P}  % The inertia dyadic of \name{B} about \name{P}
+    % test: \theIdyadOfDescription{B}{P}  % the inertia dyadic of \name{B} about \name{P}
+    % test: \idyadsDescription{B}{P}      % \name{B}'s inertia dyadic about \name{P}
+
+\newcommand{\TheMomentOfInertiaDescription}[3]{The moment of inertia of \name{#1} about \name{#2} for {#3}}
+\newcommand{\theMomentOfInertiaDescription}[3]{the moment of inertia of \name{#1} about \name{#2} for {#3}}
+\newcommand{\momentOfInertiasDescription}[3]{\name{#1}'s moment of inertia about \name{#2} for {#3}}
+\newcommand{\TheProductOfInertiaDescription}[4]{The product of inertia of \name{#1} about \name{#2} for {#3} and {#4}}
+\newcommand{\theProductOfInertiaDescription}[4]{the product of inertia of \name{#1} about \name{#2} for {#3} and {#4}}
+\newcommand{\productOfInertiasDescription}[4]{\name{#1}'s product of inertia about \name{#2} for {#3} and {#4}}
+    % test: \TheMomentOfInertiaDescription{B}{P}{\uvecWithHat{k}}         % The moment of inertia of \name{B} about \name{P} for \uvecWithHat{k}
+    % test: \theMomentOfInertiaDescription{B}{P}{\uvecWithHat{k}}         % The moment of inertia of \name{B} about \name{P} for \uvecWithHat{k}
+    % test: \momentOfInertiasDescription{B}{P}{\uvecWithHat{k}}           % \name{B}'s  moment of inertia about \name{P} for \uvecWithHat{k}
+    % test: \TheProductOfInertiaDescription{B}{P}{\uvecx{b}}{\uvecy{b}}   % The product of inertia of \name{B} about \name{P} for \uvecx{b} and \uvecy{b}
+    % test: \theProductOfInertiaDescription{B}{P}{\uvecx{b}}{\uvecy{b}}   % the product of inertia of \name{B} about \name{P} for \uvecx{b} and \uvecy{b}
+    % test: \productOfInertiasDescription{B}{P}{\uvecx{b}}{\uvecy{b}}     % \name{B}'s product of inertia about \name{P} for \uvecx{b} and \uvecy{b}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MOMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\momentScalarSymbol}{\ensuremath{\textrm{M}}}   % test: \momentScalarSymbol
+\newcommand{\momentVectorSymbol}{\ensuremath{\bvec{M}}}     % test: \momentVectorSymbol
+
+\newcommand{\moment}[2][\,]{\ensuremath{\momentVectorSymbol_{#1}^{#2}}}
+\newcommand{\momentAbout}[3][\,]{\ensuremath{\momentVectorSymbol_{#1}^{#2/#3}}}
+\newcommand{\momentIgnoreSuperscript}[2][\,]{\ensuremath{\momentVectorSymbol_{#1}}}
+\newcommand{\momentIgnoreSuperSubscripts}[2][\,]{\ensuremath{\momentVectorSymbol}}
+\newcommand{\externalMoment}[1]{\ensuremath{\moment[\textrm{External}]{#1}}}
+    % test: \moment{S/P}                          % moment of the set of forces S about point P
+    % test: \moment{B/\cm{B}}                     % moment of the forces on body B about the center of mass of B
+    % test: \moment[x]{B/P}                       % moment of the forces on B about P with subscript x
+    % test: \momentAbout{B}{P}                    % moment of the forces on B about P
+    % test: \momentAbout[x]{B}{P}                 % moment of the forces on B about P with subscript x
+    % test: \momentIgnoreSuperscript{S/P}         % moment of S about P but ignores superscripts (for K-12)
+    % test: \momentIgnoreSuperSubscripts[x]{S/P}  % moment of S about P but ignores superscripts (for K-12)
+    % test: \externalMoment{S/P}                  % moment of S about P with subscript \textrm{External}
+    % NOTE: INERTIA FORCE MOMENT IS UNNECESSARY.  Paul 5/10/2000.  Use inertia torques.
+
+\newcommand{\momentCentral}[2][\,]{\ensuremath{\momentVectorSymbol_{#1}^{#2/\cm{#2}}}}
+    % test: \momentCentral{B}      % moment of the forces on body B about the center of mass of B
+    % test: \momentCentral[2]{B}   % moment of the forces on body B about the center of mass of B with subscript 2
+
+\newcommand{\momenti}[2][]{\ensuremath{M_{#1}^{#2}}}
+\newcommand{\momentx}[1]{\momenti[x]{#1}}
+\newcommand{\momenty}[1]{\momenti[y]{#1}}
+\newcommand{\momentz}[1]{\momenti[z]{#1}}
+\newcommand{\momentUx}[2]{\momenti[\uvecx{#1}]{#2}}
+\newcommand{\momentUy}[2]{\momenti[\uvecy{#1}]{#2}}
+\newcommand{\momentUz}[2]{\momenti[\uvecz{#1}]{#2}}
+    % test: \momenti[1]{S/P}       % b1> measure of the moment of the set S of vectors about point P
+    % test: \momentx{S/P}          % body bx> measure of the moment of the set S of vectors about point P
+    % test: \momentUx{a}{S/P}      % arbitrary ax> measure of the moment of the set S of vectors about point P
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% MOMENT OF EFFECTIVE FORCE %%%%%%%%%%%%%%%%%%%%%
+\newcommand{\momentOfEffectiveForceVectorSymbol}{\ensuremath{\bvec{M}}}   % test: \momentOfEffectiveForceVectorSymbol
+
+\newcommand{\emoment}[3][]{\ensuremath{\leftSuperscriptWithBase{#3}{\momentOfEffectiveForceVectorSymbol}_{#1}^{#2}}}
+\newcommand{\emomentsDescription}[3]{\name{#1}'s moment of effective forces about \name{#2} in \name{#3}}
+% TODO depends on \newnameIndex
+\newcommand{\emomentsDescriptionNewName}[3]{\name{#1}'s \newnameIndex{moment of effective forces}{moment of effective force} \/ about \name{#2} in \name{#3}}
+    % test: \emoment{Q/O}{N}                      % moment of effective force  of particle Q about point O in reference frame N
+    % test: \emoment{B/\cm{B}}{N}                 % moment of effective forces of body B about the center of mass of B in reference frame N
+    % test: \emoment[2]{S/O}{N}                   % moment on effective forces on system S about point O in reference frame N with subscript 2
+    % test: \emomentsDescription{S}{O}{N}         % S's moment of effective forces about O in N
+    % TODO test: \emomentsDescriptionNewName{S}{O}{N}  % S's \newnameIndex{moment of effective forces}{moment of effective force} about O in N
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% MOMENT OF IMPULSE FORCE %%%%%%%%%%%%%%%%%%%%%
+\newcommand{\impulseMomentVec}{\ensuremath{\bvec{m}}}   % test: \impulseMomentVec
+
+\newcommand{\imoment}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\impulseMomentVec}_{#1}^{#2}}}
+    % test: \imoment{Q/O}{N}       % moment of impulse of particle Q about point O in reference frame N
+    % test: \imoment{B/\cm{B}}{N}  % moment of impulse of body B about the center of mass of B in reference frame N
+    % test: \imoment[2]{S/O}{N}    % moment on impulse on system S about point O in reference frame N with subscript 2
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FORCE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\forceScalarSymbol}{\ensuremath{F}}                           % test: \forceScalarSymbol
+\newcommand{\forceVectorSymbol}{\ensuremath{\bvec{\forceScalarSymbol}}}   % test: \forceVectorSymbol
+
+\newcommand{\force}[2][]{\ensuremath{\forceVectorSymbol_{#1}^{#2}}}
+\newcommand{\forcei}[2][]{\ensuremath{\forceScalarSymbol_{#1}^{#2}}}
+\newcommand{\forcex}[1]{\forcei[x]{#1}}
+\newcommand{\forcey}[1]{\forcei[y]{#1}}
+\newcommand{\forcez}[1]{\forcei[z]{#1}}
+\newcommand{\resultantForcei}[2][]{\ensuremath{\forceScalarSymbol_{#1}^{#2}}}
+\newcommand{\forceNormal}[1][]{\ensuremath{\forceVectorSymbol_{\!N}^{#1}}}
+\newcommand{\forceFriction}[1][]{\ensuremath{\forceVectorSymbol_{\!f}^{#1}}}
+\newcommand{\forceIgnoreSuperscript}[2][]{\ensuremath{\forceVectorSymbol_{#1}}}
+\newcommand{\forceIgnoreSuperSubscripts}[2][]{\ensuremath{\forceVectorSymbol}}
+\newcommand{\forceOnFrom}[3][]{\ensuremath{\forceVectorSymbol_{#1}^{{#2}/{#3}}}}
+\newcommand{\ForceDescriptionOnFrom}[2]{Force on \name{#1} from \name{#2}}
+\newcommand{\forceDescriptionOnFrom}[2]{force on \name{#1} from \name{#2}}
+\newcommand{\theForceDescriptionOnFrom}[2]{the force on \name{#1} from \name{#2}}
+\newcommand{\onsForceDescriptionFrom}[2]{\name{#1}'s force from \name{#2}}
+\newcommand{\resultantForce}[2][]{\ensuremath{\bvec{F}_{#1}^{#2}}}
+\newcommand{\netForce}[1]{\ensuremath{\force[\textrm{Net}]{#1}}}
+\newcommand{\externalForce}[1]{\ensuremath{\force[\textrm{External}]{#1}}}
+    % test: \force{Q}                          % force on point Q
+    % test: \force{P/Q}                        % force of point P on point Q
+    % test: \force[2]{Q}                       % force on point Q with subscript 2
+    % TODO deprecated? test: \forceArrow{Q}                     % force on point Q with an arrow over the F symbol
+    % test: \forceNormal{Q}                    % normal   force on point Q (with subscript N)
+    % test: \forceFriction{Q}                  % friction force on point Q (with subscript f)
+    % test: \forceIgnoreSuperscript{Q}         % force on point Q, but does not put superscript Q  (for K-12)
+    % test: \forceIgnoreSuperSubscripts[x]{Q}  % force on point Q, but does not put superscript Q  (for K-12)
+    % test: \forceOnFrom[x]{Q}{P}              % force on \name{Q} from \name{P} with subscript x
+    % test: \forceDescriptionOnFrom{Q}{P}      % force on \name{Q} from \name{P}
+    % test: \theForceDescriptionOnFrom{Q}{P}   % the force on \name{Q} from \name{P}
+    % test: \onsForceDescriptionFrom{Q}{P}     % \name{Q}'s force from \name{P}
+    % test: \resultantForce{S}                 % resultant of the set S of vectors
+    % test: \resultantForce[2]{S}              % resultant of the set S of vectors with subscript 2
+    % test: \netForce{S}                       % net force on object S.
+    % test: \forcei[\uvecx{b}]{Q}              % bx> measure of force on P
+    % test: \forcei[\ur]{P/Q}                  % $u_r^{th}$ generalized active force on P by Q
+    % test: \forcex{Q}                         % x   measure of force on P
+    % test: \resultantForcei[x]{S}             % bx> measure of the resultant of the set S of vectors
+
+\newcommand{\setOfForces}[1]{\ensuremath{\bar{S}_{#1}}}
+    % test: \setOfForces{F}        % \widebar{S}_F
+    % test: \setOfForces{1}        % \widebar{S}_1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FRICTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\epsilonv}{\ensuremath{\epsilon_v}}  % test: \epsilonv  % Characteristic small velocity
+\newcommand{\muk}{\ensuremath{\mu_k}}            % test: \muk       % Coefficient of kinetic friction
+\newcommand{\mus}{\ensuremath{\mu_s}}            % test: \mus       % Coefficient of static  friction
+\newcommand{\Ff}{\ensuremath{F_f}}               % test: \Ff        % Friction force measure number
+\newcommand{\Fn}{\ensuremath{F_n}}               % test: \Fn        % Normal force measure number
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% AERODYNAMICS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\liftForce}[1]{\force[\textrm{Lift}]{#1}}
+\newcommand{\dragForce}[1]{\force[\textrm{Drag}]{#1}}
+\newcommand{\liftForcei}[1]{\forcei[\textrm{Lift}]{#1}}
+\newcommand{\dragForcei}[1]{\forcei[\textrm{Drag}]{#1}}
+\newcommand{\ReynoldsNumber}[1][]{\ensuremath{\textrm{Re}_{\textrm{#1}}}}
+    % test: \liftForce{Q}                 % lift force on point Q
+    % test: \dragForce{Q}                 % drag force on point Q
+    % test: \liftForcei{Q}                % lift force on point Q (scalar)
+    % test: \dragForcei{Q}                % drag force on point Q (scalar)
+    % test: \ReynoldsNumber               % Re
+    % test: \ReynoldsNumber{turbulent}    % Re_{turbulent}
+
+\newcommand{\coefLift}{\ensuremath{C_{\textrm{L}}}}
+\newcommand{\coefDrag}{\ensuremath{C_{\textrm{D}}}}
+\newcommand{\coefMoment}{\ensuremath{C_{\textrm{M}}}}
+\newcommand{\rhoAir}{\ensuremath{\rho_{\textrm{air}}}}
+\newcommand{\dynamicViscosity}{\ensuremath{\mu}}
+    % test: \coefLift          % C_{L}
+    % test: \coefDrag          % C_{D}
+    % test: \coefMoment        % C_{M}
+    % test: \rhoAir            %
+    % test: \dynamicViscosity  % mu  (depends only on temperature) \dynamicViscosity = \rho * \kinematicViscosity
+
+
+%%%%%%%%%%%%%%%%%%%% STRESS AND STRAIN  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\stressScalarSymbol}{\ensuremath{\sigma}}
+\newcommand{\strainScalarSymbol}{\ensuremath{\epsilon}}
+\newcommand{\shearStressScalarSymbol}{\ensuremath{\tau}}
+\newcommand{\shearStrainScalarSymbol}{\ensuremath{\gamma}}
+\newcommand{\yieldStressSymbol}{\ensuremath{\stressScalarSymbol_{\textrm{yield}}}}
+\newcommand{\breakStressSymbol}{\ensuremath{\stressScalarSymbol_{\textrm{break}}}}
+\newcommand{\fractureStressSymbol}{\ensuremath{\stressScalarSymbol_{\textrm{fracture}}}}
+\newcommand{\shearYieldStressSymbol}{\ensuremath{\shearStressScalarSymbol_{\textrm{yield}}}}
+    % test: \stressScalarSymbol
+    % test: \strainScalarSymbol
+    % test: \shearStressScalarSymbol
+    % test: \shearStrainScalarSymbol  % This is "engineering strain" - hmmmm.
+    % test: \yieldStressSymbol        % Yield is where plastic deformation starts (which can be considered to be breaking)
+    % test: \breakStressSymbol        % breakStress = fractureStress (breakStress is used in Beer & Johnson)
+    % test: \fractureStressSymbol     % breakStress = fractureStress (fractureStress is used in Hibbeler)
+    % test: \shearYieldStressSymbol   % Yield is where plastic deformation starts (which can be considered to be breaking)
+
+\newcommand{\averageStressScalarSymbol}{\ensuremath{\overline{\stressScalarSymbol}}}
+\newcommand{\averageStrainScalarSymbol}{\ensuremath{\overline{\strainScalarSymbol}}}
+\newcommand{\averageShearStressScalarSymbol}{\ensuremath{\overline{\shearStressScalarSymbol}}}
+\newcommand{\averageShearStrainScalarSymbol}{\ensuremath{\overline{\shearStrainScalarSymbol}}}
+    % test: \averageStressScalarSymbol
+    % test: \averageStrainScalarSymbol
+    % test: \averageShearStressScalarSymbol
+    % test: \averageShearStrainScalarSymbol
+
+\newcommand{\stressVectorSymbol}{\ensuremath{\bbvec{\stressScalarSymbol}}}
+\newcommand{\strainVectorSymbol}{\ensuremath{\bbvec{\strainScalarSymbol}}}
+\newcommand{\stressDyadicSymbol}{\ensuremath{\ddyad{\stressScalarSymbol}}}
+\newcommand{\strainDyadicSymbol}{\ensuremath{\ddyad{\strainScalarSymbol}}}
+\newcommand{\stressMatrixSymbol}{\ensuremath{\stressScalarSymbol}}
+\newcommand{\strainMatrixSymbol}{\ensuremath{\strainScalarSymbol}}
+    % test: \stressVectorSymbol
+    % test: \strainVectorSymbol  % Also called ``traction", Traction is Limit of Force/Area as Area -> 0
+    % test: \stressDyadicSymbol
+    % test: \strainDyadicSymbol
+    % test: \stressMatrixSymbol
+    % test: \strainMatrixSymbol
+
+\newcommand{\stressDyadic}[1]{\ensuremath{\stressDyadicSymbol^{#1}}}
+\newcommand{\strainDyadic}[1]{\ensuremath{\strainDyadicSymbol^{#1}}}
+\newcommand{\stressMatrix}[2]{\ensuremath{\stressMatrixSymbol^{#1}_{#2}}}
+\newcommand{\strainMatrix}[2]{\ensuremath{\strainMatrixSymbol^{#1}_{#2}}}
+\newcommand{\stressVector}[2]{\ensuremath{\stressVectorSymbol^{#1}_{#2}}}
+\newcommand{\strainVector}[2]{\ensuremath{\strainVectorSymbol^{#1}_{#2}}}
+\newcommand{\stressScalar}[2]{\ensuremath{\stressScalarSymbol^{#1}_{#2}}}
+\newcommand{\strainScalar}[2]{\ensuremath{\strainScalarSymbol^{#1}_{#2}}}
+\newcommand{\shearStressScalar}[2]{\ensuremath{\shearStressScalarSymbol^{#1}_{#2}}}
+\newcommand{\shearStrainScalar}[2]{\ensuremath{\shearStrainScalarSymbol^{#1}_{#2}}}
+\newcommand{\averageStressScalar}[2]{\ensuremath{\averageStressScalarSymbol^{#1}_{#2}}}
+\newcommand{\averageStrainScalar}[2]{\ensuremath{\averageStrainScalarSymbol^{#1}_{#2}}}
+\newcommand{\averageShearStressScalar}[2]{\ensuremath{\averageShearStressScalarSymbol^{#1}_{#2}}}
+\newcommand{\averageShearStrainScalar}[2]{\ensuremath{\averageShearStrainScalarSymbol^{#1}_{#2}}}
+    % test: \stressDyadic{Q}                        % stress dyadic at point Q.
+    % test: \strainDyadic{Q}                        % strain dyadic for   point Q.
+    % test: \stressMatrix{Q}{\uvecxyz{b}}           % stress matrix at Q with subscript bxyz
+    % test: \stressVector{Q}{\uvecx{b}}             % stress vector at Q for bx>
+    % test: \stressScalar{Q}{ij}                    % stress scalar at Q for ij, \ijxyzParensFontSize[]{\scriptsize}
+    % test: \stressScalar{Q}{\uvecx{b}\,\uvecy{b}}  % stress scalar at Q for \uvecx{b} and \uvecy{b}
+    % test: \stressScalar{Q}{ij}                    % strain scalar for   Q for ij, \ijxyzParensFontSize[]{\scriptsize}
+
+\newcommand{\stressrr}[1]{\stressScalar{#1}{\textrm{rr}}}
+\newcommand{\stressxx}[1]{\stressScalar{#1}{\textrm{xx}}}
+\newcommand{\stressxy}[1]{\stressScalar{#1}{\textrm{xy}}}
+\newcommand{\stressxz}[1]{\stressScalar{#1}{\textrm{xz}}}
+\newcommand{\stressyx}[1]{\stressScalar{#1}{\textrm{yx}}}
+\newcommand{\stressyy}[1]{\stressScalar{#1}{\textrm{yy}}}
+\newcommand{\stressyz}[1]{\stressScalar{#1}{\textrm{yz}}}
+\newcommand{\stresszx}[1]{\stressScalar{#1}{\textrm{zx}}}
+\newcommand{\stresszy}[1]{\stressScalar{#1}{\textrm{zy}}}
+\newcommand{\stresszz}[1]{\stressScalar{#1}{\textrm{zz}}}
+    % test: \stressxx{Q}  % normal stress at Q for xx (implied basis)
+    % test: \stressxx{}   % normal stress  at some point for xx (implied basis)
+    % TODO(anyone): Complete these tests.
+
+\newcommand{\strainrr}[1]{\strainScalar{#1}{\textrm{rr}}}
+\newcommand{\strainxx}[1]{\strainScalar{#1}{\textrm{xx}}}
+\newcommand{\strainxy}[1]{\strainScalar{#1}{\textrm{xy}}}
+\newcommand{\strainxz}[1]{\strainScalar{#1}{\textrm{xz}}}
+\newcommand{\strainyx}[1]{\strainScalar{#1}{\textrm{yx}}}
+\newcommand{\strainyy}[1]{\strainScalar{#1}{\textrm{yy}}}
+\newcommand{\strainyz}[1]{\strainScalar{#1}{\textrm{yz}}}
+\newcommand{\strainzx}[1]{\strainScalar{#1}{\textrm{zx}}}
+\newcommand{\strainzy}[1]{\strainScalar{#1}{\textrm{zy}}}
+\newcommand{\strainzz}[1]{\strainScalar{#1}{\textrm{zz}}}
+    % test: \strainxx{Q} % normal strain for   Q for xx (implied basis)
+    % TODO(anyone): Complete these tests.
+
+\newcommand{\stressuu}[1]{\stressScalar{#1}{\uvecu{}\,\uvecu{}}}
+\newcommand{\stressvv}[1]{\stressScalar{#1}{\uvecv{}\,\uvecv{}}}
+\newcommand{\stressww}[1]{\stressScalar{#1}{\uvecw{}\,\uvecw{}}}
+\newcommand{\stressuv}[1]{\stressScalar{#1}{\uvecu{}\,\uvecv{}}}
+\newcommand{\stressuw}[1]{\stressScalar{#1}{\uvecu{}\,\uvecw{}}}
+\newcommand{\stressvw}[1]{\stressScalar{#1}{\uvecv{}\,\uvecw{}}}
+    % TODO(anyone): Complete these tests.
+
+\newcommand{\averageStressxx}[1]{\averageStressScalar{#1}{\textrm{xx}}}
+\newcommand{\averageStressxy}[1]{\averageStressScalar{#1}{\textrm{xy}}}
+\newcommand{\averageStressxz}[1]{\averageStressScalar{#1}{\textrm{xz}}}
+\newcommand{\averageStressyx}[1]{\averageStressScalar{#1}{\textrm{yx}}}
+\newcommand{\averageStressyy}[1]{\averageStressScalar{#1}{\textrm{yy}}}
+\newcommand{\averageStressyz}[1]{\averageStressScalar{#1}{\textrm{yz}}}
+\newcommand{\averageStresszx}[1]{\averageStressScalar{#1}{\textrm{zx}}}
+\newcommand{\averageStresszy}[1]{\averageStressScalar{#1}{\textrm{zy}}}
+\newcommand{\averageStresszz}[1]{\averageStressScalar{#1}{\textrm{zz}}}
+    % TODO(anyone): Complete these tests.
+
+\newcommand{\averageShearStressxy}[1]{\averageShearStressScalar{#1}{\textrm{xy}}}
+\newcommand{\averageShearStressxz}[1]{\averageShearStressScalar{#1}{\textrm{xz}}}
+\newcommand{\averageShearStressyx}[1]{\averageShearStressScalar{#1}{\textrm{yx}}}
+\newcommand{\averageShearStressyz}[1]{\averageShearStressScalar{#1}{\textrm{yz}}}
+\newcommand{\averageShearStresszx}[1]{\averageShearStressScalar{#1}{\textrm{zx}}}
+\newcommand{\averageShearStresszy}[1]{\averageShearStressScalar{#1}{\textrm{zy}}}
+    % test: \averageStressScalar{Q}{\uvecu\,\uvecu}  % average stress at some point for xx (implied basis)
+    % test: \averageStressxx{}                       % average stress at some point for xx (implied basis)
+    % TODO(anyone): Complete these tests.
+
+\newcommand{\stressDyadicDescription}[1]{stress dyadic at \name{#1}}
+\newcommand{\strainDyadicDescription}[1]{strain dyadic for \name{#1}}
+\newcommand{\stressDyadicPointDescription}[1]{stress dyadic at point \name{#1}}
+\newcommand{\strainDyadicPointDescription}[1]{strain dyadic for point \name{#1}}
+\newcommand{\stressScalarDescription}[3]{stress at \name{#1} for {#2}~{#3}}
+\newcommand{\strainScalarDescription}[3]{strain at \name{#1} for {#2}~{#3}}
+\newcommand{\shearStressDescription}[3]{shear stress at \name{#1} for {#2}~{#3}}
+\newcommand{\shearStrainDescription}[3]{shear strain at \name{#1} for {#2}~{#3}}
+    % test: \stressDyadicDescription{Q}                       % stress dyadic at \name{Q}
+    % test: \strainDyadicDescription{Q}                       % strain dyadic for   \name{Q}
+    % test: \stressDyadicPointDescription{Q}                  % stress dyadic at point \name{Q}
+    % test: \stressScalarDescription{Q}{\uvecu}{\uvecv}       % stress at \name{Q} for \uvecu, \uvecv   % \uvecu face (area) and \uvecv measure of force.
+    % test: \strainScalarDescription{Q}{\uvecu}{\uvecv}       % strain at \name{Q} for \uvecu, \uvecv   % \uvecu direction (length) and \uvecv displacement.
+    % test: \shearStressDescription{Q}{\uvecx{b}}{\uvecy{b}}  % shear  stress at \name{Q} for \uvecx{b}~\uvecy{b}
+    % test: \shearStrainDescription{Q}{\uvecx{b}}{\uvecy{b}}  % shear  strain at \name{Q} for \uvecx{b}~\uvecy{b}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% F=MA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\fmaShort}[1][]{\ensuremath{\forceVectorSymbol \equals[#1] \massSymbol\,\accelerationVectorSymbol}}
+\newcommand{\fma}[4][\,]{\ensuremath{\force{#2} \equals[#4] \mass{#2}{#1}\accel{#2}{#3}}}
+\newcommand{\fmaBody}[4][\,]{\ensuremath{\force{#2} \equals[#4] \mass{#2}{#1}\accel{\cm{#2}}{#3}}}
+    % test: \fma{}{}{}             % \force{}    =   \mass{} \,\accel{}{}
+    % test: \fma{P}{N}{}           % \force{P}   =   \mass{P}\,\accel{P}{N}
+    % test: \fma{P}{N}{\;}         % \force{P} \;=\; \mass{P}\,\accel{P}{N}
+    % test: \fma[\:]{P}{N}{\;}     % \force{P} \;=\; \mass{P}\:\accel{P}{N}
+    % test: \fmaBody{B}{N}{}       % \force{B}   =   \mass{B}\,\accel{\cm{B}}{N}
+    % test: \fmaBody{B}{N}{\,}     % \force{B} \,=\, \mass{B}\,\accel{\cm{B}}{N}
+    % test: \fmaBody[*]{B}{N}{\,}  % \force{B} \,=\, \mass{B} *\accel{\cm{B}}{N}
+
+% TODO(mitiguy): FYI, this macro had some bugs in it.
+\newcommand{\TIAlf}[3][\,]{\ensuremath{\torque{#2}  \equals[#1] \iscalar{#2}\:\:\alf{#2}{#3}}}
+\newcommand{\TIAlfOnly}[1][\,]{\ensuremath{\torqueVectorSymbol \equals[#1] \inertiaScalarSymbol\:\alfVectorSymbol}}
+    % test: \TIAlf[\:]{B}{N}       % Euler equation for a rigid body in a plane.
+    % test: \TIAlfOnly[\:]         % Euler equation for a rigid body in a plane.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% F=MA MATRICES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\augmentLeftOneOne}[0]{\ensuremath{M}}  % test: \augmentLeftOneOne
+\newcommand{\augmentLeftOneTwo}[0]{\ensuremath{N}}  % test: \augmentLeftOneTwo
+\newcommand{\augmentLeftTwoOne}[0]{\ensuremath{C}}  % test: \augmentLeftTwoOne
+\newcommand{\augmentLeftTwoTwo}[0]{\ensuremath{D}}  % test: \augmentLeftTwoTwo
+\newcommand{\augmentRightOne}[0]{\ensuremath{R}}    % test: \augmentRightOne
+\newcommand{\augmentRightTwo}[0]{\ensuremath{S}}    % test: \augmentRightTwo
+\newcommand{\augmentAccel}[0]{\ensuremath{A}}       % test: \augmentAccel
+\newcommand{\augmentForce}[0]{\ensuremath{F}}       % test: \augmentForce
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% GENERALIZED ACTIVE FORCES Fr %%%%%%%%%%%%%%%%%%%
+\newcommand{\frSymbol}{\ensuremath{\mathcal{F}}}   % test: \frSymbol
+
+\newcommand{\fr}[2][r]{\ensuremath{\frSymbol_{\!#1}^{#2}} }
+\newcommand{\frLagrange}[2][r]{\ensuremath{Q_{#1}^{#2}} }
+\newcommand{\frtilde}[2][r]{\ensuremath{ \widetilde{\frSymbol}_{#1}^{#2}{}} }
+\newcommand{\frGeneric}{\ensuremath{\fr[r]{}}}   % test: \frGeneric
+\newcommand{\frGenericKane}{\ensuremath{\fr[\ur]{}}}   % test: \frGenericKane
+    % test: \fr{}                % generalized active force Fr of system
+    % test: \fr[\qrdot]{}        % generalized active force corresponding to \qrdot
+    % test: \fr{B}               % contribution of B to generalized active forces
+    % test: \fr[\ur]{B}          % contribution of B to generalized active forces associated with \ur
+    % test: \frLagrange{}        % generalized active force Qr of system
+    % test: \frLagrange[\qr]{}   % generalized active force Q_\qr of system
+    % test: \frLagrange{B}{}     % contribution of B to generalized active forces
+    % test: \frLagrange[\qr]{B}  % contribution of B to generalized active forces associated with \qr
+    % test: \frtilde{}           % nonholonomic generalized active force F_r of system
+    % test: \frtilde[2]{}        % nonholonomic 2nd generalized active force F_2
+    % test: \frtilde{B}{}        % contribution of B to nonholonomic generalized inertia forces
+    % test: \frtilde[\ur]{B}     % contribution of B to nonholonomic generalized inertia forces associated with u_r
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMPULSE (GENERALIZED) %%%%%%%%%%%%%%%%%%%%%%%%
+% Note: I is used for inertia so better to use lower-case f or J for impulse.
+\newcommand{\impulseScalarSymbol}{\ensuremath{J}}    % For Physics41
+%\newcommand{\impulseScalarSymbol}{\ensuremath{f}}
+\newcommand{\impulseVectorSymbol}{\ensuremath{\bvec{\impulseScalarSymbol}}}
+    % test: \impulseScalarSymbol
+    % test: \impulseVectorSymbol
+
+\newcommand{\impulse}[2][]{\ensuremath{\impulseVectorSymbol_{#1}^{#2}}}
+\newcommand{\netImpulse}[1]{\ensuremath{\impulse[\textrm{Net}]{#1}}}
+    % test: \impulse{Q}     % impulse on point Q
+    % test: \impulse{Q/R}   % impulse on point Q by point R
+    % test: \impulse[2]{Q}  % impulse on point Q with subscript 2
+    % test: \netImpulse{S}  % net impulse on object S.
+
+\newcommand{\impulsei}[2][]{\ensuremath{\impulseScalarSymbol_{#1}^{#2}}}
+    % test: \impulsei[\ur]{Q/R}  % generalized impulse on Q by R
+
+%%%%%%%%%%%%%%%%%%%%%% INERTIA & EFFECTIVE FORCE (GENERALIZED) %%%%%%%%%%%%%%
+\newcommand{\effectiveForceVectorSymbol}{\ensuremath{\bvec{F}}}           % test: \effectiveForceVectorSymbol
+\newcommand{\effectiveForceScalarSymbol}{\ensuremath{\textrm{F}}}         % test: \effectiveForceScalarSymbol
+\newcommand{\effectiveForceCaligraphicSymbol}{\ensuremath{\mathcal{F}}}   % test: \effectiveForceCaligraphicSymbol
+
+\newcommand{\eforce}[3][\,]{\ensuremath{{}\leftSuperscriptWithBase{#3}{\!\effectiveForceVectorSymbol}_{#1}^{#2}{}}}
+\newcommand{\eforceitilde}[3][\,]{\ensuremath{{}^{#3}\!\widetilde{F}_{#1}^{#2}{}}}
+\newcommand{\eforceGeneralized}[3]{\ensuremath{{}^{#2}\!\effectiveForceCaligraphicSymbol_{#3}^{#1}{}}}
+\newcommand{\eforceGeneralizedGeneric}[2]{\eforceGeneralized{#1}{#2}{r}}
+%\newcommand{\eforcei}[3][\,]{\ensuremath{{}^{#3}\!\effectiveForceScalarSymbol_{#1}^{#2}{}}}
+\newcommand{\iforce}{\ensuremath{\effectiveForceVectorSymbol^{*}}}   % test: \iforce
+\newcommand{\iforcep}[1]{\ensuremath{\left(\effectiveForceVectorSymbol^{*}\right)_{#1}}}
+    % test: \eforce[2]{Q}{N}               % effective force of particle Q in N with a 2 subscript
+    % test: \eforce{Q}{N}                  % effective force of particle Q in N
+    % test: \eforceitilde[\ur]{Q}{N}       % nonholonomic generalized effective force of Q in N associated with motion variable $u_r$
+    % TODO deprecated? test: \eforcei[\ur]{Q}{N}          % scalar effective force of Q in N with subscript \ur (OBSOLETE)
+    % test: \eforceGeneralized{Q}{N}{\ur}  % generalized effective force of Q in N associated with motion variable $u_r$
+    % test: \iforce{}                      % inertia force F^*
+    % test: \iforcep{B}                    % inertia force (F^*)_B
+
+\newcommand{\eforcesDescription}[2]{\name{#1}'s effective force in \name{#2}}
+\newcommand{\eforcesDescriptionNewName}[2]{\name{#1}'s \newname{effective force} \/ in \name{#2}}
+\newcommand{\generalizedEffectiveForceDescriptionForUr}[3]{\name{#1}'s generalized effective force in \name{#2} for \name{#3}}
+\newcommand{\generalizedEffectiveForcesDescriptionForUr}[3]{\name{#1}'s generalized effective forces in \name{#2} for \name{#3}}
+% TODO these depend on \newname
+\newcommand{\generalizedEffectiveForceDescriptionForUrNewName}[3]{\name{#1}'s \newname{generalized effective force} \/ in \name{#2} for \name{#3}}
+\newcommand{\generalizedEffectiveForcesDescriptionForUrNewName}[3]{\name{#1}'s \newnameIndex{generalized effective forces}{generalized effective force} \/ in \name{#2} for \name{#3}}
+    % test: \eforcesDescription{S}{N}                                      % S's effective forces in N
+    % test: \generalizedEffectiveForceDescriptionForUr{S}{N}{\ur}          % S's generalized effective force in N for \ur
+    % TODO test: \generalizedEffectiveForceDescriptionForUrNewName{Q}{N}{\ur}   % Q's \newname{generalized effective force}  in N for \ur
+    % TODO test: \generalizedEffectiveForcesDescriptionForUrNewName{Q}{N}{\ur}  % Q's \newname{generalized effective forces} in N for \ur
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TORQUE (GENERALIZED) %%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\torqueVectorSymbol}{\bvec{T}}     % test: \torqueVectorSymbol
+\newcommand{\torqueScalarSymbol}{\textrm{T}}   % test: \torqueScalarSymbol
+
+\newcommand{\torque}[2][]{\ensuremath{\torqueVectorSymbol_{#1}^{#2}}}
+\newcommand{\torqueIgnoreSuperscript}[2][]{\ensuremath{\torqueVectorSymbol_{#1}}}
+\newcommand{\torqueVectorx}[1]{\torque[\textrm{x}]{#1}}
+\newcommand{\torqueVectory}[1]{\torque[\textrm{y}]{#1}}
+\newcommand{\torqueVectorz}[1]{\torque[\textrm{z}]{#1}}
+    % test: \torque{B}                    % torque on body B
+    % test: \torque{A/B}                  % torque on A by B
+    % test: \torque[2]{B}                 % torque on body B with subscript 2
+    % test: \torqueIgnoreSuperscript{B}   % torque on body B ignore superscript B  (for K-12)
+    % test: \torqueVectorx{B}             % torque on body B with subscript x
+    % test: \torqueVectory{B}             % torque on body B with subscript y
+    % test: \torqueVectorz{B}             % torque on body B with subscript z
+
+\newcommand{\torquei}[2][]{\ensuremath{\torqueScalarSymbol_{#1}^{#2}}}
+\newcommand{\torquex}[1]{\torquei[x]{#1}}
+\newcommand{\torquey}[1]{\torquei[y]{#1}}
+\newcommand{\torquez}[1]{\torquei[z]{#1}}
+\newcommand{\torqueUx}[2]{\torquei[\uvecx{#1}]{#2}}
+\newcommand{\torqueUy}[2]{\torquei[\uvecy{#1}]{#2}}
+\newcommand{\torqueUz}[2]{\torquei[\uvecz{#1}]{#2}}
+    % test: \torquei[\ur]{A/B}   % generalized torque on A by B
+    % test: \torquei[x]{A/B}     % x-measure of torque on A by B
+    % test: \torquex{A}          % body x> measure of the torque on B
+    % test: \torqueUx{a}{A}      % arbitrary x> measure of the torque on B
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% IMPULSE TORQUE (GENERALIZED) %%%%%%%%%%%%%%%%%%%
+\newcommand{\impulseVectorMomentSymbol}{\bvec{m}}         % test: \impulseVectorMomentSymbol
+\newcommand{\impulseVectorTorqueSymbol}{\bvec{t}}         % test: \impulseVectorTorqueSymbol
+\newcommand{\impulseScalarMomentSymbol}{\ensuremath{m}}   % test: \impulseScalarMomentSymbol
+\newcommand{\impulseScalarTorqueSymbol}{\ensuremath{t}}   % test: \impulseScalarTorqueSymbol
+
+\newcommand{\impulseMoment}[2][]{\ensuremath{\impulseVectorMomentSymbol_{#1}^{#2}}}
+\newcommand{\impulseTorque}[2][]{\ensuremath{\impulseVectorTorqueSymbol_{#1}^{#2}}}
+\newcommand{\impulseMomenti}[2][]{\ensuremath{\impulseScalarMomentSymbol^{#2}_{#1}}}
+\newcommand{\impulseTorquei}[2][]{\ensuremath{\impulseScalarTorqueSymbol^{#2}_{#1}}}
+    % test: \impulseMoment{A}          % impulse moment on A
+    % test: \impulseTorque{A}          % impulse torque on A
+    % test: \impulseTorque{A/B}        % impulse torque on A by B
+    % test: \impulseTorque[2]{A}       % impulse torque on A with subscript 2
+    % test: \impulseTorquei[\ur]{A/B}  % scalar impulse torque on A by B with subscript \ur
+    % test: \impulseMomenti[x]{A/B}    % scalar impulse moment on A by B with subscript x
+
+%%%%%%%%%%%%%%%%%%%%%% INERTIA & EFFECTIVE TORQUE (GENERALIZED) %%%%%%%%%%%%%
+\newcommand{\effectiveTorqueVectorSymbol}{\bvec{T}}     % test: \effectiveTorqueVectorSymbol
+\newcommand{\effectiveTorqueScalarSymbol}{\textrm{T}}   % test: \effectiveTorqueScalarSymbol
+
+\newcommand{\etorque}[3][\,]{\ensuremath{\leftSuperscriptWithBase{#3}{\!\effectiveTorqueVectorSymbol}_{#1}^{#2}{}}}
+\newcommand{\etorquei}[3][\,]{\ensuremath{{}^{#3}\!{\effectiveTorqueScalarSymbol}^{#2}_{#1}{}}}
+    % test: \etorque{B}{N}         % effective torque on body B in N
+    % test: \etorque[2]{B}{N}      % effective torque on body B in N with subscript 2
+    % test: \etorque[2]{B}{N}      % effective torque on body B in N with subscript 2
+    % test: \etorquei[\ur]{B}{N}   % generalized effective torque of B in N
+
+\newcommand{\itorque}{\ensuremath{\effectiveTorqueVectorSymbol^{*}}}   % test: \itorque
+\newcommand{\itorquep}[1]{\ensuremath{\left(\effectiveTorqueVectorSymbol^{*}\right)_{#1}}}
+    % test: \itorque{}        % inertia torque T^*
+    % test: \itorquep{B}      % inertia torque (T^*)_B
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% GENERALIZED INERTIA FORCES Fr* %%%%%%%%%%%%%%%%
+\newcommand{\frstarBaseSymbol}{\ensuremath{\mathcal{F}}}   % test: \frstarBaseSymbol
+
+\newcommand{\frstar}[1][r]{\ensuremath{\frstarBaseSymbol_{#1}^{*}}}
+\newcommand{\frstartilde}[1][r]{\ensuremath{\widetilde{\frstarBaseSymbol}_{#1}^{*}} }
+\newcommand{\frstarp}[2][r]{\ensuremath{{(\frstarBaseSymbol_{#1}^{*})}_{#2}} }
+\newcommand{\frstarptilde}[2][r]{\ensuremath{{(\widetilde{\frstarBaseSymbol}_{#1}^{*})}_{#2}} }
+    % test: \frstar              % generalized inertia force F_r^*
+    % test: \frstar[2]           % 2nd generalized active force F_2^*
+    % test: \frstartilde         % nonholonomic generalized inertia force F_r^*
+    % test: \frstartilde[2]      % nonholonomic 2nd generalized active force F_2^*
+    % test: \frstarp{B}          % contribution of B to generalized inertia forces
+    % test: \frstarp[2]{B}       % contribution of B to 2nd generalized inertia forces
+    % test: \frstarptilde{B}     % contribution of B to nonholonomic generalized inertia forces
+    % test: \frstarptilde[2]{B}  % contribution of B to 2nd nonholonomic generalized inertia forces
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% INERTIA COEFFICIENTS %%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\inertiaCoefficientSymbol}{\textrm{m}}   % test: \inertiaCoefficientSymbol
+
+\newcommand{\icoef}[3]{\ensuremath{{}^{#2}\inertiaCoefficientSymbol^{#1}_{#3}}}
+\newcommand{\icoeftilde}[3]{\ensuremath{{}^{#2}\widetilde{\inertiaCoefficientSymbol}^{#1}_{#3}}}
+    % test: \icoef{P}{N}{u_1,u_2}   % holonomic inertia coefficient of P in N associated with generalized speed u_1, u_2
+    % test: \icoef{P}{N}{u_1,u_2}   % non-holonomic inertia coefficient of P in N associated with generalized speed u_1, u_2
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% LINEAR MOMENTUM (GENERALIZED) %%%%%%%%%%%%%%%%%
+\newcommand{\linearMomentumName}{linear momentum}                                     % test: \linearMomentumName
+\newcommand{\LinearMomentumName}{Linear momentum}                                     % test: \LinearMomentumName
+\newcommand{\linearMomentumPrincipleName}{\linearMomentumName{} principle}            % test: \linearMomentumPrincipleName
+\newcommand{\LinearMomentumPrincipleName}{\LinearMomentumName{} principle}            % test: \LinearMomentumPrincipleName
+\newcommand{\conservationOfLinearMomentumName}{conservation of \linearMomentumName}   % test: \conservationOfLinearMomentumName
+\newcommand{\ConservationOfLinearMomentumName}{Conservation of \linearMomentumName}   % test: \ConservationOfLinearMomentumName
+
+\newcommand{\TheLinmomOfDescription}[2]{The \linearMomentumName{} of \name{#1} in \name{#2}}
+\newcommand{\theLinmomOfDescription}[2]{the \linearMomentumName{} of \name{#1} in \name{#2}}
+\newcommand{\linmomsDescription}[2]{\name{#1}'s \linearMomentumName{} in \name{#2}}
+\newcommand{\generalizedMomentumDescriptionForUr}[3]{\name{#1}'s generalized momentum in \name{#2} for \name{#3}}
+% TODO this depends on newname
+\newcommand{\linmomsDescriptionNewName}[2]{\name{#1}'s \newname{\linearMomentumName{}} \/ in \name{#2}}
+\newcommand{\generalizedMomentumDescriptionForUrNewName}[3]{\name{#1}'s \newname{generalized momentum} \/ in \name{#2} for \name{#3}}
+    % test: \linmomsDescription{S}{N}                               % S's linear momentum in N
+    % TODO test: \linmomsDescriptionNewName{S}{N}                        % S's \newname{linear momentum} in N
+    % test: \generalizedMomentumDescriptionForUr{S}{N}{\ur}         % S's generalized momentum in N for \ur
+    % TODO test: \generalizedMomentumDescriptionForUrNewName{S}{N}{\ur}  % S's \newname{generalized momentum} in N for \ur
+
+\newcommand{\linearMomentumScalarSymbol}{\textrm{L}}                           % test: \linearMomentumScalarSymbol
+\newcommand{\linearMomentumVectorSymbol}{\bvec{\linearMomentumScalarSymbol}}   % test: \linearMomentumVectorSymbol
+\newcommand{\generalizedMomentumSymbol}{\linearMomentumScalarSymbol}           % test: \generalizedMomentumSymbol
+%\newcommand{\generalizedMomentumSymbol}{\ensuremath{\mathcal{L}}}
+
+\newcommand{\linmom}[3][]{\ensuremath{\leftSuperscriptWithBase{#3}{\linearMomentumVectorSymbol}_{#1}^{#2}{}}}
+\newcommand{\linmomi}[3][]{\ensuremath{{}^{#3}{\linearMomentumScalarSymbol}_{#1}^{#2}{}}}
+\newcommand{\generalizedMomentum}[3]{\ensuremath{{}^{#3}{\generalizedMomentumSymbol}_{#1}^{#2}{}}}
+    % test: \linmom{Q}{N}                    % linear momentum of Q in N
+    % test: \linmom[1]{Q}{N}                 % linear momentum of Q in N with subscript 1
+    % test: \linmomi[x]{Q}{N}                % bx> measure of linear momentum of Q in N
+    % test: \linmomi[\ur]{Q}{N}              % generalized linear momentum of Q in N associated with motion variable $u_r$
+    % test: \generalizedMomentum{\ur}{Q}{N}  % generalized linear momentum of Q in N associated with motion variable $u_r$
+    % Note: the symbol p may be used in place of L, but L is used by Beer & Johnston too
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% ANGULAR MOMENTUM (GENERALIZED) %%%%%%%%%%%%%%%%%
+\newcommand{\angularMomentumName}{angular momentum}            % test: \angularMomentumName  % My use
+\newcommand{\AngularMomentumName}{Angular momentum}            % test: \AngularMomentumName  % My use
+\newcommand{\angmomScalarSymbol}{\textrm{H}}                   % test: \angmomScalarSymbol
+\newcommand{\angmomVectorSymbol}{\bvec{\angmomScalarSymbol}}   % test: \angmomVectorSymbol
+
+\newcommand{\angmom}[3][]{\ensuremath{\leftSuperscriptWithBase{#3}{\angmomVectorSymbol}_{#1}^{#2}{}}}
+\newcommand{\angmomi}[3][]{\ensuremath{{}^{#3}\angmomScalarSymbol_{{#1}}^{#2}{}}}
+\newcommand{\angmomCentral}[3][]{\angmom[#1]{#2/\cm{#2}}{#3}}
+    % test: \angmom{B}{N}              % angular momentum of B (about Bc implied) in N
+    % test: \angmom{B/P}{N}            % angular momentum of B about point P in N
+    % test: \angmom[2]{B/P}{N}         % angular momentum of B about point P in N with subscript 2
+    % test: \angmomi[x]{B}{N}          % bx> measure of angular momentum of B (about Bc implied) in N
+    % test: \angmomi[\ur]{B/P}{N}      % generalized angular momentum of B about point P in N associated with motion variable $u_r$
+    % test: \angmomCentral{B}{N}       % angular momentum of B about the center of mass of B in N
+    % test: \angmomCentral[2]{B/P}{N}  % angular momentum of B about the center of mass of B in N with subscript 2
+
+\newcommand{\TheAngmomOfDescription}[3]{The \angularMomentumName{} of \name{#1} about \name{#2} in \name{#3}}
+\newcommand{\theAngmomOfDescription}[3]{the \angularMomentumName{} of \name{#1} about \name{#2} in \name{#3}}
+\newcommand{\angmomsDescription}[3]{\name{#1}'s \angularMomentumName{} about \name{#2} in \name{#3}}
+% TODO depends on newname.
+\newcommand{\angmomsDescriptionNewName}[3]{\name{#1}'s \newname{\angularMomentumName{}} \/ about \name{#2} in \name{#3}}
+    % test: \TheAngmomOfDescription{B}{Q}{N}    % The angular momentum of B about Q in N
+    % test: \theAngmomOfDescription{B}{Q}{N}    % the angular momentum of B about Q in N
+    % test: \angmomsDescription{B}{Q}{N}         % B's angular momentum about Q in N
+    % TODO test: \angmomsDescriptionNewName{B}{Q}{N}  % B's \newname{angular momentum} about Q in N
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KINETIC ENERGY %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\kineticEnergySymbol}{\ensuremath{K}}                                                        % test: \kineticEnergySymbol
+\newcommand{\DeltaKineticEnergySymbol}{\ensuremath{\Delta\kineticEnergySymbol}}                          % test: \DeltaKineticEnergySymbol
+\newcommand{\kineticEnergyRotationSymbol}{\ensuremath{\kineticEnergySymbol_{\textrm{rotation}}}}         % test: \kineticEnergyRotationSymbol
+\newcommand{\kineticEnergyTranslationSymbol}{\ensuremath{\kineticEnergySymbol_{\textrm{translation}}}}   % test: \kineticEnergyTranslationSymbol
+\newcommand{\keSymbol}{\kineticEnergySymbol}                                                             % test: \keSymbol
+
+\newcommand{\ke}[3][]{\ensuremath{{}^{#3}\!\kineticEnergySymbol^{#2}_{#1}}}
+\newcommand{\DeltaKineticEnergy}[3][]{\ensuremath{{}^{#3}\!\DeltaKineticEnergySymbol^{#2}_{#1}}}
+\newcommand{\keRotation}[2]{\ensuremath{{}^{#2}\!\kineticEnergyRotationSymbol^{#1}}}
+\newcommand{\keTranslation}[2]{\ensuremath{{}^{#2}\!\kineticEnergyTranslationSymbol^{#1}}}
+\newcommand{\kedot}[3][]{\ensuremath{{}^{#3} \! \dot{\kineticEnergySymbol}^{#2}_{#1}}}
+    % test: \ke{B}{N}             % B's kinetic energy in N
+    % test: \ke[v]{B}{N}          % B's kinetic energy in N with subscript v (translational)
+    % test: \ke[w]{B}{N}          % B's kinetic energy in N with subscript w (rotational)
+    % test: \ke[0]{B}{N}          % B's kinetic energy in N with subscript 0 (0th, 1st, 2nd term)
+    % test: \keRotation{B}{N}     % B's rotational kinetic energy in N
+    % test: \keTranslation{B}{N}  % B's translational kinetic energy in N
+    % test: \kedot{B}{N}          % time derivative of B's kinetic energy in N
+    % test: \kedot[v]{B}{N}       % time derivative of B's kinetic energy in N with subscript v (translational)
+    % test: \kedot[w]{B}{N}       % time derivative of B's kinetic energy in N with subscript w (rotational)
+    % test: \kedot[0]{B}{N}       % time derivative of B's kinetic energy in N with subscript 0 (0th, 1st, 2nd term)
+
+\newcommand{\kesDescription}[2]{\name{#1}'s kinetic energy in \name{#2}}
+\newcommand{\kesRotationDescription}[2]{\name{#1}'s rotational kinetic energy in \name{#2}}
+% TODO depends on newname
+\newcommand{\kesDescriptionNewName}[2]{\name{#1}'s \newname{kinetic energy} \/ in \name{#2}}
+    % test: \kesDescription{B}{N}           % B's kinetic energy in N
+    % test: \kesRotationDescription{B}{N}   % B's rotational kinetic energy in N
+    % TODO test: \kesDescriptionNewName{B}{N}    % B's \newname{kinetic energy} in N
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAGRANGIAN %%%%%%%%%%%%%%%%%%%%
+\newcommand{\LagrangianSymbol}{\ensuremath{\mathcal{L}}}   % test: \LagrangianSymbol
+
+\newcommand{\lagrangian}[3][]{\ensuremath{{}^{#3}\!\LagrangianSymbol^{#2}_{#1}}}
+\newcommand{\lagrangiandot}[3][]{\ensuremath{{}^{#3} \! \dot{\LagrangianSymbol}^{#2}_{#1}}}
+    % test: \lagrangian{B}{N}        % Lagrangian of B in N
+    % test: \lagrangian[0]{B}{N}     % Lagrangian of B in N with subscript 0
+    % test: \lagrangiandot{B}{N}     % time derivative of lagrangian of B in N
+    % test: \lagrangiandot[0]{B}{N}  % time derivative of lagrangian of B in N with subscript 0
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HAMILTONIAN %%%%%%%%%%%%%%%%%%%%
+\newcommand{\hamiltonian}[3][]{\ensuremath{{}^{#3}\!\textrm{H}^{#2}_{#1}}}
+\newcommand{\generalizedHamiltonian}[3][]{\ensuremath{{}^{#3}\!\mathcal{H}^{#2}_{#1}}}
+\newcommand{\hamiltoniandot}[3][]{\ensuremath{{}^{#3}\!\dot{\textrm{H}}^{#2}_{#1}}}
+    % test: \hamiltonian{B}{N}                % Hamiltonian of B in N
+    % test: \hamiltonian[0]{B}{N}             % Hamiltonian of B in N with subscript 0
+    % test: \generalizedHamiltonian{B}{N}     % generalized Hamiltonian of B in N
+    % test: \generalizedHamiltonian[0]{B}{N}  % generalized Hamiltonian of B in N with subscript 0
+    % test: \hamiltoniandot{B}{N}             % time derivative of Hamiltonian of B in N
+    % test: \hamiltoniandot[0]{B}{N}          % time derivative of Hamiltonian of B in N with subscript 0
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ROUTHIAN %%%%%%%%%%%%%%%%%%%%
+\newcommand{\routhian}[3][]{\ensuremath{{}^{#3}\!\mathcal{R}^{#2}_{#1}}}
+\newcommand{\routhiandot}[3][]{\ensuremath{{}^{#3} \! \dot{\mathcal{L}}^{#2}_{#1}}}
+    % test: \routhian{B}{N}         % Routhian of B in N
+    % test: \routhian[0]{B}{N}      % Routhian of B in N with subscript 0
+    % test: \routhiandot{B}{N}      % time derivative of Routhian of B in N
+    % test: \routhiandot[0]{B}{N}   % time derivative of Routhian of B in N with subscript 0
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% GIBBS FUNCTION %%%%%%%%%%%%%%%%%%%
+\newcommand{\gibbsFunctionScalarSymbol}{\ensuremath{\mathcal{G}}}   % test: \gibbsFunctionScalarSymbol
+
+\newcommand{\gibbsFunction}[3][]{\ensuremath{{}^{#3}\!\gibbsFunctionScalarSymbol^{#2}_{#1}}}
+\newcommand{\gibbsFunctiondot}[3][]{\ensuremath{{}^{#3} \! \dot{\gibbsFunctionScalarSymbol}^{#2}_{#1}}}
+    % test: \gibbsFunction{B}{N}        % gibbsFunction of B in N
+    % test: \gibbsFunction[0]{B}{N}     % gibbsFunction of B in N with subscript 0
+    % test: \gibbsFunctiondot{B}{N}     % time derivative of gibbsFunction of B in N
+    % test: \gibbsFunctiondot[0]{B}{N}  % time derivative of gibbsFunction of B in N with subscript 0
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NISIGMA %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\nisigma}[3][]{\ensuremath{{}^{#3}\sigma^{#2}_{#1}}}
+    % test: \nisigma{B}{N}     % numerical integration checking function of B in N
+    % test: \nisigma[R]{B}{N}  % numerical integration checking function of B in N with subscript R
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% GENERALIZED ENERGY %%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\generalizedEnergyZ}[2]{\ensuremath{{}^{#2}\mathcal{E}_Z^{#1}}}
+\newcommand{\generalizedEnergyConstant}[2]{\ensuremath{{}^{#2}\mathcal{E}^{#1}}}
+\newcommand{\kineticGeneralizedPEConstant}[2]{\ensuremath{{}^{#2}\mathcal{C}^{#1}}}
+\newcommand{\mechanicalEnergyConstant}[2]{\ensuremath{{}^{#2}\textrm{C}^{#1}}}
+    % test: \generalizedEnergyConstant{S}{N}   % generalized energy constant for a system S in a Newtonian reference frame N
+    % test: \generalizedEnergyConstant{}{}     % generalized energy constant for an implied system in an implied Newtonian reference frame
+    % test: \kineticGeneralizedPEConstant{}{}  % kinetic energy plus generalized potential energy for an implied system S in an implied Newtonian reference frame
+    % test: \mechanicalEnergyConstant{}{}      % mechanical energy constant for an implied system in an implied Newtonian reference frame
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% POWER %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\powerSymbol}{\ensuremath{\textrm{P}}}   % test: \powerSymbol
+
+\newcommand{\power}[3][]{\ensuremath{{}^{#3\!}\powerSymbol^{#2}_{#1}}}
+    % test: \power{\force{Q/R}}{N}  % power due to the force on Q by R in a reference frame N
+    % test: \power{S}{N}            % power due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \power{Spring}{N}       % power due to the force exerted by a specific constraint in a reference frame N
+    % test: \power{\force{Q/R}}{N}  % power due to the force on Q by R in an implied reference frame
+    % test: \power{S}{}             % power due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \power[hi]{S}{}         % power due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript hi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% GENERALIZED POWER %%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\generalizedPowerSymbol}{\ensuremath{\mathcal{P}}}   % test: \generalizedPowerSymbol
+
+\newcommand{\generalizedPower}[3][]{\ensuremath{{}^{#3\!\!}\generalizedPowerSymbol^{#2}_{#1}}}
+    % test: \generalizedPower{\force{Q/R}}{N}  % generalized power due to the force on Q by R in a reference frame N
+    % test: \generalizedPower{S}{N}            % generalized power due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \generalizedPower{Spring}{N}       % generalized power due to the force exerted by a specific constraint in a reference frame N
+    % test: \generalizedPower{\force{Q/R}}{N}  % generalized power due to the force on Q by R in an implied reference frame
+    % test: \generalizedPower{S}{}             % generalized power due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \generalizedPower[hi]{S}{}         % generalized power due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript hi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% WORK %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\workSymbol}{\ensuremath{\textrm{W}}}                              % test: \workSymbol
+\newcommand{\workNonConservativeSymbol}{\ensuremath{\widetilde{\textrm{W}}}}   % test: \workNonConservativeSymbol
+
+\newcommand{\work}[3][]{\ensuremath{{}^{#3}\workSymbol^{#2}_{#1}}}
+\newcommand{\workNonConservative}[3][]{\ensuremath{{}^{#3}\workNonConservativeSymbol^{#2}_{#1}}}
+    % test: \work{\force{Q/R}}{N}       % work due to the force on Q by R in a reference frame N
+    % test: \work{S}{N}                 % work due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \work{Spring}{N}            % work due to the force exerted by a specific constraint in a reference frame N
+    % test: \work{\force{Q/R}}{N}       % work due to the force on Q by R in an implied reference frame
+    % test: \work{S}{}                  % work due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \work[\textrm{air}]{S}{}    % work due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript air
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% VIRTUAL WORK %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\virtualWork}[3][]{\ensuremath{{}^{#3}\!\virtuald{W}^{#2}_{#1}}}
+    % test: \virtualWork{\force{Q/R}}{N}  % virtual work due to the force on Q by R in a reference frame N
+    % test: \virtualWork{S}{N}            % virtual work due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \virtualWork{Spring}{N}       % virtual work due to the force exerted by a specific constraint in a reference frame N
+    % test: \virtualWork{\force{Q/R}}{N}  % virtual work due to the force on Q by R in an implied reference frame
+    % test: \virtualWork{S}{}             % virtual work due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \virtualWork[hi]{S}{}         % virtual work due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript hi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% WORK FUNCTION %%%%%%%%%%%%%%%%%%%
+\newcommand{\generalizedWorkSymbol}{\ensuremath{\mathcal{W}}}   % test: \generalizedWorkSymbol
+
+\newcommand{\generalizedWork}[3][]{\ensuremath{{}^{#3}\generalizedWorkSymbol^{#2}_{#1}}}
+    % test: \generalizedWork{\force{Q/R}}{N}  % generalized work due to the force on Q by R in a reference frame N
+    % test: \generalizedWork{S}{N}            % generalized work due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \generalizedWork{Spring}{N}       % generalized work due to the force exerted by a specific constraint in a reference frame N
+    % test: \generalizedWork{\force{Q/R}}{N}  % generalized work due to the force on Q by R in an implied reference frame
+    % test: \generalizedWork{S}{}             % generalized work due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \generalizedWork[hi]{S}{}         % generalized work due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript hi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DISSIPATION %%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dissipationScalarSymbol}{\ensuremath{\mathcal{F}}}   % test: \dissipationScalarSymbol
+
+\newcommand{\dissipation}[3][]{\ensuremath{{}^{#3}\dissipationScalarSymbol^{#2}_{#1}}}
+    % test: \dissipation{\force{Q/R}}{N}  % dissipation due to the force on Q by R in a reference frame N
+    % test: \dissipation{S}{N}            % dissipation due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \dissipation{Damper}{N}       % dissipation due to the force exerted by a specific constraint in a reference frame N
+    % test: \dissipation{\force{Q/R}}{N}  % dissipation due to the force on Q by R in an implied reference frame
+    % test: \dissipation{S}{N}            % dissipation due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \dissipation[hi]{S}{N}        % dissipation due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript hi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% POTENTIAL ENERGY %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% GENERALIZED POTENTIAL ENERGY %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% POTENTIAL FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\potentialEnergySymbol}{\ensuremath{U}}                                   % test: \potentialEnergySymbol
+\newcommand{\potentialFunctionSymbol}{\ensuremath{V}}                                 % test: \potentialFunctionSymbol
+\newcommand{\DeltaPotentialEnergySymbol}{\ensuremath{\Delta\potentialEnergySymbol}}   % test: \DeltaPotentialEnergySymbol
+\newcommand{\generalizedPotentialEnergySymbol}{\ensuremath{\mathcal{U}}}              % test: \generalizedPotentialEnergySymbol
+
+\newcommand{\pe}[3][]{\ensuremath{{}^{#3}\potentialEnergySymbol^{#2}_{#1}}}
+\newcommand{\DeltaPotentialEnergy}[3][]{\ensuremath{{}^{#3}\DeltaPotentialEnergySymbol^{#2}_{#1}}}
+\newcommand{\generalizedPE}[3][]{\ensuremath{{}^{#3}\generalizedPotentialEnergySymbol^{#2}_{#1}}}
+\newcommand{\potential}[3][]{\ensuremath{{}^{#3}\potentialFunctionSymbol^{#2}_{#1}}}
+\newcommand{\PotentialEnergyFinal}{\ensuremath{\potentialEnergySymbol_\textrm{f}}}   % test: \PotentialEnergyFinal
+    % test: \pe{\force{Q/R}}{N}             % potential energy due to the force on Q by R in a reference frame N
+    % test: \pe{S}{N}                       % potential energy due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \pe{Spring}{N}                  % potential energy due to the force exerted by a specific constraint in a reference frame N
+    % test: \pe{\force{Q/R}}{N}             % potential energy due to the force on Q by R in an implied reference frame
+    % test: \pe{S}{N}                       % potential energy due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \pe[\textrm{gravity}]{S}{N}     % potential energy due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript gravity
+    % test: \potential{\force{Q/R}}{N}      % potential function due to the force on Q by R in a reference frame N
+    % test: \potential{S}{N}                % potential function due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \potential{Spring}{N}           % potential function due to the force exerted by a specific constraint in a reference frame N
+    % test: \potential{\force{Q/R}}{N}      % potential function due to the force on Q by R in an implied reference frame
+    % test: \potential{S}{N}                % potential function due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \potential[hi]{S}{N}            % potential function due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript hi
+    % test: \generalizedPE{\force{Q/R}}{N}  % generalized potential energy due to the force on Q by R in a reference frame N
+    % test: \generalizedPE{S}{N}            % generalized potential energy due to all forces on point, body, or system S (forces and torque) in a reference frame N
+    % test: \generalizedPE{Spring}{N}       % generalized potential energy due to the force exerted by a specific constraint in a reference frame N
+    % test: \generalizedPE{\force{Q/R}}{N}  % generalized potential energy due to the force on Q by R in an implied reference frame
+    % test: \generalizedPE{S}{N}            % generalized potential energy due to all forces on point, body, or system S (forces and torque) in an implied reference frame
+    % test: \generalizedPE[hi]{S}{N}        % generalized potential energy due to all forces on point, body, or system S (forces and torque) in an implied reference frame with subscript hi
+    % test: \PotentialEnergyFinal     U_f
+
+
+%%%%%%%%%%%%%%%%%%% YOUNG'S ELASTIC MODULUS, ETC.  %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ElasticModulus}{\ensuremath{\textrm{E}}}              % test: \ElasticModulus
+\newcommand{\ShearModulus}{\ensuremath{\textrm{G}}}                % test: \ShearModulus
+\newcommand{\PoissonsRatio}{\ensuremath{\nu}}                      % test: \PoissonsRatio
+\newcommand{\CoefficientOfThermalExpansion}{\ensuremath{\alpha}}   % test: \CoefficientOfThermalExpansion
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OMEGA AND ALPHA OPERATORS %%%%%%%%%%%%%%%%%%%%
+\newcommand{\omegaOperatorName}{omega operator}   % test: \omegaOperatorName
+\newcommand{\OmegaOperatorName}{Omega operator}   % test: \OmegaOperatorName
+\newcommand{\alphaOperatorName}{alpha operator}   % test: \alphaOperatorName
+\newcommand{\AlphaOperatorName}{Alpha operator}   % test: \AlphaOperatorName
+
+\newcommand{\omegaOperator}[3]{\ensuremath{{}_{#1}^{#3}\!{\boldOmegaVector}^{#2}{}}}
+\newcommand{\alphaOperator}[3]{\ensuremath{{}_{#1}^{#3}\!{\boldAlphaVector}^{#2}{}}}
+    % test: \omegaOperator{x}{B}{N}   % omegaOperator of B in N with left-subscript x
+    % test: \alphaOperator{x}{B}{N}   % alphaOperator of B in N with left-subscript x
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% This must be the last command.
+\endinput
