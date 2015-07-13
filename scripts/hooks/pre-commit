@@ -2,6 +2,7 @@
 #
 # Called by "git commit" with no arguments before doing a commit.
 CWHITE="\x1B[0m"
+CRED="\x1B[31m"
 CGREEN="\x1B[32m"
 echo -e "************************************"
 
@@ -41,6 +42,15 @@ If you know what you are doing you can disable this check using:
   git config hooks.allownonascii true
 EOF
 	exit 1
+fi
+
+# Prevent commits to master
+branch=`git rev-parse --abbrev-ref HEAD`
+if [ "${branch}" = "master" ]; then
+  echo -e "${CRED}You are attempting to commit to the master branch.${CWHITE}"
+  echo -e "  Create a new branch by doing: ${CGREEN}git checkout -b my-branch${CWHITE}"
+  echo -e "  And then try committing again."
+  exit 2
 fi
 
 # Let's just bypass this for now:
