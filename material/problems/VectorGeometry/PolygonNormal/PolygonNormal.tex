@@ -1,65 +1,114 @@
-\providecommand{\isolatedBuild}[1]{#1}% fallback definition lets this file build normally
-\isolatedBuild
-{
-\documentclass[11pt,letterpaper]{book}
-\usepackage{import}
-
-% This file must be found via the TEXINPUTS environment variable.
-\input{handout_helpers.tex}
-
-\pagestyle{empty}
-\pagenumbering{arabic}
-
-\begin{document}
-\HandoutHeader{Vector Equations and Geometry}
-\normalsize
-\vspace{-1.5pc}
-\\[0.0pc]
-%
-%\begin{enumerate}
-%\item
-\textColorBold{darkerBlue}{Polygon Meshes in Engineering and Graphics}
-\\[0.5pc]
+% File: PolygonNormal.tex
+% Author: Adam Leeper
+%------------------------------------------------------------------------------
+\providecommand{\isolatedBuild}[1]{#1}% Fallback definition to build normally.
+\isolatedBuild{
+  \documentclass[11pt,letterpaper]{book}
+  \input{handout_helpers.tex}   % Found via TEXINPUTS environment variable.
+  \isolatedBuildHeader{Vector Equations and Geometry}
+                      {Polygon Meshes in Engineering and Graphics}
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%
+%%%
+%%%
+%%%
 \begin{minipage}[t]{0.68\columnwidth}
-In many engineering applications (such as stress and aerodynamics computations using finite elements, as well as CAD and graphical display), objects are represented using a group of polygons. Being able to compute a ``normal'' vector perpendicular to each polygon is important for all these applications.
+  \minipageTopAnchor
+  In many engineering applications -- such as stress and aerodynamics
+  computations using finite elements, as well as CAD and graphical display --
+  objects are represented using a group of polygons (usually triangles)
+  collectively called a ``mesh". Being able to compute a ``normal'' vector
+  perpendicular to each polygon is important for all these applications.
 \end{minipage}
-\hfill
-\begin{minipage}[t]{0.25\columnwidth}
-\flushright
-\vspace*{0pc}
-%\includegraphics[width=0.95\columnwidth]{dolphin.jpg}
-%\includegraphics[width=0.9\columnwidth]{wing_mesh.png}
-\includegraphics[width=0.97\columnwidth]{wing_robot.jpg}
-\end{minipage}
-%\\[0.0pc]
-%For example, for drawing a polygon on screen, it is necessary to compute the illumination in a way that simulates realistic lighting. A simple model for diffuse illumination at each vertex (corner) of a polygon is defined as $I_D = I_L * \uvecWithHat{n} \cdot \uvecWithHat{L}$, where:
-%\begin{itemize}
-%\item $I_L$ is the (scalar) strength of the incoming light.
-%\item $\uvecWithHat{L}$ is the unit vector from the vertex to the light source.
-%\item $\uvecWithHat{n}$ is the ``unit-normal" for the polygon (that is, the unit vector perpendicular to the polygon).
-%\end{itemize}
 %
-\\[0.5pc]
-In the figure below, the \uvecxyz{a} ``coordinate" measures of each vertex from $A_o$ are labeled.
+\hfill
+%
+\begin{minipage}[t]{0.25\columnwidth}
+  \minipageTopAnchor
+  \flushright
+  \includegraphics[width=0.9\columnwidth]{wing_robot.jpg}
+\end{minipage}
+%
+\\[0.45pc]
+In the figure below, the \uvecxyz{a} measures of the position vector to each
+vertex from \origin{A} are labeled.
 \\[0.0pc]
-For example, $\posvec{A_o}{P_1} \equals[\;] 3~\uvecx{a} \plus[\;] 2~\uvecy{a} \plus[\;] 0~\uvecz{a}$.
+For example, $\posvec{\origin{A}}{P_1} \equals[\;] 3~\uvecx{a} \plus[\;] 2~\uvecy{a}
+\plus[\;] 0~\uvecz{a}$.
+%
+\begin{center}
+  \includegraphicsAB[width=7cm]{polygon-solution.png}{polygon_normal.png}
+\end{center}
+%
 \begin{enumerate}
-\item \underline{Compute} a vector \bvec{n} that is perpendicular to the polygon, expressed in \uvecxyz{a}.
-\item \underline{Explain} in detail how to get \uvecWithHat{n}, the unit vector in the same direction as \bvec{n}. \underline{Sketch} \uvecWithHat{n} on the figure.
-\item \underline{Explain} why there are actually two possible \uvecWithHat{n} vectors for the polygon.
-%\item Compute \posvec{P_0}{Q}, and hence compute the unit vector $\uvecWithHat{L}$.
-%\item For a light source of strength $I_L = 0.5$, compute the diffuse illumination $I_D$.
+  \item \underline{Compute} a vector \bvec{n} that is perpendicular to the 
+  polygon, expressed in terms of \uvecxyz{a}.
+    \\[0.25pc]\textbf{Result:} \\[-1.0pc]
+    %
+    \begin{displaymath}
+      \bvec{n} \equals[\;]
+      \hidemath[2cm]{4~\uvecx{a} \plus[\;] 6~\uvecy{a} \plus[\;] 8~\uvecz{a}}
+    \end{displaymath}
+    %
+    \Solution{}{0.99\linewidth}{
+      \begin{tabular}{p{0.03\linewidth}ll}
+        $\bvec{n}$
+        & $\equals[\;] \posvec{P_1}{P_2} \CrossProduct[\;] \posvec{P_1}{P_3}$
+        \\[0.45pc]
+        %\begin{align*}
+        $\posvec{P_1}{P_2}$
+        & $\equals[\;] \posvec{\origin{A}}{P_2} \minus[\;] \posvec{\origin{A}}{P_1}$
+        & $\equals[\;] (2 - 3)~\uvecx{a} \plus[\;] (0 - 2)~\uvecy{a}
+        \plus[\;] (2 - 0)~\uvecz{a}$
+        \\[0.45pc]
+        & & $\equals[\;] -1~\uvecx{a} \minus 2~\uvecy{a} \plus[\;] 2~\uvecz{a}$
+        %\end{align*}
+        \\[0.45pc]
+        $\posvec{P_1}{P_3}$
+        & $\equals[\;] \posvec{\origin{A}}{P_3} \minus[\;] \posvec{\origin{A}}{P_1}$
+        & $\equals[\;] (6 - 3)~\uvecx{a} \plus[\;] (0 - 2)~\uvecy{a}
+        \plus[\;] (0 - 0)~\uvecz{a}$
+        \\[0.45pc]
+        & & $\equals[\;] 3~\uvecx{a} \minus 2~\uvecy{a}$
+        \\[0.45pc]
+        $\bvec{n}$
+        & $\equals[\;] \posvec{P_1}{P_2} \CrossProduct[\;] \posvec{P_1}{P_3}$
+        & $\equals[\;] (-1~\uvecx{a} \minus 2~\uvecy{a} \plus[\;] 2~\uvecz{a})
+        \CrossProduct[\;] (3~\uvecx{a} \minus 2~\uvecy{a})$
+        \\[0.45pc]
+        & & $\equals[\;] -3~\uvecx{a} \CrossProduct[\;] ~\uvecx{a} \plus[\;]
+        2~\uvecy{a} \CrossProduct[\;] ~\uvecx{a} \minus[\;] 6~\uvecy{a}
+        \CrossProduct[\;] ~\uvecx{a} $
+        \\[0.45pc]
+        & & \quad\; $\plus[\;] 4~\uvecy{a} \CrossProduct[\;] ~\uvecy{a} \plus[\;]
+        6~\uvecz{a} \CrossProduct[\;] ~\uvecx{a} \minus[\;] 4~\uvecz{a} \CrossProduct[\;] ~\uvecy{a}$
+        \\[0.45pc]
+        & & $\equals[\;] 2~\uvecz{a} \minus 6(-~\uvecz{a}) \plus[\;] 6~\uvecy{a}
+        \minus 4(-~\uvecx{a})$
+        \\[0.45pc]
+        & & $\equals[\;] 4~\uvecx{a} \plus[\;] 6~\uvecy{a} \plus[\;] 8~\uvecz{a}$
+      \end{tabular}
+    }
+  \item \underline{Explain} in detail how to get \uvecHat{n}, the unit vector
+  in the same direction as \bvec{n}. \boldDarkBlue{\underline{Sketch}}
+  \uvecHat{n} on the figure.
+    %
+    \\[0.45pc]
+    %
+    \Solution{}{0.99\linewidth}{
+      To get \uvecHat{n}, simply divide \bvec{n} by its magnitude:
+      $$\uvecHat{n} \equals[\;] \frac{\bvec{n}}{\magnitude{\bvec{n}}} \equals[\;]
+      \frac{\bvec{n}}{\sqrt{\bvec{n}\CrossProduct[\;]\bvec{n}}}$$
+      \\[0.0pc]
+    }
+  %
+  \item What is the geometric interpretation of the length of \bvec{n}?
+    \\[0.45pc]
+    %
+    \Solution{}{0.99\linewidth}{
+      The length of $\bvec{n}$, given by $\magnitude{\bvec{n}}$, is twice the
+      area of the triangle shown.
+      \\[1.0pc]
+    }
 \end{enumerate}
-\includegraphics[width=8cm]{polygon_normal.png}
-
-\vfill
-Bonus (1 pt). What is the geometric interpretation of the length of \bvec{n}?
-\vspace{2.0pc}
-
-\isolatedBuild {
-%\end{enumerate}
- \end{document} }
+%
+\isolatedBuildFooter
