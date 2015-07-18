@@ -250,17 +250,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%
 % Internal stuff for rotation tables
+\def\dirCosTablea{a}
+\def\dirCosTableb{b}
 \def\dirCosTableA{A}
 \def\dirCosTableB{B}
 \newcommand{\rotationTableInternal}[9]
 {
   \ensuremath{
   \begin{array}{c|ccc}
-    \dircos{\dirCosTableA}{\dirCosTableB}  &  \uvec{\dirCosTableB}{x}  &  \uvec{\dirCosTableB}{y}  & \uvec{\dirCosTableB}{z}
+    \dircos{\dirCosTableA}{\dirCosTableB}
+      &  \uvec{\dirCosTableb}{x}  &  \uvec{\dirCosTableb}{y}  & \uvec{\dirCosTableb}{z}
     \\[0.0pc]\hline \\[-0.5pc]
-       \uvec{\dirCosTableA}{x}  &  #1     &  #2     & #3    \\[0.5pc]
-       \uvec{\dirCosTableA}{y}  &  #4     &  #5     & #6    \\[0.5pc]
-       \uvec{\dirCosTableA}{z}  &  #7     &  #8     & #9    \\[-0.75pc] & & &
+       \uvec{\dirCosTablea}{x}  &  #1     &  #2     & #3    \\[0.5pc]
+       \uvec{\dirCosTablea}{y}  &  #4     &  #5     & #6    \\[0.5pc]
+       \uvec{\dirCosTablea}{z}  &  #7     &  #8     & #9    \\[-0.75pc] & & &
   \end{array}
   }
 }
@@ -271,8 +274,10 @@
 %%%
 \newcommand{\rotationTable}[2]
 {
-  \def\dirCosTableA{#1}
-  \def\dirCosTableB{#2}
+  \def\dirCosTablea{\lowercase{#1}}
+  \def\dirCosTableb{\lowercase{#2}}
+  \def\dirCosTableA{\uppercase{#1}}
+  \def\dirCosTableB{\uppercase{#2}}
   \rotationTableInternal
 }
 \newcommand{\rotationTableIdentity}[2]
