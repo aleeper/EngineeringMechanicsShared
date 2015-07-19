@@ -27,19 +27,127 @@
   Let the earth be a Newtonian frame, \basis{N}, and assume the gravitational
   constant is $g = 9.81$ m/s$^2$.
   Neglecting air resistance, we can model the forces on the ball as
-  $\force{Q} \equals -mg~\uvecy{n}$.
+  $\force{Q} \equals \minus mg~\uvecy{n}$.
 \end{minipage}
 \hfill
 \begin{minipage}{0.43\textwidth}
-  \includegraphics[width=\linewidth]{golfer.png}
+  \includegraphicsAB[width=\linewidth]{golfer-solution.png}{golfer.png}
 \end{minipage}
 %
-\\[0.5pc]
+\\[0.45pc]
 \begin{itemize}
   \item Introduce appropriate measures to describe the kinematics of the ball.
+    %
+    \\[0.45pc]
+    \Solution{}{0.99\linewidth}{
+      \begin{minipage}{0.3\linewidth}
+%        \minipageTopAnchor
+        \center
+        \rotationTable{N}{b}
+          {\cos\theta_B}{-\sin\theta_B}{0}
+          {\sin\theta_B}{\cos\theta_B}{0}
+          {0} {0} {1}
+        \\[1.0pc]
+      \end{minipage}
+      \begin{minipage}{0.6\linewidth}
+        \minipageTopAnchor
+        \center
+        \begin{tabular}{lr@{\equals[\;]}l}
+          Let
+          & $\posvec{\origin{N}}{Q}$
+          & $x~\uvecx{b} \plus y~\uvecy{b}$
+          \\[0.45pc]
+          Then
+          & $\vel{Q}{N}$
+          & $\xdot~\uvecx{b} \plus \ydot~\uvecy{b}$
+          \\[0.45pc]
+          & $\accel{Q}{N}$
+          & $\xddot~\uvecx{b} \plus \yddot~\uvecy{b}$
+        \end{tabular}
+      \end{minipage}
+    }
+    %
   \item Use Newton's law to \textbf{show} how to get a pair of \textbf{scalar}
     differential equations describing the ball's motion.
+    %
+    \\[0.45pc]
+    \Solution{}{0.99\linewidth}{
+      \begin{minipage}{0.99\linewidth}
+        Newton says
+        \center
+        \begin{tabular}{r@{\equals[\;]}l}
+          $\force{Q}$
+          & $m \accel{Q}{N}$
+          \\[0.45pc]
+          $ \minus mg\uvecy{n}$
+          & $m \xddot~\uvecx{b} \plus m \yddot~\uvecy{b}$
+          \\[0.45pc]
+        \end{tabular}
+      \end{minipage}
+      %
+      \begin{minipage}{0.99\linewidth}
+        From scalar equations:
+        \center
+        \begin{tabular}{lr@{\equals[\;]}l@{$\longrightarrow$\;}l@{\equals[\;]}l}
+          dot with $\uvecx{b}$:
+          & $\minus mg\sin\theta_B$
+          & $m \xddot$
+          & $\minus g \sin\theta_B$
+          & $\xddot$
+          \\[0.45pc]
+          dot with $\uvecy{b}$:
+          & $\minus mg\cos\theta_B$
+          & $m \yddot$
+          & $\minus g \cos\theta_B$
+          & $\yddot$
+        \end{tabular}
+      \end{minipage}
+    }
   \item Determine the \textbf{time} that the ball is in the air.
+    %
+    Result:
+    \begin{displaymath}
+      t \equals[\;]
+      \hidemath{3.586 \; \mathrm{sec}}
+    \end{displaymath}
+    %
+    \\[0.45pc]
+    \Solution{}{0.99\linewidth}{
+      $\yddot$ is \underline{constant}, so we can use ``constant-acceleration'' equations.
+      But what is $\ydot_i$?
+      \\[0.45pc]
+      $$(\vel{Q}{N})_i
+        \equals (20~\mathrm{\frac{m}{s}})\cos\degrees{60}~\uvecx{b}
+        \plus (20~\mathrm{\frac{m}{s}})\sin\degrees{60}~\uvecy{b}
+        \equals \xdot_i~\uvecx{b} \plus \ydot_i~\uvecy{b}
+      $$
+      %
+      \\[0.45pc]
+      \begin{tabular}{lr@{\equals[\;]}l}
+        Now use
+        & $s_f \minus s_i$
+        & $v_i t \plus \frac{1}{2}at^2$,
+        \\[0.45pc]
+        or
+        & $y_f \minus y_i$
+        & $\ydot_i t \plus \frac{1}{2}\yddot t^2$
+      \end{tabular}
+      %
+      \\[0.45pc]
+      \underline{Insight:} time of flight is until $y_f \equals 0$
+      and ball starts at $y_i \equals 0$
+      \center
+      \begin{tabular}{r@{\equals[\;]}l}
+        $0 \minus 0$
+        & $(10\sqrt{3} \mathrm{\frac{m}{s}})t
+          \plus \frac{1}{2}(-9.81 \mathrm{\frac{m}{s^2}} \cos\degrees{10}) t^2$
+        \\[0.45pc]
+        & $10 \sqrt{3} \mathrm{\frac{m}{s}}\minus \frac{1}{2} (9.81 \cos\degrees{10}) t$
+        \\[0.45pc]
+        $t$
+        & $3.586 \; \mathrm{sec}$
+      \end{tabular}
+    }
 \end{itemize}
 }
 \isolatedBuildFooter
