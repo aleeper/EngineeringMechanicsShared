@@ -19,15 +19,13 @@
 %%%
 %%%
 %%%
-{
-\small
 \begin{minipage}{0.50\textwidth}
   A golf ball, $Q$, is struck with an initial velocity of 20 m/s in the
   direction shown by the arrow.
   Let the earth be a Newtonian frame, \basis{N}, and assume the gravitational
   constant is $g = 9.81$ m/s$^2$.
   Neglecting air resistance, we can model the forces on the ball as
-  $\force{Q} \equals \minus mg~\uvecy{n}$.
+  $\force{Q} \equals[] \minus[] mg~\uvecy{n}$.
 \end{minipage}
 \hfill
 \begin{minipage}{0.43\textwidth}
@@ -35,22 +33,29 @@
 \end{minipage}
 %
 \\[0.45pc]
-\begin{itemize}
+\begin{enumerate}
   \item Introduce appropriate measures to describe the kinematics of the ball.
     %
-    \\[0.45pc]
-    \Solution{}{0.99\linewidth}{
-      \begin{minipage}{0.3\linewidth}
-%        \minipageTopAnchor
+    \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
+      The hardest part of this problem (indeed, most dynamics problems) is
+      picking good identifiers. There is not a single ``right'' choice,
+      but certain choices result in easier math at the end.
+      %
+      \\[0.45pc]
+      Here, we introduce a basis \basis{B} with \uvecx{b} parallel to the
+      slope and \uvecy{b} perpendicular to the slope. Then, we use \uvecxy{b}
+      measures of the ball's position from \origin{N}.
+      %
+      \\[0.45pc]
+      \begin{minipage}{0.5\linewidth}
         \center
-        \rotationTable{N}{b}
+        \rotationTable{n}{b}
           {\cos\theta_B}{-\sin\theta_B}{0}
           {\sin\theta_B}{\cos\theta_B}{0}
           {0} {0} {1}
         \\[1.0pc]
       \end{minipage}
-      \begin{minipage}{0.6\linewidth}
-        \minipageTopAnchor
+      \begin{minipage}{0.5\linewidth}
         \center
         \begin{tabular}{lr@{\equals[\;]}l}
           Let
@@ -70,25 +75,25 @@
   \item Use Newton's law to \textbf{show} how to get a pair of \textbf{scalar}
     differential equations describing the ball's motion.
     %
-    \\[0.45pc]
-    \Solution{}{0.99\linewidth}{
+    \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
       \begin{minipage}{0.99\linewidth}
-        Newton says
+        Newton's law allows us to relate the ball's kinematics to the forces
+        acting on the ball:
         \center
         \begin{tabular}{r@{\equals[\;]}l}
           $\force{Q}$
           & $m \accel{Q}{N}$
           \\[0.45pc]
-          $ \minus mg\uvecy{n}$
+          $ \minus[] mg~\uvecy{n}$
           & $m \xddot~\uvecx{b} \plus m \yddot~\uvecy{b}$
           \\[0.45pc]
         \end{tabular}
       \end{minipage}
       %
       \begin{minipage}{0.99\linewidth}
-        From scalar equations:
+        We form scalar equations by dotting:
         \center
-        \begin{tabular}{lr@{\equals[\;]}l@{$\longrightarrow$\;}l@{\equals[\;]}l}
+        \begin{tabular}{lr@{\equals[\;]}l@{\symmetricSpace{1cm}{$\longrightarrow$}}l@{\equals[\;]}l}
           dot with $\uvecx{b}$:
           & $\minus mg\sin\theta_B$
           & $m \xddot$
@@ -105,49 +110,49 @@
     }
   \item Determine the \textbf{time} that the ball is in the air.
     %
-    Result:
-    \begin{displaymath}
-      t \equals[\;]
-      \hidemath{3.586 \; \mathrm{sec}}
-    \end{displaymath}
+    % $$ t \equals[\;] \hidemath{3.586 \; \mathrm{sec}} $$
     %
-    \\[0.45pc]
-    \Solution{}{0.99\linewidth}{
-      $\yddot$ is \underline{constant}, so we can use ``constant-acceleration'' equations.
-      But what is $\ydot_i$?
-      \\[0.45pc]
+    \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
+      Any 2nd-order differential equation of the form
+      $\xddot = \text{constant}$
+      can be solved using the familiar equations for
+      ``constant-acceleration''.
+      %
+      $$s_f \minus s_i = v_i t \plus \frac{1}{2}at^2$$
+      %
+      The equations above for $\xddot$ and $\yddot$ both meet this requirement,
+      so we can relate the initial conditions, final conditions, and time as:
+      $$x_f \minus x_i = \xdot_i t \plus \frac{1}{2}\xddot t^2
+        \symmetricSpace{1cm}{\text{and}}
+        y_f \minus y_i = \ydot_i t \plus \frac{1}{2}\yddot t^2$$
+      %
+      We can solve for $\xdot_i$ and $\ydot_i$ using the initial condition:
+      %
       $$(\vel{Q}{N})_i
         \equals (20~\mathrm{\frac{m}{s}})\cos\degrees{60}~\uvecx{b}
         \plus (20~\mathrm{\frac{m}{s}})\sin\degrees{60}~\uvecy{b}
         \equals \xdot_i~\uvecx{b} \plus \ydot_i~\uvecy{b}
       $$
       %
-      \\[0.45pc]
-      \begin{tabular}{lr@{\equals[\;]}l}
-        Now use
-        & $s_f \minus s_i$
-        & $v_i t \plus \frac{1}{2}at^2$,
-        \\[0.45pc]
-        or
-        & $y_f \minus y_i$
-        & $\ydot_i t \plus \frac{1}{2}\yddot t^2$
-      \end{tabular}
-      %
-      \\[0.45pc]
-      \underline{Insight:} time of flight is until $y_f \equals 0$
-      and ball starts at $y_i \equals 0$
+      Finally, we use the physical insight that the ball starts at
+      $y_i \equals[] 0$, and will hit the ground again when $y_f \equals[] 0$.
       \center
       \begin{tabular}{r@{\equals[\;]}l}
+        $y_f \minus y_i$
+        & $\ydot_i t \plus \frac{1}{2}\yddot t^2$
+        \\[0.45pc]
         $0 \minus 0$
         & $(10\sqrt{3} \mathrm{\frac{m}{s}})t
           \plus \frac{1}{2}(-9.81 \mathrm{\frac{m}{s^2}} \cos\degrees{10}) t^2$
         \\[0.45pc]
-        & $10 \sqrt{3} \mathrm{\frac{m}{s}}\minus \frac{1}{2} (9.81 \cos\degrees{10}) t$
+        0
+        & $10 \sqrt{3} \mathrm{\frac{m}{s}}\minus
+          \frac{1}{2} (9.81 \mathrm{\frac{m}{s^2}} \cos\degrees{10}) t$
         \\[0.45pc]
         $t$
         & $3.586 \; \mathrm{sec}$
       \end{tabular}
     }
-\end{itemize}
-}
+\end{enumerate}
+%
 \isolatedBuildFooter
