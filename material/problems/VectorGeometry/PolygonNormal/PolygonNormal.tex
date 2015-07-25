@@ -29,10 +29,11 @@
 \end{minipage}
 %
 \\[0.45pc]
-In the figure below, the \uvecxyz{a} measures of the position vector to each
-vertex from \origin{A} are labeled.
+In the figure below, the position vector to each vertex from \origin{A} is
+labeled as a tuple of \uvecxyz{a} measures.
 \\[0.0pc]
-For example, $\posvec{\origin{A}}{P_1} \equals[\;] 3~\uvecx{a} \plus[\;] 2~\uvecy{a}
+For example, $P_1 \equals[\;] (3, 2, 0)$ means
+$\posvec{\origin{A}}{P_1} \equals[\;] 3~\uvecx{a} \plus[\;] 2~\uvecy{a}
 \plus[\;] 0~\uvecz{a}$.
 %
 \begin{center}
@@ -40,8 +41,8 @@ For example, $\posvec{\origin{A}}{P_1} \equals[\;] 3~\uvecx{a} \plus[\;] 2~\uvec
 \end{center}
 %
 \begin{enumerate}
-  \item \underline{Compute} a vector \bvec{n} that is perpendicular to the 
-  polygon, expressed in terms of \uvecxyz{a}.
+  \item \underline{Compute} a vector \bvec{n} that is perpendicular to the
+    polygon, expressed in terms of \uvecxyz{a}.
     \\[0.25pc]\textbf{Result:} \\[-1.0pc]
     %
     \begin{displaymath}
@@ -49,7 +50,7 @@ For example, $\posvec{\origin{A}}{P_1} \equals[\;] 3~\uvecx{a} \plus[\;] 2~\uvec
       \hidemath[2cm]{4~\uvecx{a} \plus[\;] 6~\uvecy{a} \plus[\;] 8~\uvecz{a}}
     \end{displaymath}
     %
-    \Solution{}{0.99\linewidth}{
+    \Solution{}{0.98\linewidth}{
       \begin{tabular}{p{0.03\linewidth}ll}
         $\bvec{n}$
         & $\equals[\;] \posvec{P_1}{P_2} \CrossProduct[\;] \posvec{P_1}{P_3}$
@@ -87,27 +88,27 @@ For example, $\posvec{\origin{A}}{P_1} \equals[\;] 3~\uvecx{a} \plus[\;] 2~\uvec
         \\[0.45pc]
         & & $\equals[\;] 4~\uvecx{a} \plus[\;] 6~\uvecy{a} \plus[\;] 8~\uvecz{a}$
       \end{tabular}
+      \\[4.0pc]
     }
   \item \underline{Explain} in detail how to get \uvecHat{n}, the unit vector
-  in the same direction as \bvec{n}. \boldDarkBlue{\underline{Sketch}}
-  \uvecHat{n} on the figure.
-    %
+    in the same direction as \bvec{n}. \boldDarkBlue{\underline{Sketch}}
+    \uvecHat{n} on the figure.
     \\[0.45pc]
     %
-    \Solution{}{0.99\linewidth}{
+    \Solution{}{0.98\linewidth}{
       To get \uvecHat{n}, simply divide \bvec{n} by its magnitude:
       $$\uvecHat{n} \equals[\;] \frac{\bvec{n}}{\magnitude{\bvec{n}}} \equals[\;]
       \frac{\bvec{n}}{\sqrt{\bvec{n}\CrossProduct[\;]\bvec{n}}}$$
-      \\[0.0pc]
+      \\[-0.5pc]
     }
   %
   \item What is the geometric interpretation of the length of \bvec{n}?
     \\[0.45pc]
     %
-    \Solution{}{0.99\linewidth}{
+    \Solution{}{0.98\linewidth}{
       The length of $\bvec{n}$, given by $\magnitude{\bvec{n}}$, is twice the
       area of the triangle shown.
-      \\[1.0pc]
+      \\[0.25pc]
     }
 \end{enumerate}
 %
