@@ -13,13 +13,62 @@
 %%%
 %%%
 %%%
-The figure below shows a rigid spool \basis{B} in contact with the ground \basis{N}. Denote the spool's inner radius as $r$ and outer radius as $R$.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+The figure below shows a rigid spool \basis{B} in contact with the ground
+\basis{N}. Denote the spool's inner radius as $r$ and outer radius as $R$.
 The point of the spool in contact with the ground is $B_N$.
-In completing this problem, please introduce appropriate unit vectors, identifiers (labels), and anything else you need to help you.
+In completing this problem, please introduce appropriate unit vectors,
+identifiers (labels), and anything else you need to help you.
+%
+\begin{center}
+    \includegraphicsAB[width=0.45\linewidth]
+      {spool-solution.png}
+      {spool.png}
+\end{center}
+%
 \begin{enumerate}
-\item Calculate \moment{\bvec{F}_T/B_N}, the moment due to force \force{T} about $B_N$, in terms of $r$, $R$, $\theta$, and any other quantities necessary.
-\item Compute the numerical value of \moment{\bvec{F}_T/B_N} when $F_T = 10$ N, $r = 1$ m, $R = 2$ m, and $\theta = \degrees{60}$.
+  \item Calculate \moment{\bvec{F}_T/\contactPoint{B}{N}},
+    the moment due to force \force{T} about $\contactPoint{B}{N}$,
+    in terms of $r$, $R$, $\theta$, and any other quantities necessary.
+    %
+    \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
+      \begin{tabular}{lcl}
+        \moment{\bvec{F}_T/B_N}
+        & $\deff$
+        & $\posvec{B_N}{B_I}~ \CrossProduct ~\bvec{F}_T$
+        \\[1.0pc]
+        & =
+        & $(R~\uvecy{n}-r~\uvecy{b})~ \CrossProduct ~(F_T~\uvecx{b})$
+        \\[1.0pc]
+        & =
+        & $F_T R~\uvecy{n}~ \CrossProduct~\uvecx{b}
+          \minus F_T r~\uvecy{b}~ \CrossProduct~\uvecx{b}$
+        \\[1.0pc]
+        & =
+        & $F_T R(\minus~\uvecz{n})~\sin(90\minus \theta)
+          \minus F_T r(\minus~\uvecz{n})$
+        \\[1.0pc]
+        & =
+        & $F_T(r\minus R \cos\theta)~\uvecz{n}$
+        \\[1.0pc]
+      \end{tabular}
+    }
+    %
+  \item Compute the numerical value of \moment{\bvec{F}_T/\contactPoint{B}{N}}
+    when $F_T = 10$ N, $r = 1$ m, $R = 2$ m, and $\theta = \degrees{60}$.
+    %
+    \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
+      \begin{tabular}{l@{\equals[\;]}l}
+        $\moment{\bvec{F}_T/B_N}$ & $F_T(r\minus R \cos\theta)~\uvecz{n}$
+        \\[1.0pc]
+        & $10N \left(\SI{1}{m}\minus\SI{2}{m}
+                 \left(\fracDisplaystyle{1}{2}\right)\right)~\uvecz{n}$
+        \\[1.0pc]
+        & $0~\uvecz{n}$
+        \\[1.0pc]
+      \end{tabular}
+    }
 \end{enumerate}
-\vspace{4.0pc}
-\includegraphics[height=5.5cm]{spool.png}
+%
 \isolatedBuildFooter
