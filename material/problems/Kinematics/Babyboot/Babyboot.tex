@@ -31,10 +31,41 @@ and $\phi$ is the angle between \uvecx{a} and \uvecx{b}.
 %\textbf{convince me} that you could come up with those expressions on your own.)
 %\\[6.0pc]
 \\[0.0pc]
-\begin{itemize}
+\begin{enumerate}
 \item Form \angvel{A}{N} and \angvel{B}{A} by inspection.
+  %
+  \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
+    \centering
+    $\angvel{A}{N} \equals \thetadot~\uvecx{a}$
+    \\[0.25pc]
+    $\angvel{B}{A} \equals \phidot~\uvecz{a}$
+  }
+  %
 \item Use the \textbf{definition} to \textbf{compute} \basis{B}'s angular acceleration in \basis{N} in terms of symbols and unit-vectors.
-\end{itemize}
+  %
+  \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
+    \centering
+    \begin{tabular}{rl}
+      $\angvel{B}{N}$
+      & $= \angvel{A}{N} \plus \angvel{B}{A} \equals \thetadot~\uvecx{a} \plus \phidot~\uvecz{a}$
+      \\[1.0pc]
+      $\alf{B}{N}$
+      & $\overEquals{\Delta} $\raisebox{6pt}{$^N$}$\!\dfrac{d}{dt} (\angvel{B}{N})$
+      \\[0.45pc]
+      & $= $\raisebox{6pt}{$^N$}$\!\dfrac{d}{dt} (\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})$
+      \\[0.45pc]
+      & $= $\raisebox{6pt}{$^A$}$\!\dfrac{d}{dt} (\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})
+         \plus (\thetadot~\uvecx{a}) \CrossProduct (\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})$
+      \\[0.45pc]
+      & $= \thetaddot~\uvecx{a} \plus \phiddot~\uvecz{a}
+         \plus \thetadot^2~\uvecx(a) \CrossProduct ~\uvecx{a}
+         \plus \thetadot~\phidot~\uvecx{a} \CrossProduct ~\uvecz{a}$
+      \\[0.45pc]
+      & $= \thetaddot~\uvecx{a} \plus \phiddot~\uvecz{a}
+         \minus \thetadot~\phidot~\uvecy{a}$
+    \end{tabular}
+  }
+\end{enumerate}
 \vspace{12.pc}
 \end{minipage}
 \hfill
