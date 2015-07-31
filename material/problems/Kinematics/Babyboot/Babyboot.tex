@@ -12,65 +12,70 @@
 %%%
 %%%
 %%%
-\begin{minipage}{0.55\textwidth}
-A babyboot pendulum (as shown in class) is pictured at right,
-consisting of a rod \basis{A} and rectangular plate \basis{B}.
-Assume the support structure is a Newtonian reference frame \basis{N}.
-Sets of right-handed  orthogonal unit vectors are fixed in each frame as shown,
-and angles $\theta$ and $\phi$ are indicated on the figure.
-\\[0.5pc]
-To clarify the figure,
-$\theta$ is the angle between \uvecz{n} and \uvecz{a},
-and $\phi$ is the angle between \uvecx{a} and \uvecx{b}.
-%\\[0.5pc]
-%Clearly \textbf{explain} why we can say $\angvel{A}{N} = + ~\thetadot~\uvecx{a}$.
-%\\[0.25pc]
-%Clearly \textbf{explain} why we can say $\angvel{B}{A} = + ~\phidot~\uvecz{a}$.
-%\\[0.25pc]
-%(I gave them to you so that you can do the rest of the problem, but you need to
-%\textbf{convince me} that you could come up with those expressions on your own.)
-%\\[6.0pc]
-\\[0.0pc]
-\begin{enumerate}
-\item Form \angvel{A}{N} and \angvel{B}{A} by inspection.
-  %
-  \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
-    \centering
-    $\angvel{A}{N} \equals \thetadot~\uvecx{a}$
-    \\[0.25pc]
-    $\angvel{B}{A} \equals \phidot~\uvecz{a}$
-  }
-  %
-\item Use the \textbf{definition} to \textbf{compute} \basis{B}'s angular acceleration in \basis{N} in terms of symbols and unit-vectors.
-  %
-  \SolutionNoSpace{\\[0.45pc]}{0.98\linewidth}{
-    \centering
-    \begin{tabular}{rl}
-      $\angvel{B}{N}$
-      & $= \angvel{A}{N} \plus \angvel{B}{A} \equals \thetadot~\uvecx{a} \plus \phidot~\uvecz{a}$
-      \\[1.0pc]
-      $\alf{B}{N}$
-      & $\overEquals{\Delta} $\raisebox{6pt}{$^N$}$\!\dfrac{d}{dt} (\angvel{B}{N})$
+\begin{minipage}[t]{0.6\textwidth}
+  \minipageTopAnchor
+  A babyboot pendulum (as shown in class) is pictured at right,
+  consisting of a rod \basis{A} and rectangular plate \basis{B}.
+  Assume the support structure is a Newtonian reference frame \basis{N}.
+  Sets of right-handed  orthogonal unit vectors are fixed in each frame as shown,
+  and angles $\theta$ and $\phi$ are indicated on the figure.
+  \\[0.45pc]
+  To help clarify the figure:
+  $\theta$ is the angle between \uvecz{n} and \uvecz{a} with $+\uvecx{a}$ sense,
+  and $\phi$ is the angle between \uvecx{a} and \uvecx{b} with $+\uvecz{b}$ sense.
+  %\\[0.5pc]
+  %Clearly \textbf{explain} why we can say $\angvel{A}{N} = + ~\thetadot~\uvecx{a}$.
+  %\\[0.25pc]
+  %Clearly \textbf{explain} why we can say $\angvel{B}{A} = + ~\phidot~\uvecz{a}$.
+  %\\[0.25pc]
+  %(I gave them to you so that you can do the rest of the problem, but you need to
+  %\textbf{convince me} that you could come up with those expressions on your own.)
+  %\\[6.0pc]
+  \\[0.0pc]
+  \begin{enumerate}
+    \item By inspection, form \angvelsDescription{A}{N}, \angvel{A}{N},
+      and \angvelsDescription{B}{A}, \angvel{B}{A}.
+      %
       \\[0.45pc]
-      & $= $\raisebox{6pt}{$^N$}$\!\dfrac{d}{dt} (\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})$
+      \Solution{}{0.98\linewidth}{
+        $$\angvel{A}{N} \equals \thetadot~\uvecx{a}$$
+        $$\angvel{B}{A} \equals \phidot~\uvecz{a}$$
+        \\[2.0pc]
+      }
+      %
+    \item Use the \textbf{definition} to \textbf{compute}
+      \alfsDescription{B}{N} in terms of symbols and unit-vectors.
+      %
       \\[0.45pc]
-      & $= $\raisebox{6pt}{$^A$}$\!\dfrac{d}{dt} (\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})
-         \plus (\thetadot~\uvecx{a}) \CrossProduct (\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})$
-      \\[0.45pc]
-      & $= \thetaddot~\uvecx{a} \plus \phiddot~\uvecz{a}
-         \plus \thetadot^2~\uvecx(a) \CrossProduct ~\uvecx{a}
-         \plus \thetadot~\phidot~\uvecx{a} \CrossProduct ~\uvecz{a}$
-      \\[0.45pc]
-      & $= \thetaddot~\uvecx{a} \plus \phiddot~\uvecz{a}
-         \minus \thetadot~\phidot~\uvecy{a}$
-    \end{tabular}
-  }
-\end{enumerate}
-\vspace{12.pc}
+      \Solution{}{0.98\linewidth}{
+        \centering
+        \begin{tabular}{r@{}c@{}l}
+            $\angvel{B}{N}$
+            & $\equals[\;]$ & $\angvel{A}{N} \plus \angvel{B}{A} \equals \thetadot~\uvecx{a} \plus \phidot~\uvecz{a}$
+          \\[1.0pc]
+            $\alf{B}{N}$
+            & $\deff[\;]$ & $\dt[N]{}(\angvel{B}{N})$
+          \\[0.45pc]
+          & $\equals[\;]$ & $\dt[N]{}(\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})$
+          \\[0.45pc]
+          & $\equals[\;]$ & $\dt[A]{}(\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})
+          \plus (\thetadot~\uvecx{a}) \CrossProduct[\;] (\thetadot~\uvecx{a} \plus \phidot~\uvecz{a})$
+          \\[0.45pc]
+          & $\equals[\;]$ & $\thetaddot~\uvecx{a} \plus \phiddot~\uvecz{a}
+          \plus \thetadot^2~\uvecx{a} \CrossProduct[\;] \uvecx{a}
+            \plus \thetadot~\phidot~\uvecx{a} \CrossProduct[\;] \uvecz{a}$
+          \\[0.45pc]
+          & $\equals[\;]$ & $\thetaddot~\uvecx{a} \plus \phiddot~\uvecz{a}
+              \minus \thetadot~\phidot~\uvecy{a}$
+        \end{tabular}
+      }
+  \end{enumerate}
 \end{minipage}
 \hfill
-\begin{minipage}{0.38\textwidth}
-\flushright
-\includegraphics[width=0.96\columnwidth]{babyboot2.png}
+\begin{minipage}[t]{0.4\textwidth}
+  \minipageTopAnchor
+  \flushright
+  \includegraphics[width=0.95\columnwidth]{babyboot2.png}
 \end{minipage}
+%
 \isolatedBuildFooter
